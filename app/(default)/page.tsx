@@ -3,13 +3,13 @@ export const metadata = {
     description: "Page description"
 };
 
-import Hero from "@/components/hero-home";
+import HeroHome from "@/components/hero-home";
 import StartupCategories from "@/components/startup-categories";
 
 export default function Home() {
     return (
         <>
-        <Hero />
+        <HeroHome />
         <StartupCategories />
         </>
     )

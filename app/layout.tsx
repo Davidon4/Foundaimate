@@ -3,6 +3,10 @@ import "./globals.css";
 
 import { Inter } from "next/font/google";
 
+import {
+  ClerkProvider
+} from '@clerk/nextjs';
+
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
@@ -20,6 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
+    <ClerkProvider>
     <html lang="en" className="scroll-smooth">
       <body
         className={`${inter.variable} bg-gray-50 font-inter tracking-tight text-gray-900 antialiased`}
@@ -29,5 +34,6 @@ export default function RootLayout({
         </div>
       </body>
     </html>
+    </ClerkProvider>
   );
 }

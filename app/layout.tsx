@@ -1,16 +1,24 @@
 import type { Metadata } from "next";
 import "./globals.css";
-
-import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 
 import {
   ClerkProvider
 } from '@clerk/nextjs';
+import { cn } from "@/lib/utils";
+import { Toaster } from "@/components/ui/toaster";
+import { ThemeProvider } from "@/components/theme-provider";
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
+const geistSans = localFont({
+  src: "./fonts/GeistVF.woff",
+  variable: "--font-geist-sans",
+  weight: "100 900",
+});
+
+const geistMono = localFont({
+  src: "./fonts/GeistMonoVF.woff",
+  variable: "--font-geist-mono",
+  weight: "100 900",
 });
 
 export const metadata: Metadata = {
@@ -25,13 +33,19 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${inter.variable} bg-gray-50 font-inter tracking-tight text-gray-900 antialiased`}
+        className={cn("bg-secondary", `${geistSans.variable} ${geistMono.variable} antialiased`)}
       >
-        <div className="flex min-h-screen flex-col overflow-hidden supports-[overflow:clip]:overflow-clip">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+          >
           {children}
-        </div>
+          <Toaster/>
+          </ThemeProvider>
       </body>
     </html>
     </ClerkProvider>

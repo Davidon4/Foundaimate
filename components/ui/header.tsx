@@ -13,14 +13,14 @@ export default function Header() {
                 <ul className="flex flex-1 items-center justify-end gap-3">
                     <li>
                     <Button variant="outline" size="sm" asChild>
-                    <Link href="/signin" 
+                    <Link href="/sign-in" 
                     className="text-black shadow text-sm rounded-md"
                     >Login</Link>
                     </Button>
                     </li>
                     <li>
                     <Button size="sm" asChild>
-                    <Link href="/signup" 
+                    <Link href="/sign-up" 
                     className="bg-tealCustom text-gray-200 shadow hover:bg-teal-700 text-sm rounded-md"
                     >Register</Link>
                     </Button>

@@ -35,17 +35,12 @@ export default function RootLayout({
     <ClerkProvider>
     <html lang="en" suppressHydrationWarning>
       <body
-        className={cn("bg-secondary", `${geistSans.variable} ${geistMono.variable} antialiased`)}
+        className={cn("bg-secondary", `${geistSans.variable} ${geistMono.variable}  bg-gray-50 font-inter tracking-tight text-gray-900 antialiased`)}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-          >
+        <div className="flex min-h-screen flex-col overflow-hidden supports-[overflow:clip]:overflow-clip">
           {children}
           <Toaster/>
-          </ThemeProvider>
+          </div>
       </body>
     </html>
     </ClerkProvider>

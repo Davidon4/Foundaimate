@@ -1,5 +1,5 @@
 export const metadata = {
-    title: "Home - Foundaimate",
+    title: "Home - foundaimate.com",
     description: "Page description"
 };
 

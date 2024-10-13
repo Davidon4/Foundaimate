@@ -1,7 +1,6 @@
 import { Sidebar } from "@/components/sidebar";
 import { Navbar } from "@/components/navbar";
 
-
 const RootLayout = ({children}: {
     children: React.ReactNode
 }) => {

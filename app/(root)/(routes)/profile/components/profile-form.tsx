@@ -37,6 +37,9 @@ import { Textarea } from "@/components/ui/textarea";
     experience: z.string().min(1, {
         message: "Experience level is required."
     }),
+    ownership: z.string().min(1, {
+        message: "Ownership level is required."
+    }),
     member: z.string().min(1, {
         message: "Founding member is required."
     }),
@@ -55,11 +58,14 @@ import { Textarea } from "@/components/ui/textarea";
     stage: z.string().min(1, {
         message: "Business stage is required"
     }),
-    size: z.string().min(1, {
-        message: "Business size is required."
+    size: z.number().min(1, {
+        message: "Business size must be at least 1."
     }),
     industry: z.string().min(1, {
         message: "Business industry is required"
+    }),
+    product: z.string().min(1, {
+        message: "Product stage is required"
     })
     })
 
@@ -70,6 +76,7 @@ export const ProfileForm = () => {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues:  {
+            ownership: "",
             experience: "",
             member: "",
             expertise: "",
@@ -77,8 +84,9 @@ export const ProfileForm = () => {
             revenue: "",
             description: "",
             stage: "",
-            size: "",
-            industry: ""
+            size: 1,
+            industry: "",
+            product: ""
         }
     })
 
@@ -92,9 +100,9 @@ export const ProfileForm = () => {
                 >
                 <div className="space-y-2 w-full">
                     <div>
-                        <h3 className="text-lg font-medium">General Information</h3>
+                        <h3 className="text-lg font-medium">Founder’s Profile</h3>
                         <p className="text-sm text-muted-foreground">
-                            General information about your companion
+                        Founder’s Profile
                         </p>
                     </div>
                     <Separator className="bg-primary/10"/>
@@ -105,7 +113,7 @@ export const ProfileForm = () => {
               control={form.control}
               render={({ field }) => (
                 <FormItem className="col-span-2 md:col-span-1">
-                  <FormLabel>Experience</FormLabel>
+                  <FormLabel>What is your previous experience as a founder or in the industry?</FormLabel>
                   <FormControl>
                     <Input
                       disabled={isLoading}
@@ -113,9 +121,6 @@ export const ProfileForm = () => {
                       {...field}
                     /> 
                   </FormControl>
-                  <FormDescription>
-                    This is how your AI Companion will be named
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}

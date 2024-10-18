@@ -11,14 +11,14 @@ export const Sidebar = () => {
     const routes = [
         {
             icon: Home,
-            href: "/",
+            href: "/home",
             label: "Home",
             pro: false
         },
         {
             icon: Plus,
-            href: "/companion/new",
-            label: "Create",
+            href: "/profile/new",
+            label: "Edit",
             pro: true
         },
         {

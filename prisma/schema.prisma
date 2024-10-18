@@ -17,44 +17,131 @@ datasource db {
 model Ownership {
   id          String @id @default(auto()) @map("_id") @db.ObjectId
   name        String
+  profiles    Profile[]    
 }
 
 model Experience {
   id          String @id @default(auto()) @map("_id") @db.ObjectId
   name        String
+  profiles    Profile[] 
 }
 
 model Expertise {
   id          String @id @default(auto()) @map("_id") @db.ObjectId
   name        String
+  profiles    Profile[] 
 }
 
 model Stage {
   id          String @id @default(auto()) @map("_id") @db.ObjectId
-  name        String       
+  name        String  
+  profiles    Profile[]      
 }
 
 model Revenue {
   id          String @id @default(auto()) @map("_id") @db.ObjectId
   name        String 
+  profiles    Profile[] 
 }
 
 model Network {
   id          String @id @default(auto()) @map("_id") @db.ObjectId
-  name        String 
+  name        String
+  profiles    Profile[]  
 }
 
 model Industry {
   id          String @id @default(auto()) @map("_id") @db.ObjectId
-  name        String 
+  name        String
+  profiles    Profile[]  
 }
 
 model Size {
   id          String @id @default(auto()) @map("_id") @db.ObjectId
   name        String 
+  profiles    Profile[] 
 }
 
 model Product {
   id          String @id @default(auto()) @map("_id") @db.ObjectId
   name        String 
+  profiles    Profile[] 
+}
+
+model Decision {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  profiles    Profile[]  
+}
+
+model Target {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  name        String 
+  profiles    Profile[] 
+}
+
+model Member {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  name        String 
+  members    Profile[] 
+}
+
+model Profile {
+  id            String @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  description   String
+  userId        String
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  experience    Experience  @relation(fields: [experienceId], references: [id])
+  experienceId  String  @db.ObjectId
+
+  ownership     Ownership  @relation(fields: [ownershipId], references: [id])
+  ownershipId   String  @db.ObjectId
+
+  expertise     Expertise  @relation(fields: [expertiseId], references: [id])
+  expertiseId   String  @db.ObjectId
+
+  stage         Stage  @relation(fields: [stageId], references: [id])
+  stageId       String  @db.ObjectId
+
+  revenue       Revenue  @relation(fields: [revenueId], references: [id])
+  revenueId     String  @db.ObjectId
+
+  network       Network  @relation(fields: [networkId], references: [id])
+  networkId     String  @db.ObjectId
+
+  industry      Industry  @relation(fields: [industryId], references: [id])
+  industryId    String  @db.ObjectId
+
+  size          Size  @relation(fields: [sizeId], references: [id])
+  sizeId        String  @db.ObjectId
+
+  product       Product  @relation(fields: [productId], references: [id])
+  productId     String  @db.ObjectId
+
+  decision      Decision  @relation(fields: [decisionId], references: [id])
+  decisionId    String  @db.ObjectId
+
+  target        Target  @relation(fields: [targetId], references: [id])
+  targetId      String  @db.ObjectId
+
+  member        Member  @relation(fields: [memberId], references: [id])
+  memberId      String  @db.ObjectId
+
+  @@index([experienceId])
+  @@index([ownershipId])
+  @@index([expertiseId])
+  @@index([stageId])
+  @@index([revenueId])
+  @@index([networkId])
+  @@index([industryId])
+  @@index([sizeId])
+  @@index([productId])
+  @@index([decisionId])
+  @@index([targetId])
+  @@index([memberId])
+  @@index([name], name: "name_text_idx") // Text index for full-text search
 }

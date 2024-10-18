@@ -8,4 +8,3 @@ declare global {
   if (process.env.NODE_ENV !== 'production') globalThis.prisma = prismadb;
   
   export default prismadb;
-  

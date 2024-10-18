@@ -50,8 +50,6 @@ async function seedExperience() {
     }
 }
 
-// Technical, Marketing, Sales, Finance, Product, Other)
-
 async function seedExpertise() {
     const uri = process.env.DATABASE_URL;
     const client = new MongoClient(uri);
@@ -223,6 +221,85 @@ async function seedProduct() {
     }
 }
 
+async function seedDecision() {
+    const uri = process.env.DATABASE_URL;
+    const client = new MongoClient(uri);
+
+    try {
+        await client.connect();
+
+        const database = client.db();
+        const decisionCollection = database.collection("Decision")
+
+        const decisionToInsert = [
+            {name: "Based On Data"},
+            {name: "Based On Intuition"},
+            {name: "Consult Team"},
+            {name: "Seek External Advice"},
+        ];
+
+        await decisionCollection.insertMany(decisionToInsert);
+        console.log("Default decision seeded successfully")
+    } catch (error) {
+        console.log("Error seeding default decision", error)
+    } finally {
+        await client.close()
+    }
+}
+
+async function seedTarget() {
+    const uri = process.env.DATABASE_URL;
+    const client = new MongoClient(uri);
+
+    try {
+        await client.connect();
+
+        const database = client.db();
+        const targetCollection = database.collection("Target")
+
+        const targetToInsert = [
+            {name: "B2B"},
+            {name: "B2C"},
+            {name: "SMBs"},
+            {name: "Enterprises"},
+        ];
+
+        await targetCollection.insertMany(targetToInsert);
+        console.log("Default target seeded successfully")
+    } catch (error) {
+        console.log("Error seeding default target", error)
+    } finally {
+        await client.close()
+    }
+}
+
+async function seedMember() {
+    const uri = process.env.DATABASE_URL;
+    const client = new MongoClient(uri);
+
+    try {
+        await client.connect();
+
+        const database = client.db();
+        const memberCollection = database.collection("Member")
+
+        const memberToInsert = [
+            {name: "1"},
+            {name: "2"},
+            {name: "3"},
+            {name: "4"},
+            {name: "5"}
+        ];
+
+        await memberCollection.insertMany(memberToInsert);
+        console.log("Default member seeded successfully")
+    } catch (error) {
+        console.log("Error seeding default member", error)
+    } finally {
+        await client.close()
+    }
+}
+
 async function seedIndustry() {
     const uri = process.env.DATABASE_URL;
     const client = new MongoClient(uri);
@@ -295,3 +372,6 @@ seedRevenue();
 seedNetwork();
 seedProduct()
 seedIndustry();
+seedTarget();
+seedMember();
+seedDecision();

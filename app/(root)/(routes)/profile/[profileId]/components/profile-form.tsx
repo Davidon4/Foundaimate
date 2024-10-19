@@ -88,7 +88,7 @@ interface ProfileFormProps {
     stageId: z.string().min(1, {
         message: "Business stage is required"
     }),
-    sizeId: z.number().min(1, {
+    sizeId: z.string().min(1, {
         message: "Business size must be at least 1."
     }),
     industryId: z.string().min(1, {
@@ -153,9 +153,9 @@ export const ProfileForm = ({
                 <div className="space-y-2 w-3/4">
                     <div>
                         <h3 className="text-lg font-medium">Founder Profile</h3>
-                        {/* <p className="text-sm text-muted-foreground">
-                        Founder Profile
-                        </p> */}
+                        <p className="text-sm text-muted-foreground">
+                        Give insights into your experience and role as a founder
+                        </p>
                     </div>
                     <Separator className="bg-primary/10"/>
                 </div>
@@ -176,7 +176,7 @@ export const ProfileForm = ({
                   <SelectTrigger className="bg-background">
                     <SelectValue
                     defaultValue={field.value}
-                    placeholder="Select an experience"
+                    placeholder="Select your experience level"
                     />
                     </SelectTrigger>
                   </FormControl>
@@ -207,7 +207,7 @@ export const ProfileForm = ({
                     <SelectTrigger className="bg-background">
                     <SelectValue
                     defaultValue={field.value}
-                    placeholder="Select ownership"
+                    placeholder="Select your ownership stake"
                     />
                     </SelectTrigger>
                   </FormControl>
@@ -315,9 +315,13 @@ export const ProfileForm = ({
                 </FormItem>
               )}
             />
+            </div>
             <div className="space-y-2 w-3/4 mt-4">
                 <div>
                   <h3 className="text-lg font-medium">Business Profile</h3>
+                  <p className="text-sm text-muted-foreground">
+                  Share essential details about your business and its journey
+              </p>
                   </div>
                   <Separator className="bg-primary/10"/>
               </div>
@@ -521,14 +525,14 @@ export const ProfileForm = ({
                   <FormLabel>How large is your current team?</FormLabel>
                   <Select
                   disabled={isLoading}
-                  onValueChange={(value) => field.onChange(Number(value))}
-                  value={String(field.value)}
-                  defaultValue={String(field.value)}
+                  onValueChange={field.onChange}
+                  value={field.value}
+                  defaultValue={field.value}
                   >
                   <FormControl>
                     <SelectTrigger className="bg-background">
                     <SelectValue
-                    defaultValue={String(field.value)}
+                    defaultValue={field.value}
                     placeholder="Select a size"
                     />
                     </SelectTrigger>
@@ -575,7 +579,14 @@ export const ProfileForm = ({
                 </FormItem>
               )}
             />
-            </div> 
+          <div className="w-full flex justify-center">
+            <Button size="lg" disabled={isLoading}>
+            Edit your companion
+              {/* {initialData ? '' : 'Create your companion'} */}
+              <Wand2 className="w-4 h-4 ml-2" />
+            </Button>
+          </div>
+            {/* </div>  */}
             </form>
             </Form>
         </div>

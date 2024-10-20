@@ -8,21 +8,26 @@ import { ArrowLeft as ArrowLeftIcon } from 'lucide-react';
 import Intro from '@/components/welcome/intro';
 import Next from '@/components/welcome/next';
 import Select from '@/components/welcome/select';
-import { Experience } from '@prisma/client';
+import { Experience, Ownership, Member, Expertise, Decision } from "@prisma/client";
 
 interface WelcomeProps {
   experiences: Experience[];
+  ownerships: Ownership[];
+  members: Member[];
+  expertises: Expertise[];
+  decisions: Decision[];
 }
 
-export default function OnboardingComponent({experiences}: WelcomeProps) {
+export default function OnboardingComponent({experiences, ownerships, members, expertises, decisions}: WelcomeProps) {
   const [error, setError] = React.useState('');
   const { user } = useUser()
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const type = searchParams.get('type');
+  // mx-auto flex h-screen max-w-3xl flex-col items-center justify-center overflow-x-hidden
   return (
-    <div className="mx-auto flex h-screen max-w-3xl flex-col items-center justify-center overflow-x-hidden">
+    <div className="">
       <div
         className="absolute inset-x-0 top-10 -z-10 flex transform-gpu justify-center overflow-hidden blur-3xl"
         aria-hidden="true"
@@ -48,7 +53,7 @@ export default function OnboardingComponent({experiences}: WelcomeProps) {
         ) : (
           <Intro key="intro" />
         )}
-        {type === "next" && <Next experiences={experiences} key="next" />}
+        {type === "next" && <Next experiences={experiences} ownerships={ownerships} members={members} expertises={expertises} decisions={decisions} key="next" />}
         {type === "select" && <Select key="select" />}
       </AnimatePresence>
     </div>

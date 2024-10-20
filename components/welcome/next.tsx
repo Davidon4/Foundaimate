@@ -7,9 +7,9 @@ import React from "react";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FileIcon, ServerIcon } from "lucide-react";
 import { STAGGER_CHILD_VARIANTS } from "@/lib/constants";
 import { useUser } from '@clerk/nextjs';
+import { Button } from "../ui/button";
 import { completeOnboarding } from "@/app/welcome/_actions";
 import { 
     Form,
@@ -27,32 +27,48 @@ import {
     SelectValue,
     SelectItem 
 } from "../ui/select";
-import { Experience } from "@prisma/client";
-
+import { Experience, Ownership, Member, Expertise, Decision } from "@prisma/client";
 import { Separator } from "../ui/separator";
 
 interface FounderFormProps {
     experiences: Experience[];
+    ownerships: Ownership[];
+    members: Member[];
+    expertises: Expertise[];
+    decisions: Decision[]
 }
 
 const formSchema = z.object({
     experienceId: z.string().min(1, {
         message: "Experience level is required."
+    }),
+    ownershipId: z.string().min(1, {
+        message: "Ownership level is required."
+    }),
+    memberId: z.string().min(1, {
+        message: "Founding member is required."
+    }),
+    expertiseId: z.string().min(1, {
+        message: "Expertise is required."
+    }),
+    decisionId: z.string().min(1, {
+        message: "Business decision is required."
     })
 })
 
-
-export default function Next({experiences}: FounderFormProps) {
+export default function Next({experiences, ownerships, members, expertises, decisions}: FounderFormProps) {
   const router = useRouter();
   const [error, setError] = React.useState('');
   const { user } = useUser()
 
-  console.log("EXPERIENCES=>", experiences)
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-        experienceId: undefined
+        experienceId: undefined,
+        ownershipId: undefined,
+        memberId: undefined,
+        expertiseId: undefined,
+        decisionId: undefined
     }
   })
 
@@ -62,6 +78,10 @@ export default function Next({experiences}: FounderFormProps) {
     try {
       const formData = new FormData();
       formData.append('experienceId', values.experienceId);
+      formData.append('ownershipId', values.ownershipId);
+      formData.append('memberId', values.memberId);
+      formData.append('expertiseId', values.expertiseId);
+      formData.append('decisionId', values.decisionId);
       const res = await completeOnboarding(formData);
       if (res?.message) {
         await user?.reload();
@@ -146,11 +166,11 @@ export default function Next({experiences}: FounderFormProps) {
                 </FormItem>
               )}
             />
-                          {/* <FormField
+              <FormField
               name="ownershipId"
               control={form.control}
               render={({ field }) => (
-                <FormItem className="mt-5 w-3/4">
+                <FormItem className="mt-5 w-full">
                   <FormLabel>Can you describe your ownership in the business?</FormLabel>
                   <Select
                   disabled={isLoading}
@@ -176,12 +196,12 @@ export default function Next({experiences}: FounderFormProps) {
                   </Select>
                 </FormItem>
               )}
-            /> */}
-                          {/* <FormField
+            />
+              <FormField
               name="memberId"
               control={form.control}
               render={({ field }) => (
-                <FormItem className="mt-5 w-3/4">
+                <FormItem className="mt-5 w-full">
                   <FormLabel>How many founding members does your company have?</FormLabel>
                   <Select
                   disabled={isLoading}
@@ -207,12 +227,12 @@ export default function Next({experiences}: FounderFormProps) {
                   </Select>
                 </FormItem>
               )}
-            /> */}
-                          {/* <FormField
+            />
+            <FormField
               name="expertiseId"
               control={form.control}
               render={({ field }) => (
-                <FormItem className="mt-5 w-3/4">
+                <FormItem className="mt-5 w-full">
                   <FormLabel>What are your core skills or expertise?</FormLabel>
                   <Select
                   disabled={isLoading}
@@ -238,12 +258,12 @@ export default function Next({experiences}: FounderFormProps) {
                   </Select>
                 </FormItem>
               )}
-            /> */}
-                          {/* <FormField
+            />
+              <FormField
               name="decisionId"
               control={form.control}
               render={({ field }) => (
-                <FormItem className="mt-5 w-3/4">
+                <FormItem className="mt-5 w-full">
                   <FormLabel>How do you approach major business decisions?</FormLabel>
                   <Select
                   disabled={isLoading}
@@ -269,7 +289,19 @@ export default function Next({experiences}: FounderFormProps) {
                   </Select>
                 </FormItem>
               )}
-            /> */}
+            />
+                    <motion.div
+          variants={STAGGER_CHILD_VARIANTS}
+        >
+            <Button
+            className="px-10 text-base bg-tealCustom font-medium mt-5 hover:bg-teal-700"
+            onClick={() =>
+              router.push("/welcome?type=select")
+            }  >
+            {isLoading ? "Submitting..." : "Submit"}
+            </Button>
+            {error && <p className="text-red-500">{error}</p>}
+            </motion.div>
             </div>
             </form>
             </Form>
@@ -279,7 +311,3 @@ export default function Next({experiences}: FounderFormProps) {
 }
 
 
-{/* <button type="submit" disabled={isLoading}>
-{isLoading ? "Submitting..." : "Submit"}
-</button>
-{error && <p className="text-red-500">{error}</p>} */}

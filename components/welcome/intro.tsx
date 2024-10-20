@@ -1,10 +1,11 @@
 import { motion } from "framer-motion";
 import { STAGGER_CHILD_VARIANTS } from "@/lib/constants";
+import { useRouter } from "next/navigation";
 
 import { Button } from "../ui/button";
 
 export default function Intro() {
-
+  const router = useRouter();
   return (
     <motion.div
       className="z-10"
@@ -28,29 +29,22 @@ export default function Intro() {
           variants={STAGGER_CHILD_VARIANTS}
         >
           Welcome to{" "}
-          <span className="font-bold tracking-tighter">Papermark</span>
+          <span className="font-bold tracking-tighter">Foundaimate</span>
         </motion.h1>
         <motion.p
           className="max-w-md text-accent-foreground/80 transition-colors sm:text-lg"
           variants={STAGGER_CHILD_VARIANTS}
         >
-          Papermark gives you the power to securely share your documents with an
-          impression that lasts.
+         Foundaimate helps you navigate the startup world and overcome hurdles as you scale.
         </motion.p>
         <motion.div
           variants={STAGGER_CHILD_VARIANTS}
-          className="rounded  px-10 py-2 font-medium transition-colors text-gray-900 bg-gray-100 hover:text-gray-100 hover:bg-gray-500"
         >
           <Button
-            className="px-10 text-base font-medium"
-            // onClick={() =>
-            //   router.push({
-            //     pathname: "/welcome",
-            //     query: {
-            //       type: "next",
-            //     },
-            //   })
-            // }
+            className="px-10 text-base bg-tealCustom font-medium hover:bg-teal-700"
+            onClick={() =>
+              router.push("/welcome?type=next")
+            }
           >
             Get Started
           </Button>

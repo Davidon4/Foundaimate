@@ -1,14 +1,102 @@
 import { useRouter } from "next/navigation";
 
 import { motion } from "framer-motion";
+import * as z from "zod";
 import { FileChartPieIcon, FileIcon, PresentationIcon } from "lucide-react";
-
-// import NotionIcon from "@/components/shared/icons/files/notion";
-
+import { Industry, Product, Revenue, Target, Stage, Size, Network } from "@prisma/client";
+import { 
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../ui/form";
+import { 
+  Select,
+  SelectContent,
+  SelectTrigger,
+  SelectValue,
+  SelectItem 
+} from "../ui/select";
 import { STAGGER_CHILD_VARIANTS } from "@/lib/constants";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
-export default function Next() {
+interface BusinessFormProps {
+  industries: Industry[];
+  products: Product[];
+  revenues: Revenue[];
+  targets: Target[];
+  stages: Stage[];
+  sizes: Size[];
+  networks: Network[];
+}
+
+const formSchema = z.object({
+  name: z.string().min(1, {
+      message: "Business name is required."
+  }),
+  revenueId: z.string().min(1, {
+      message: "Revenue model is required"
+  }),
+  description: z.string().min(200, {
+      message: "Business description is required"
+  }),
+  stageId: z.string().min(1, {
+      message: "Business stage is required"
+  }),
+  sizeId: z.string().min(1, {
+      message: "Business size must be at least 1."
+  }),
+  industryId: z.string().min(1, {
+      message: "Business industry is required"
+  }),
+  productId: z.string().min(1, {
+      message: "Product stage is required"
+  }),
+  targetId: z.string().min(1, {
+      message: "Target customer is required"
+  })
+  })
+
+
+
+export default function Business({industries, products, revenues, targets, stages, sizes, networks}: BusinessFormProps) {
   const router = useRouter();
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+    name: "",
+    description: "",
+    revenueId: undefined,
+    stageId: undefined,
+    sizeId: undefined,
+    industryId: undefined,
+    productId: undefined,
+    targetId: undefined
+    }
+  })
+
+  const isLoading = form.formState.isSubmitting
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      const formData = new FormData();
+      formData.append('name', values.name);
+      formData.append('description', values.description);
+      formData.append('revenueId', values.revenueId);
+      formData.append('stageId', values.stageId);
+      formData.append('sizeId', values.sizeId);
+      formData.append('industryId', values.industryId);
+      formData.append('productId', values.productId);
+      formData.append('targetId', values.targetId);
+      // const res = await 
+  } catch (err) {
+    console.log("Error message")
+  }
+  }
   return (
     <motion.div
       className="z-10 mx-5 flex flex-col items-center space-y-10 text-center sm:mx-auto"

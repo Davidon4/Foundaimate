@@ -56,7 +56,7 @@ const formSchema = z.object({
     })
 })
 
-export default function Next({experiences, ownerships, members, expertises, decisions}: FounderFormProps) {
+export default function Founder({experiences, ownerships, members, expertises, decisions}: FounderFormProps) {
   const router = useRouter();
   const [error, setError] = React.useState('');
   const { user } = useUser()
@@ -97,8 +97,9 @@ export default function Next({experiences, ownerships, members, expertises, deci
   };
 
   return (
+    <div className="max-w-2xl mx-auto px-4 py-8 scrollbar-hide">
     <motion.div
-      className="z-10 mx-5 flex flex-col items-center space-y-10 text-center sm:mx-auto"
+      className="mb-8"
       variants={{
         hidden: { opacity: 0, scale: 0.95 },
         show: {
@@ -116,11 +117,11 @@ export default function Next({experiences, ownerships, members, expertises, deci
     >
       <motion.div
         variants={STAGGER_CHILD_VARIANTS}
-        className="flex flex-col items-center space-y-10 text-center"
+        className="flex flex-col items-center mt-10 space-y-10 text-center"
       >
-        <p className="text-2xl font-bold tracking-tighter text-foreground">
+        {/* <p className="text-2xl font-bold tracking-tighter text-foreground">
           Foundaimate
-        </p>
+        </p> */}
         <h1 className="font-display max-w-md text-3xl font-semibold transition-colors sm:text-4xl">
           Founder Profile
         </h1>
@@ -140,7 +141,7 @@ export default function Next({experiences, ownerships, members, expertises, deci
               control={form.control}
               render={({ field }) => (
                 <FormItem className="mt-5 w-full">
-                  <FormLabel>What is your level of experience as a founder?</FormLabel>
+                  <FormLabel className="font-bold text-base">What is your level of experience as a founder?</FormLabel>
                   <Select
                   disabled={isLoading}
                   onValueChange={field.onChange}
@@ -171,7 +172,7 @@ export default function Next({experiences, ownerships, members, expertises, deci
               control={form.control}
               render={({ field }) => (
                 <FormItem className="mt-5 w-full">
-                  <FormLabel>Can you describe your ownership in the business?</FormLabel>
+                  <FormLabel className="font-bold text-base">Can you describe your ownership in the business?</FormLabel>
                   <Select
                   disabled={isLoading}
                   onValueChange={field.onChange}
@@ -202,7 +203,7 @@ export default function Next({experiences, ownerships, members, expertises, deci
               control={form.control}
               render={({ field }) => (
                 <FormItem className="mt-5 w-full">
-                  <FormLabel>How many founding members does your company have?</FormLabel>
+                  <FormLabel className="font-bold text-base">How many founding members does your company have?</FormLabel>
                   <Select
                   disabled={isLoading}
                   onValueChange={field.onChange}
@@ -233,7 +234,7 @@ export default function Next({experiences, ownerships, members, expertises, deci
               control={form.control}
               render={({ field }) => (
                 <FormItem className="mt-5 w-full">
-                  <FormLabel>What are your core skills or expertise?</FormLabel>
+                  <FormLabel className="font-bold text-base">What are your core skills or expertise?</FormLabel>
                   <Select
                   disabled={isLoading}
                   onValueChange={field.onChange}
@@ -264,7 +265,7 @@ export default function Next({experiences, ownerships, members, expertises, deci
               control={form.control}
               render={({ field }) => (
                 <FormItem className="mt-5 w-full">
-                  <FormLabel>How do you approach major business decisions?</FormLabel>
+                  <FormLabel className="font-bold text-base">How do you approach major business decisions?</FormLabel>
                   <Select
                   disabled={isLoading}
                   onValueChange={field.onChange}
@@ -290,23 +291,25 @@ export default function Next({experiences, ownerships, members, expertises, deci
                 </FormItem>
               )}
             />
-                    <motion.div
+        <motion.div
           variants={STAGGER_CHILD_VARIANTS}
-        >
+          className="flex justify-center mt-8"
+          >
             <Button
-            className="px-10 text-base bg-tealCustom font-medium mt-5 hover:bg-teal-700"
+            className="py-5 px-10 text-base bg-tealCustom font-medium mt-5 hover:bg-teal-700 rounded transition-colors"
             onClick={() =>
               router.push("/welcome?type=select")
             }  >
-            {isLoading ? "Submitting..." : "Submit"}
+            {isLoading ? "Submitting..." : "Next"}
             </Button>
-            {error && <p className="text-red-500">{error}</p>}
+            {error && <p className="text-red-500 mt-2">{error}</p>}
             </motion.div>
             </div>
             </form>
             </Form>
       </motion.div>
     </motion.div>
+    </div>
   );
 }
 

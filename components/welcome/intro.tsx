@@ -7,6 +7,7 @@ import { Button } from "../ui/button";
 export default function Intro() {
   const router = useRouter();
   return (
+    <div className="mx-auto flex h-screen max-w-3xl flex-col items-center justify-center overflow-x-hidden">
     <motion.div
       className="z-10"
       exit={{ opacity: 0, scale: 0.95 }}
@@ -43,7 +44,7 @@ export default function Intro() {
           <Button
             className="px-10 text-base bg-tealCustom font-medium hover:bg-teal-700"
             onClick={() =>
-              router.push("/welcome?type=next")
+              router.push("/welcome?type=founder")
             }
           >
             Get Started
@@ -51,5 +52,6 @@ export default function Intro() {
         </motion.div>
       </motion.div>
     </motion.div>
+    </div>
   );
 }

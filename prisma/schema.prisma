@@ -172,6 +172,6 @@ model Profile {
   @@index([memberId])
   @@index([schallengeId])
   @@index([sstrategyId])
-  @@index([lead])
+  @@index([leadId])
   @@index([name], name: "name_text_idx") // Text index for full-text search
 }

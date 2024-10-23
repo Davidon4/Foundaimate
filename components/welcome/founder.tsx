@@ -8,17 +8,13 @@ import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { STAGGER_CHILD_VARIANTS } from "@/lib/constants";
-import { useUser } from '@clerk/nextjs';
 import { Button } from "../ui/button";
-import { completeOnboarding } from "@/app/welcome/_actions";
 import { 
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
-    FormLabel,
-    FormMessage,
+    FormLabel
  } from "../ui/form";
 import { 
     Select,
@@ -28,7 +24,6 @@ import {
     SelectItem 
 } from "../ui/select";
 import { Experience, Ownership, Member, Expertise, Decision } from "@prisma/client";
-import { Separator } from "../ui/separator";
 
 interface FounderFormProps {
     experiences: Experience[];
@@ -59,7 +54,7 @@ const formSchema = z.object({
 export default function Founder({experiences, ownerships, members, expertises, decisions}: FounderFormProps) {
   const router = useRouter();
   const [error, setError] = React.useState('');
-  const { user } = useUser()
+
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -76,20 +71,17 @@ export default function Founder({experiences, ownerships, members, expertises, d
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const formData = new FormData();
-      formData.append('experienceId', values.experienceId);
-      formData.append('ownershipId', values.ownershipId);
-      formData.append('memberId', values.memberId);
-      formData.append('expertiseId', values.expertiseId);
-      formData.append('decisionId', values.decisionId);
-      // const res = await completeOnboarding(formData);
-      // if (res?.message) {
-      //   await user?.reload();
-      //   router.push('/');
-      // }
-      // if (res?.error) {
-      //   setError(res.error);
-      // }
+      // Instead of creating a FormData object, we'll use the values directly
+      const queryParams = new URLSearchParams({
+        experienceId: values.experienceId,
+        ownershipId: values.ownershipId,
+        memberId: values.memberId,
+        expertiseId: values.expertiseId,
+        decisionId: values.decisionId
+      }).toString();
+
+      // Navigate to the next page with the form data as query parameters
+      router.push(`/welcome?type=business&${queryParams}`);
     } catch (error) {
       console.error("Error submitting form:", error);
       setError("An error occurred while submitting the form.");
@@ -119,20 +111,16 @@ export default function Founder({experiences, ownerships, members, expertises, d
         variants={STAGGER_CHILD_VARIANTS}
         className="flex flex-col items-center mt-10 space-y-10 text-center"
       >
-        {/* <p className="text-2xl font-bold tracking-tighter text-foreground">
-          Foundaimate
-        </p> */}
         <h1 className="font-display max-w-md text-3xl font-semibold transition-colors sm:text-4xl">
           Founder Profile
         </h1>
       </motion.div>
       <motion.div
         variants={STAGGER_CHILD_VARIANTS}
-        // className="grid w-full grid-cols-1 divide-y divide-border rounded-md border border-border text-foreground md:grid-cols-2 md:divide-x"
       >
         <Form {...form}>
         <form
-        onSubmit={() => console.log("NEXT")}
+        onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-8 pb-10"
             >
         <div className="gap-2">
@@ -296,6 +284,7 @@ export default function Founder({experiences, ownerships, members, expertises, d
           className="flex justify-center mt-8"
           >
             <Button
+            type="submit"
             className="py-5 px-10 text-base bg-tealCustom font-medium mt-5 hover:bg-teal-700 rounded transition-colors"
             onClick={() =>
               router.push("/welcome?type=business")
@@ -312,5 +301,3 @@ export default function Founder({experiences, ownerships, members, expertises, d
     </div>
   );
 }
-
-

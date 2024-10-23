@@ -1,4 +1,4 @@
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 
 import { motion } from "framer-motion";
@@ -61,7 +61,13 @@ const formSchema = z.object({
 
 export default function Business({industries, stages, sizes, networks}: BusinessFormProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [error, setError] = React.useState('');
+  const experienceId = searchParams.get('experienceId');
+  const ownershipId = searchParams.get('ownershipId');
+  const memberId = searchParams.get('memberId');
+  const expertiseId = searchParams.get('expertiseId');
+  const decisionId = searchParams.get('decisionId');
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -85,6 +91,12 @@ export default function Business({industries, stages, sizes, networks}: Business
       formData.append('sizeId', values.sizeId);
       formData.append('industryId', values.industryId);
       formData.append('networkId', values.networkId);
+
+      formData.append('experienceId', experienceId || '');
+      formData.append('ownershipId', ownershipId || '');
+      formData.append('memberId', memberId || '');
+      formData.append('expertiseId', expertiseId || '');
+      formData.append('decisionId', decisionId || '');
       // const res = await 
   } catch (err) {
     console.log("Error message")

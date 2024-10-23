@@ -23,10 +23,12 @@ import {
 } from "../ui/select";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
+import { useUser } from "@clerk/nextjs";
 import { Button } from "../ui/button";
 import { STAGGER_CHILD_VARIANTS } from "@/lib/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { completeOnboarding } from "@/app/welcome/_actions";
 
 interface DevelopmentFormProps {
   products: Product[];
@@ -41,6 +43,7 @@ const formSchema = z.object({
 export default function Development({products}: DevelopmentFormProps) {
   const router = useRouter();
   const [error, setError] = React.useState('');
+  const { user } = useUser();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -54,6 +57,14 @@ export default function Development({products}: DevelopmentFormProps) {
     try {
       const formData = new FormData();
       formData.append('productId', values.productId);
+      const res = await completeOnboarding(formData);
+      if (res?.message) {
+        await user?.reload();
+        router.push('/');
+      }
+      if (res?.error) {
+        setError(res.error);
+      }
   } catch (err) {
     console.log("Error message")
   }

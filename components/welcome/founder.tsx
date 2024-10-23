@@ -82,14 +82,14 @@ export default function Founder({experiences, ownerships, members, expertises, d
       formData.append('memberId', values.memberId);
       formData.append('expertiseId', values.expertiseId);
       formData.append('decisionId', values.decisionId);
-      const res = await completeOnboarding(formData);
-      if (res?.message) {
-        await user?.reload();
-        router.push('/');
-      }
-      if (res?.error) {
-        setError(res.error);
-      }
+      // const res = await completeOnboarding(formData);
+      // if (res?.message) {
+      //   await user?.reload();
+      //   router.push('/');
+      // }
+      // if (res?.error) {
+      //   setError(res.error);
+      // }
     } catch (error) {
       console.error("Error submitting form:", error);
       setError("An error occurred while submitting the form.");
@@ -132,7 +132,7 @@ export default function Founder({experiences, ownerships, members, expertises, d
       >
         <Form {...form}>
         <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={() => console.log("NEXT")}
         className="space-y-8 pb-10"
             >
         <div className="gap-2">
@@ -298,7 +298,7 @@ export default function Founder({experiences, ownerships, members, expertises, d
             <Button
             className="py-5 px-10 text-base bg-tealCustom font-medium mt-5 hover:bg-teal-700 rounded transition-colors"
             onClick={() =>
-              router.push("/welcome?type=select")
+              router.push("/welcome?type=business")
             }  >
             {isLoading ? "Submitting..." : "Next"}
             </Button>

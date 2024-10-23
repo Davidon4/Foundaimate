@@ -1,9 +1,13 @@
 import { useRouter } from "next/navigation";
+import React from "react";
 
 import { motion } from "framer-motion";
 import * as z from "zod";
-import { FileChartPieIcon, FileIcon, PresentationIcon } from "lucide-react";
-import { Industry, Product, Revenue, Target, Stage, Size, Network } from "@prisma/client";
+import { 
+  Industry, 
+  Stage, 
+  Size, 
+  Network } from "@prisma/client";
 import { 
   Form,
   FormControl,
@@ -20,15 +24,15 @@ import {
   SelectValue,
   SelectItem 
 } from "../ui/select";
+import { Input } from "../ui/input";
+import { Textarea } from "../ui/textarea";
+import { Button } from "../ui/button";
 import { STAGGER_CHILD_VARIANTS } from "@/lib/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 interface BusinessFormProps {
   industries: Industry[];
-  products: Product[];
-  revenues: Revenue[];
-  targets: Target[];
   stages: Stage[];
   sizes: Size[];
   networks: Network[];
@@ -37,9 +41,6 @@ interface BusinessFormProps {
 const formSchema = z.object({
   name: z.string().min(1, {
       message: "Business name is required."
-  }),
-  revenueId: z.string().min(1, {
-      message: "Revenue model is required"
   }),
   description: z.string().min(200, {
       message: "Business description is required"
@@ -53,30 +54,24 @@ const formSchema = z.object({
   industryId: z.string().min(1, {
       message: "Business industry is required"
   }),
-  productId: z.string().min(1, {
-      message: "Product stage is required"
-  }),
-  targetId: z.string().min(1, {
-      message: "Target customer is required"
+  networkId: z.string().min(1, {
+      message: "Network is required"
   })
   })
 
-
-
-export default function Business({industries, products, revenues, targets, stages, sizes, networks}: BusinessFormProps) {
+export default function Business({industries, stages, sizes, networks}: BusinessFormProps) {
   const router = useRouter();
+  const [error, setError] = React.useState('');
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
     name: "",
     description: "",
-    revenueId: undefined,
     stageId: undefined,
     sizeId: undefined,
     industryId: undefined,
-    productId: undefined,
-    targetId: undefined
+    networkId: undefined,
     }
   })
 
@@ -86,20 +81,20 @@ export default function Business({industries, products, revenues, targets, stage
       const formData = new FormData();
       formData.append('name', values.name);
       formData.append('description', values.description);
-      formData.append('revenueId', values.revenueId);
       formData.append('stageId', values.stageId);
       formData.append('sizeId', values.sizeId);
       formData.append('industryId', values.industryId);
-      formData.append('productId', values.productId);
-      formData.append('targetId', values.targetId);
+      formData.append('networkId', values.networkId);
       // const res = await 
   } catch (err) {
     console.log("Error message")
   }
   }
+
   return (
+    <div className="max-w-2xl mx-auto px-4 py-8 scrollbar-hide">
     <motion.div
-      className="z-10 mx-5 flex flex-col items-center space-y-10 text-center sm:mx-auto"
+      className="mb-8"
       variants={{
         hidden: { opacity: 0, scale: 0.95 },
         show: {
@@ -117,77 +112,204 @@ export default function Business({industries, products, revenues, targets, stage
     >
       <motion.div
         variants={STAGGER_CHILD_VARIANTS}
-        className="flex flex-col items-center space-y-10 text-center"
+        className="flex flex-col items-center mt-10 space-y-10 text-center"
       >
-        <p className="text-2xl font-bold tracking-tighter text-foreground">
-          Papermark
-        </p>
+        {/* <p className="text-2xl font-bold tracking-tighter text-foreground">
+          Foundaimate
+        </p> */}
         <h1 className="font-display max-w-md text-3xl font-semibold transition-colors sm:text-4xl">
-          Which document do you want to share today?
+          Business Profile
         </h1>
       </motion.div>
       <motion.div
         variants={STAGGER_CHILD_VARIANTS}
-        className="grid w-full grid-cols-1 divide-y divide-border rounded-md border border-border text-foreground md:grid-cols-4 md:divide-x"
+        // className="grid w-full grid-cols-1 divide-y divide-border rounded-md border border-border text-foreground md:grid-cols-2 md:divide-x"
       >
-        <button
-          onClick={() =>
-            router.push("./welcome?type=pitchdeck")
-          }
-          className="flex min-h-[200px] flex-col items-center justify-center space-y-5 overflow-hidden p-5 transition-colors hover:bg-gray-200 hover:dark:bg-gray-800 md:p-10"
-        >
-          <PresentationIcon className="pointer-events-none h-auto w-12 sm:w-12" />
-          <p>Pitchdeck</p>
-        </button>
-
-        <button
-          onClick={() =>
-            router.push("./welcome?type=sales")
-          }
-          className="flex min-h-[200px] flex-col items-center justify-center space-y-5 overflow-hidden p-5 transition-colors hover:bg-gray-200 hover:dark:bg-gray-800 md:p-10"
-        >
-          <FileChartPieIcon className="pointer-events-none h-auto w-12 sm:w-12" />
-          <p>Sales document</p>
-        </button>
-
-        <button
-          onClick={() =>
-            router.push("./welcome?type=notion")
-          }
-          className="flex min-h-[200px] flex-col items-center justify-center space-y-5 overflow-hidden p-5 transition-colors hover:bg-gray-200 hover:dark:bg-gray-800 md:p-10"
-        >
-          {/* <NotionIcon className="pointer-events-none h-auto w-12 sm:w-12" /> */}
-          <p>Notion Page</p>
-        </button>
-        <button
-          onClick={() =>
-            router.push("./welcome?type=document")
-          }
-          className="flex min-h-[200px] flex-col items-center justify-center space-y-5 overflow-hidden p-5 transition-colors hover:bg-gray-200 hover:dark:bg-gray-800 md:p-10"
-        >
-          <FileIcon className="pointer-events-none h-auto w-12 sm:w-12" />
-          <p>Another document</p>
-        </button>
-      </motion.div>
-
-      <motion.div
-        variants={STAGGER_CHILD_VARIANTS}
-        className="text-center text-sm text-muted-foreground"
-      >
-        {/* <button
-          className="text-center text-sm text-muted-foreground underline-offset-4 transition-all hover:text-gray-800 hover:underline hover:dark:text-muted-foreground/80"
-          onClick={() =>
-            router.push({
-              pathname: "/welcome",
-              query: {
-                type: "dataroom",
-              },
-            })
-          }
-        > */}
-        You can start by sharing documents and create a data room later.
-        {/* </button> */}
-      </motion.div>
-    </motion.div>
+        <Form {...form}>
+        <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-8 pb-10"
+            >
+        <div className="gap-2">
+        <FormField
+              name="name"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem className="mt-5 w-full">
+                  <FormLabel className="font-bold text-base">What is your business name?</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={isLoading}
+                      placeholder=""
+                      {...field}
+                      className="w-full bg-white"
+                    /> 
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+              <FormField
+              name="description"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem className="mt-5 w-full">
+                  <FormLabel className="font-bold text-base">Describe what your company does in 50 characters or less.</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      disabled={isLoading}
+                      placeholder=""
+                      {...field}
+                      className="w-full bg-white p-2 border rounded-lg resize-vertical"
+                      rows={3}
+                    /> 
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+              <FormField
+              name="industryId"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem className="mt-5 w-full">
+                  <FormLabel className="font-bold text-base">What industry does your startup operate in?</FormLabel>
+                  <Select
+                  disabled={isLoading}
+                  onValueChange={field.onChange}
+                  value={field.value}
+                  defaultValue={field.value}
+                  >
+                  <FormControl>
+                    <SelectTrigger className="bg-background">
+                    <SelectValue
+                    defaultValue={field.value}
+                    placeholder="Select an industry"
+                    />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {industries.map((industry) => (
+                      <SelectItem key={industry.id} value={industry.id}>
+                        {industry.name}
+                      </SelectItem>  
+                    ))}
+                  </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="stageId"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem className="mt-5 w-full">
+                  <FormLabel className="font-bold text-base">What stage is your business in?</FormLabel>
+                  <Select
+                  disabled={isLoading}
+                  onValueChange={field.onChange}
+                  value={field.value}
+                  defaultValue={field.value}
+                  >
+                  <FormControl>
+                    <SelectTrigger className="bg-background">
+                    <SelectValue
+                    defaultValue={field.value}
+                    placeholder="Select a stage"
+                    />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {stages.map((stage) => (
+                      <SelectItem key={stage.id} value={stage.id}>
+                        {stage.name}
+                      </SelectItem>  
+                    ))}
+                  </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="sizeId"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem className="mt-5 w-full">
+                  <FormLabel className="font-bold text-base">How large is your current team?</FormLabel>
+                  <Select
+                  disabled={isLoading}
+                  onValueChange={field.onChange}
+                  value={field.value}
+                  defaultValue={field.value}
+                  >
+                  <FormControl>
+                    <SelectTrigger className="bg-background">
+                    <SelectValue
+                    defaultValue={field.value}
+                    placeholder="Select a size"
+                    />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {sizes.map((size) => (
+                      <SelectItem key={size.id} value={size.id}>
+                        {size.name}
+                      </SelectItem>  
+                    ))}
+                  </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            /> 
+             <FormField
+              name="networkId"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem className="mt-5 w-full">
+                  <FormLabel className="font-bold text-base">Which of the following networks can you leverage in your industry?</FormLabel>
+                  <Select
+                  disabled={isLoading}
+                  onValueChange={field.onChange}
+                  value={field.value}
+                  defaultValue={field.value}
+                  >
+                  <FormControl>
+                    <SelectTrigger className="bg-background">
+                    <SelectValue
+                    defaultValue={field.value}
+                    placeholder="Select a Network"
+                    />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {networks.map((network) => (
+                      <SelectItem key={network.id} value={network.id}>
+                        {network.name}
+                      </SelectItem>  
+                    ))}
+                  </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
+          <motion.div
+          variants={STAGGER_CHILD_VARIANTS}
+          className="flex justify-center mt-8"
+          >
+            <Button
+            className="py-5 px-10 text-base bg-tealCustom font-medium mt-5 hover:bg-teal-700 rounded transition-colors"
+            onClick={() =>
+              router.push("/welcome?type=sales")
+            }  >
+            {isLoading ? "Submitting..." : "Next"}
+            </Button>
+            {error && <p className="text-red-500 mt-2">{error}</p>}
+            </motion.div>
+            </div>
+            </form>
+            </Form>
+            </motion.div>
+            </motion.div>
+            </div>
   );
 }

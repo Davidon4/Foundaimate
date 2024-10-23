@@ -11,7 +11,6 @@ import {
 import { 
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -42,7 +41,7 @@ const formSchema = z.object({
   name: z.string().min(1, {
       message: "Business name is required."
   }),
-  description: z.string().min(200, {
+  description: z.string().min(20, {
       message: "Business description is required"
   }),
   stageId: z.string().min(1, {
@@ -81,22 +80,23 @@ export default function Business({industries, stages, sizes, networks}: Business
     }
   })
 
-  const isLoading = form.formState.isSubmitting
+  const isLoading = form.formState.isSubmitting;
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const formData = new FormData();
-      formData.append('name', values.name);
-      formData.append('description', values.description);
-      formData.append('stageId', values.stageId);
-      formData.append('sizeId', values.sizeId);
-      formData.append('industryId', values.industryId);
-      formData.append('networkId', values.networkId);
+      const allData = {
+        ...values,
+        experienceId,
+        ownershipId,
+        memberId,
+        expertiseId,
+        decisionId
+      };
 
-      formData.append('experienceId', experienceId || '');
-      formData.append('ownershipId', ownershipId || '');
-      formData.append('memberId', memberId || '');
-      formData.append('expertiseId', expertiseId || '');
-      formData.append('decisionId', decisionId || '');
+      const queryParams = new URLSearchParams(allData as Record<string, string>).toString();
+
+      // Navigate to the Sales page with all the data
+      router.push(`/onboarding/sales?${queryParams}`);
       // const res = await 
   } catch (err) {
     console.log("Error message")
@@ -126,16 +126,12 @@ export default function Business({industries, stages, sizes, networks}: Business
         variants={STAGGER_CHILD_VARIANTS}
         className="flex flex-col items-center mt-10 space-y-10 text-center"
       >
-        {/* <p className="text-2xl font-bold tracking-tighter text-foreground">
-          Foundaimate
-        </p> */}
         <h1 className="font-display max-w-md text-3xl font-semibold transition-colors sm:text-4xl">
           Business Profile
         </h1>
       </motion.div>
       <motion.div
         variants={STAGGER_CHILD_VARIANTS}
-        // className="grid w-full grid-cols-1 divide-y divide-border rounded-md border border-border text-foreground md:grid-cols-2 md:divide-x"
       >
         <Form {...form}>
         <form
@@ -157,7 +153,6 @@ export default function Business({industries, stages, sizes, networks}: Business
                       className="w-full bg-white"
                     /> 
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -176,7 +171,6 @@ export default function Business({industries, stages, sizes, networks}: Business
                       rows={3}
                     /> 
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -309,10 +303,7 @@ export default function Business({industries, stages, sizes, networks}: Business
           className="flex justify-center mt-8"
           >
             <Button
-            className="py-5 px-10 text-base bg-tealCustom font-medium mt-5 hover:bg-teal-700 rounded transition-colors"
-            onClick={() =>
-              router.push("/welcome?type=sales")
-            }  >
+            className="py-5 px-10 text-base bg-tealCustom font-medium mt-5 hover:bg-teal-700 rounded transition-colors">
             {isLoading ? "Submitting..." : "Next"}
             </Button>
             {error && <p className="text-red-500 mt-2">{error}</p>}

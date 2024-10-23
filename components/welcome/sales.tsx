@@ -1,4 +1,4 @@
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 
 import { motion } from "framer-motion";
@@ -41,6 +41,21 @@ const formSchema = z.object({
 export default function Sales({ revenues}: SalesFormProps) {
   const router = useRouter();
   const [error, setError] = React.useState('');
+  const searchParams = useSearchParams();
+
+  const businessData = {
+    name: searchParams.get('name'),
+    description: searchParams.get('description'),
+    stageId: searchParams.get('stageId'),
+    sizeId: searchParams.get('sizeId'),
+    industryId: searchParams.get('industryId'),
+    networkId: searchParams.get('networkId'),
+    experienceId: searchParams.get('experienceId'),
+    ownershipId: searchParams.get('ownershipId'),
+    memberId: searchParams.get('memberId'),
+    expertiseId: searchParams.get('expertiseId'),
+    decisionId: searchParams.get('decisionId')
+  }
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -52,8 +67,14 @@ export default function Sales({ revenues}: SalesFormProps) {
   const isLoading = form.formState.isSubmitting
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const formData = new FormData();
-      formData.append('revenueId', values.revenueId);
+      const allData = {
+        ...businessData,
+        ...values
+      }
+      console.log("All data=>", allData);
+      const queryParams = new URLSearchParams(allData as Record<string, string>).toString();
+
+      router.push(`/onboarding/marketing?${queryParams}`);
   } catch (err) {
     console.log("Error message")
   }
@@ -82,16 +103,12 @@ export default function Sales({ revenues}: SalesFormProps) {
         variants={STAGGER_CHILD_VARIANTS}
         className="flex flex-col items-center mt-10 space-y-10 text-center"
       >
-        {/* <p className="text-2xl font-bold tracking-tighter text-foreground">
-          Foundaimate
-        </p> */}
         <h1 className="font-display max-w-md text-3xl font-semibold transition-colors sm:text-4xl">
           Sales Strategy
         </h1>
       </motion.div>
       <motion.div
         variants={STAGGER_CHILD_VARIANTS}
-        // className="grid w-full grid-cols-1 divide-y divide-border rounded-md border border-border text-foreground md:grid-cols-2 md:divide-x"
       >
         <Form {...form}>
         <form
@@ -135,10 +152,7 @@ export default function Sales({ revenues}: SalesFormProps) {
           className="flex justify-center mt-8"
           >
             <Button
-            className="py-5 px-10 text-base bg-tealCustom font-medium mt-5 hover:bg-teal-700 rounded transition-colors"
-            onClick={() =>
-              router.push("/welcome?type=marketing")
-            }  >
+            className="py-5 px-10 text-base bg-tealCustom font-medium mt-5 hover:bg-teal-700 rounded transition-colors">
             {isLoading ? "Submitting..." : "Next"}
             </Button>
             {error && <p className="text-red-500 mt-2">{error}</p>}

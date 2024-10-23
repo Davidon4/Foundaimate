@@ -285,10 +285,7 @@ export default function Founder({experiences, ownerships, members, expertises, d
           >
             <Button
             type="submit"
-            className="py-5 px-10 text-base bg-tealCustom font-medium mt-5 hover:bg-teal-700 rounded transition-colors"
-            onClick={() =>
-              router.push("/welcome?type=business")
-            }  >
+            className="py-5 px-10 text-base bg-tealCustom font-medium mt-5 hover:bg-teal-700 rounded transition-colors">
             {isLoading ? "Submitting..." : "Next"}
             </Button>
             {error && <p className="text-red-500 mt-2">{error}</p>}

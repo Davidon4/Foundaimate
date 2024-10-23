@@ -1,4 +1,4 @@
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 
 import { motion } from "framer-motion";
@@ -41,7 +41,23 @@ const formSchema = z.object({
 
 export default function Marketing({targets}: MarketingFormProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [error, setError] = React.useState('');
+
+  const businessData = {
+    name: searchParams.get('name'),
+    description: searchParams.get('description'),
+    stageId: searchParams.get('stageId'),
+    sizeId: searchParams.get('sizeId'),
+    industryId: searchParams.get('industryId'),
+    networkId: searchParams.get('networkId'),
+    experienceId: searchParams.get('experienceId'),
+    ownershipId: searchParams.get('ownershipId'),
+    memberId: searchParams.get('memberId'),
+    expertiseId: searchParams.get('expertiseId'),
+    decisionId: searchParams.get('decisionId'),
+    revenueId: searchParams.get('revenueId')
+  }
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -53,8 +69,14 @@ export default function Marketing({targets}: MarketingFormProps) {
   const isLoading = form.formState.isSubmitting
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const formData = new FormData();
-      formData.append('targetId', values.targetId);
+      const allData = {
+        ...businessData,
+        ...values
+      }
+      console.log("All data=>", allData);
+      const queryParams = new URLSearchParams(allData as Record<string, string>).toString();
+
+      router.push(`/onboarding/development?${queryParams}`);
   } catch (err) {
     console.log("Error message")
   }
@@ -136,10 +158,7 @@ export default function Marketing({targets}: MarketingFormProps) {
           className="flex justify-center mt-8"
           >
             <Button
-            className="py-5 px-10 text-base bg-tealCustom font-medium mt-5 hover:bg-teal-700 rounded transition-colors"
-            onClick={() =>
-              router.push("/welcome?type=development")
-            }  >
+            className="py-5 px-10 text-base bg-tealCustom font-medium mt-5 hover:bg-teal-700 rounded transition-colors">
             {isLoading ? "Submitting..." : "Next"}
             </Button>
             {error && <p className="text-red-500 mt-2">{error}</p>}

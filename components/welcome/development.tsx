@@ -103,8 +103,8 @@ export default function Development({products}: DevelopmentFormProps) {
               name="productId"
               control={form.control}
               render={({ field }) => (
-                <FormItem className="mt-5 w-3/4">
-                  <FormLabel>What stage is your product in?</FormLabel>
+                <FormItem className="mt-5 w-full">
+                  <FormLabel className="font-bold text-base">What stage is your product in?</FormLabel>
                   <Select
                   disabled={isLoading}
                   onValueChange={field.onChange}

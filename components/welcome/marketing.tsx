@@ -104,8 +104,8 @@ export default function Marketing({targets}: MarketingFormProps) {
               name="targetId"
               control={form.control}
               render={({ field }) => (
-                <FormItem className="mt-5 w-3/4">
-                  <FormLabel>Who are your target customers?</FormLabel>
+                <FormItem className="mt-5 w-full">
+                  <FormLabel className="font-bold text-base">Who are your target customers?</FormLabel>
                   <Select
                   disabled={isLoading}
                   onValueChange={field.onChange}

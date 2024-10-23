@@ -8,6 +8,9 @@ import { ArrowLeft as ArrowLeftIcon } from 'lucide-react';
 import Intro from '@/components/welcome/intro';
 import Founder from '@/components/welcome/founder';
 import Business from '@/components/welcome/business';
+import Sales from '@/components/welcome/sales';
+import Marketing from '@/components/welcome/marketing';
+import Development from '@/components/welcome/development';
 import { Experience, Ownership, Network, Revenue, Stage, Size, Industry, Product, Target, Member, Expertise, Decision } from "@prisma/client";
 
 interface WelcomeProps {
@@ -27,7 +30,7 @@ interface WelcomeProps {
 
 export default function OnboardingComponent({experiences, ownerships, members, expertises, decisions, revenues, stages, sizes, industries, products, targets, networks}: WelcomeProps) {
   const [error, setError] = React.useState('');
-  const { user } = useUser()
+  const { user } = useUser();
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -63,6 +66,9 @@ export default function OnboardingComponent({experiences, ownerships, members, e
         )}
         {type === "founder" && <Founder experiences={experiences} ownerships={ownerships} members={members} expertises={expertises} decisions={decisions} key="founder" />}
         {type === "business" && <Business stages={stages} sizes={sizes} industries={industries} networks={networks} key="business" />}
+        {type === "development" && <Development products={products} key="development" />}
+        {type === "marketing" && <Marketing targets={targets} key="marketing" />}
+        {type === "sales" && <Sales revenues={revenues} key="sales" />}
       </AnimatePresence>
     </div>
   )

@@ -363,15 +363,99 @@ async function seedIndustry() {
     }
 }
 
-seedOwnership();
-seedExperience();
-seedExpertise();
-seedStage();
-seedSize();
-seedRevenue();
-seedNetwork();
-seedProduct()
-seedIndustry();
-seedTarget();
-seedMember();
-seedDecision();
+            async function seedSChallenge() {
+                const uri = process.env.DATABASE_URL;
+                const client = new MongoClient(uri);
+
+                try {
+                    await client.connect();
+
+                    const database = client.db();
+                    const schallengeCollection = database.collection("SChallenge");
+
+                    const schallengeToInsert = [
+                        {name: "Generating enough leads"},
+                        {name: "Converting leads into paying customers"},
+                        {name: "Managing long sales cycles"},
+                        {name: "Scaling our sales efforts"},
+                        {name: "Understanding customer needs better"}
+                    ];
+
+                    await schallengeCollection.insertMany(schallengeToInsert);
+                    console.log("Default sales challenge seeded successfully")
+                } catch (error) {
+                    console.log("Error seeding default sales", error)
+                } finally {
+                    await client.close()
+                }
+            }
+
+        async function seedSStrategy() {
+            const uri = process.env.DATABASE_URL;
+            const client = new MongoClient(uri);
+
+            try {
+                await client.connect();
+
+                const database = client.db();
+                const sstrategyCollection = database.collection("SStrategy");
+
+                const sstrategyToInsert = [
+                    {name: "Direct sales to customers"},
+                    {name: "Inbound marketing and lead generation"},
+                    {name: "Partnering with resellers or affiliates"},
+                    {name: "E-commerce/online platform sales"},
+                    {name: "We’re still figuring it out"}
+                ];
+
+                await sstrategyCollection.insertMany(sstrategyToInsert)
+                console.log("Default sales strategy seeded successfully")
+            } catch (error) {
+                console.log("Error seeding default strategy", error)
+            } finally {
+                await client.close()
+            }
+        }
+
+        async function Lead() {
+            const uri = process.env.DATABASE_URL;
+            const client = new MongoClient(uri);
+
+            try {
+                await client.connect();
+
+                const database = client.db();
+                const leadCollection = database.collection("Lead");
+
+                const leadToInsert = [
+                    {name: "Cold outreach (emails, calls)"},
+                    {name: "Inbound marketing (SEO, content marketing)"},
+                    {name: "Paid advertising"},
+                    {name: "Referrals and word of mouth"},
+                    {name: "Networking and events"}
+                ];
+
+                await leadCollection.insertMany(leadToInsert);
+                console.log("Default lead seeded successfully")
+            } catch (error) {
+                console.log("Error seeding default lead", error)
+            } finally {
+                await client.close()
+            }
+        }
+
+// seedOwnership();
+// seedExperience();
+// seedExpertise();
+// seedStage();
+// seedSize();
+// seedRevenue();
+// seedNetwork();
+// seedProduct()
+// seedIndustry();
+// seedTarget();
+// seedMember();
+// seedDecision();
+seedSChallenge();
+seedSStrategy();
+Lead();

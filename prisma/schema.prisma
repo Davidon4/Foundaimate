@@ -104,6 +104,36 @@ model Lead {
   members    Profile[] 
 }
 
+model MChannel {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  name        String 
+  members    Profile[] 
+}
+
+model MChallenge {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  name        String 
+  members    Profile[] 
+}
+
+model Usp {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  name        String 
+  members    Profile[] 
+}
+
+model MGoal {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  name        String 
+  members    Profile[] 
+}
+
+model SGoal {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  name        String 
+  members    Profile[] 
+}
+
 model Profile {
   id            String @id @default(auto()) @map("_id") @db.ObjectId
   name          String
@@ -150,13 +180,28 @@ model Profile {
   memberId      String  @db.ObjectId
 
   schallenge    SChallenge  @relation(fields: [schallengeId], references: [id])
-  schallengeId   String  @db.ObjectId
+  schallengeId  String  @db.ObjectId
 
   sstrategy     SStrategy  @relation(fields: [sstrategyId], references: [id])
   sstrategyId   String  @db.ObjectId
 
   lead          Lead  @relation(fields: [leadId], references: [id])
   leadId        String  @db.ObjectId
+
+  mchannel      MChannel  @relation(fields: [mchannelId], references: [id])
+  mchannelId    String  @db.ObjectId
+
+  usp           Usp  @relation(fields: [uspId], references: [id])
+  uspId         String  @db.ObjectId
+
+  mchallenge    MChallenge  @relation(fields: [mchallengeId], references: [id])
+  mchallengeId  String  @db.ObjectId
+
+  mgoal         MGoal  @relation(fields: [mgoalId], references: [id])
+  mgoalId       String  @db.ObjectId
+
+  sgoal         SGoal  @relation(fields: [sgoalId], references: [id])
+  sgoalId       String  @db.ObjectId
 
   @@index([experienceId])
   @@index([ownershipId])
@@ -173,5 +218,10 @@ model Profile {
   @@index([schallengeId])
   @@index([sstrategyId])
   @@index([leadId])
+  @@index([mchannelId])
+  @@index([mchallengeId])
+  @@index([uspId])
+  @@index([sgoalId])
+  @@index([mgoalId])
   @@index([name], name: "name_text_idx") // Text index for full-text search
 }

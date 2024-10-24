@@ -11,7 +11,7 @@ import Business from '@/components/welcome/business';
 import Sales from '@/components/welcome/sales';
 import Marketing from '@/components/welcome/marketing';
 import Development from '@/components/welcome/development';
-import { Experience, Ownership, Network, Revenue, Stage, Size, Industry, Product, Target, Member, Expertise, Decision } from "@prisma/client";
+import { Experience, Ownership, Network, Revenue, Stage, Size, Industry, Product, Target, Member, Expertise, Decision, Lead, SStrategy, SChallenge } from "@prisma/client";
 
 interface WelcomeProps {
   experiences: Experience[];
@@ -26,9 +26,12 @@ interface WelcomeProps {
   products: Product[];
   targets: Target[];
   networks: Network[];
+  leads: Lead[];
+  schallenges: SChallenge[];
+  sstrategies: SStrategy[];
 }
 
-export default function OnboardingComponent({experiences, ownerships, members, expertises, decisions, revenues, stages, sizes, industries, products, targets, networks}: WelcomeProps) {
+export default function OnboardingComponent({experiences, ownerships, members, expertises, decisions, revenues, stages, sizes, industries, products, targets, networks, leads, sstrategies, schallenges}: WelcomeProps) {
   const [error, setError] = React.useState('');
   const { user } = useUser();
   const router = useRouter();
@@ -68,7 +71,7 @@ export default function OnboardingComponent({experiences, ownerships, members, e
         {type === "business" && <Business stages={stages} sizes={sizes} industries={industries} networks={networks} key="business" />}
         {type === "development" && <Development products={products} key="development" />}
         {type === "marketing" && <Marketing targets={targets} key="marketing" />}
-        {type === "sales" && <Sales revenues={revenues} key="sales" />}
+        {type === "sales" && <Sales revenues={revenues} leads={leads} schallenges={schallenges} sstrategies={sstrategies} key="sales" />}
       </AnimatePresence>
     </div>
   )

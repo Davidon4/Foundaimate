@@ -444,6 +444,138 @@ async function seedIndustry() {
             }
         }
 
+        async function MGoal() {
+            const uri = process.env.DATABASE_URL;
+            const client = new MongoClient(uri);
+
+            try {
+                await client.connect();
+
+                const database = client.db();
+                const mgoalCollection = database.collection("MGoal");
+
+                const mgoalToInsert = [
+                    {name: "Increase brand awareness"},
+                    {name: "Grow customer base"},
+                    {name: "Improve conversion rates"},
+                    {name: "Optimize marketing ROI"},
+                ];
+
+                await mgoalCollection.insertMany(mgoalToInsert);
+                console.log("Default marketing goal seeded successfully")
+            } catch (error) {
+                console.log("Error seeding default marketing goal", error)
+            } finally {
+                await client.close()
+            }
+        }
+
+        async function Usp() {
+            const uri = process.env.DATABASE_URL;
+            const client = new MongoClient(uri);
+
+            try {
+                await client.connect();
+
+                const database = client.db();
+                const uspCollection = database.collection("Usp");
+
+                const uspToInsert = [
+                    {name: "Product features and innovation"},
+                    {name: "Price and affordability"},
+                    {name: "Customer service and support"},
+                    {name: "Brand mission or values"},
+                    {name: "Still defining our USP"}
+                ];
+
+                await uspCollection.insertMany(uspToInsert);
+                console.log("Default unique selling point seeded successfully")
+            } catch (error) {
+                console.log("Error seeding default unique selling point", error)
+            } finally {
+                await client.close()
+            }
+        }
+
+        async function MChannel() {
+            const uri = process.env.DATABASE_URL;
+            const client = new MongoClient(uri);
+
+            try {
+                await client.connect();
+
+                const database = client.db();
+                const mchannelCollection = database.collection("MChannel");
+
+                const mchannelToInsert = [
+                    {name: "Social media platforms (Instagram, LinkedIn, Twitter)"},
+                    {name: "Email marketing"},
+                    {name: "Search engine optimization (SEO)"},
+                    {name: "Paid ads (PPC, social media ads)"},
+                    {name: "Word of mouth and referrals"}
+                ];
+
+                await mchannelCollection.insertMany(mchannelToInsert);
+                console.log("Default marketing channel seeded successfully")
+            } catch (error) {
+                console.log("Error seeding default marketing channel", error)
+            } finally {
+                await client.close()
+            }
+        }
+
+        async function MChallenge() {
+            const uri = process.env.DATABASE_URL;
+            const client = new MongoClient(uri);
+
+            try {
+                await client.connect();
+
+                const database = client.db();
+                const mchallengeCollection = database.collection("MChallenge");
+
+                const mchallengeToInsert = [
+                    {name: "Limited budget"},
+                    {name: "Reaching the right audience"},
+                    {name: "Scaling campaigns effectively"},
+                    {name: "Measuring and analyzing results"},
+                ];
+
+                await mchallengeCollection.insertMany(mchallengeToInsert);
+                console.log("Default marketing challenge seeded successfully")
+            } catch (error) {
+                console.log("Error seeding default marketing challenge", error)
+            } finally {
+                await client.close()
+            }
+        }
+
+        async function SGoal() {
+            const uri = process.env.DATABASE_URL;
+            const client = new MongoClient(uri);
+
+            try {
+                await client.connect();
+
+                const database = client.db();
+                const sgoalCollection = database.collection("SGoal");
+
+                const sgoalToInsert = [
+                    {name: "Increase revenue growth"},
+                    {name: "Expand market share"},
+                    {name: "Improve customer retention and loyalty"},
+                    {name: "Acquire new customers"}
+                ];
+
+                await sgoalCollection.insertMany(sgoalToInsert);
+                console.log("Default marketing challenge seeded successfully")
+            } catch (error) {
+                console.log("Error seeding default marketing challenge", error)
+            } finally {
+                await client.close()
+            }
+        }
+
 // seedOwnership();
 // seedExperience();
 // seedExpertise();
@@ -456,6 +588,12 @@ async function seedIndustry() {
 // seedTarget();
 // seedMember();
 // seedDecision();
-seedSChallenge();
-seedSStrategy();
-Lead();
+// seedSChallenge();
+// seedSStrategy();
+// Lead();
+MGoal();
+Usp();
+MChannel();
+MChallenge();
+MGoal();
+SGoal();

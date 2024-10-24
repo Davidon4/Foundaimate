@@ -4,7 +4,11 @@ import React from "react";
 import { motion } from "framer-motion";
 import * as z from "zod";
 import { 
-  Revenue } from "@prisma/client";
+  Revenue,
+  Lead,
+  SChallenge,
+  SStrategy
+} from "@prisma/client";
 import { 
   Form,
   FormControl,
@@ -30,37 +34,52 @@ import { useForm } from "react-hook-form";
 
 interface SalesFormProps {
   revenues: Revenue[];
+  leads: Lead[];
+  schallenges: SChallenge[];
+  sstrategies: SStrategy[];
 }
 
 const formSchema = z.object({
   revenueId: z.string().min(1, {
       message: "Revenue model is required"
-  })
+  }),
+  leadId: z.string().min(1, {
+      message: "Lead mode is required"
+  }),
+  schallengeId: z.string().min(1, {
+      message: "Sales challenge is required"
+  }),
+  sstrategyId: z.string().min(1, {
+      message: "Sales strategy is required"
+  }),
   })
 
-export default function Sales({ revenues}: SalesFormProps) {
+export default function Sales({ revenues, leads, schallenges, sstrategies}: SalesFormProps) {
   const router = useRouter();
   const [error, setError] = React.useState('');
   const searchParams = useSearchParams();
 
-  const businessData = {
-    name: searchParams.get('name'),
-    description: searchParams.get('description'),
-    stageId: searchParams.get('stageId'),
-    sizeId: searchParams.get('sizeId'),
-    industryId: searchParams.get('industryId'),
-    networkId: searchParams.get('networkId'),
-    experienceId: searchParams.get('experienceId'),
-    ownershipId: searchParams.get('ownershipId'),
-    memberId: searchParams.get('memberId'),
-    expertiseId: searchParams.get('expertiseId'),
-    decisionId: searchParams.get('decisionId')
-  }
+  // const businessData = {
+    const name = searchParams.get('name');
+    const description = searchParams.get('description');
+    const stageId = searchParams.get('stageId');
+    const sizeId = searchParams.get('sizeId');
+    const industryId = searchParams.get('industryId');
+    const networkId = searchParams.get('networkId');
+    const experienceId = searchParams.get('experienceId');
+    const ownershipId = searchParams.get('ownershipId');
+    const memberId = searchParams.get('memberId');
+    const expertiseId = searchParams.get('expertiseId');
+    const decisionId = searchParams.get('decisionId');
+  // }
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-    revenueId: undefined
+    revenueId: undefined,
+    leadId: undefined,
+    schallengeId: undefined,
+    sstrategyId: undefined
     }
   })
 
@@ -68,13 +87,24 @@ export default function Sales({ revenues}: SalesFormProps) {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const allData = {
-        ...businessData,
-        ...values
+        // ...businessData,
+        ...values,
+        name,
+        description,
+        stageId,
+        sizeId,
+        industryId,
+        networkId,
+        experienceId,
+        ownershipId,
+        memberId,
+        expertiseId,
+        decisionId
       }
       console.log("All data=>", allData);
       const queryParams = new URLSearchParams(allData as Record<string, string>).toString();
 
-      router.push(`/onboarding/marketing?${queryParams}`);
+      router.push(`/welcome?type=marketing&${queryParams}`);
   } catch (err) {
     console.log("Error message")
   }
@@ -147,11 +177,105 @@ export default function Sales({ revenues}: SalesFormProps) {
                 </FormItem>
               )}
             />
+        <FormField
+              name="leadId"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem className="mt-5 w-full">
+                  <FormLabel className="font-bold text-base">What is your most effective method for generating leads and filling your sales pipeline?</FormLabel>
+                  <Select
+                  disabled={isLoading}
+                  onValueChange={field.onChange}
+                  value={field.value}
+                  defaultValue={field.value}
+                  >
+                  <FormControl>
+                    <SelectTrigger className="bg-background">
+                    <SelectValue
+                    defaultValue={field.value}
+                    placeholder="Select lead generation"
+                    />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {leads.map((lead) => (
+                      <SelectItem key={lead.id} value={lead.id}>
+                        {lead.name}
+                      </SelectItem>  
+                    ))}
+                  </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
+        <FormField
+              name="sstrategyId"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem className="mt-5 w-full">
+                  <FormLabel className="font-bold text-base">What is your current sales strategy?</FormLabel>
+                  <Select
+                  disabled={isLoading}
+                  onValueChange={field.onChange}
+                  value={field.value}
+                  defaultValue={field.value}
+                  >
+                  <FormControl>
+                    <SelectTrigger className="bg-background">
+                    <SelectValue
+                    defaultValue={field.value}
+                    placeholder="Select sales strategy"
+                    />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {sstrategies.map((sstrategy) => (
+                      <SelectItem key={sstrategy.id} value={sstrategy.id}>
+                        {sstrategy.name}
+                      </SelectItem>  
+                    ))}
+                  </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
+        <FormField
+              name="schallengeId"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem className="mt-5 w-full">
+                  <FormLabel className="font-bold text-base">What is your main sales challenge right now?</FormLabel>
+                  <Select
+                  disabled={isLoading}
+                  onValueChange={field.onChange}
+                  value={field.value}
+                  defaultValue={field.value}
+                  >
+                  <FormControl>
+                    <SelectTrigger className="bg-background">
+                    <SelectValue
+                    defaultValue={field.value}
+                    placeholder="Select sales challenge"
+                    />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {schallenges.map((schallenge) => (
+                      <SelectItem key={schallenge.id} value={schallenge.id}>
+                        {schallenge.name}
+                      </SelectItem>  
+                    ))}
+                  </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
           <motion.div
           variants={STAGGER_CHILD_VARIANTS}
           className="flex justify-center mt-8"
           >
             <Button
+            type="submit"
             className="py-5 px-10 text-base bg-tealCustom font-medium mt-5 hover:bg-teal-700 rounded transition-colors">
             {isLoading ? "Submitting..." : "Next"}
             </Button>

@@ -60,6 +60,18 @@ async function getNetworks() {
   const networks = await prismadb.network.findMany();
   return networks;
 }
+async function getLeads() {
+  const leads = await prismadb.lead.findMany();
+  return leads;
+}
+async function getSChallenges() {
+  const schallenges = await prismadb.sChallenge.findMany();
+  return schallenges;
+}
+async function getSStrategies() {
+  const sstrategies = await prismadb.sStrategy.findMany();
+  return sstrategies;
+}
 
 export default async function WelcomePage() {
   const experiences = await getExperiences();
@@ -74,6 +86,9 @@ export default async function WelcomePage() {
   const products = await getProducts();
   const targets = await getTargets();
   const networks = await getNetworks();
+  const leads = await getLeads();
+  const schallenges = await getSChallenges();
+  const sstrategies = await getSStrategies();
 
   return <OnboardingComponent
           experiences={experiences}
@@ -88,5 +103,8 @@ export default async function WelcomePage() {
           products={products}
           targets={targets}
           networks={networks}
+          leads={leads}
+          schallenges={schallenges}
+          sstrategies={sstrategies}
           />;
 }

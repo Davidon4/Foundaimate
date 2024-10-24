@@ -96,7 +96,7 @@ export default function Business({industries, stages, sizes, networks}: Business
       const queryParams = new URLSearchParams(allData as Record<string, string>).toString();
 
       // Navigate to the Sales page with all the data
-      router.push(`/onboarding/sales?${queryParams}`);
+      router.push(`/welcome?type=sales&${queryParams}`);
       // const res = await 
   } catch (err) {
     console.log("Error message")
@@ -303,6 +303,7 @@ export default function Business({industries, stages, sizes, networks}: Business
           className="flex justify-center mt-8"
           >
             <Button
+            type="submit"
             className="py-5 px-10 text-base bg-tealCustom font-medium mt-5 hover:bg-teal-700 rounded transition-colors">
             {isLoading ? "Submitting..." : "Next"}
             </Button>

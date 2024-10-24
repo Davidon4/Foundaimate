@@ -72,6 +72,26 @@ async function getSStrategies() {
   const sstrategies = await prismadb.sStrategy.findMany();
   return sstrategies;
 }
+async function getSGoals() {
+  const sgoals = await prismadb.sGoal.findMany();
+  return sgoals;
+}
+async function getMGoals() {
+  const mgoals = await prismadb.mGoal.findMany();
+  return mgoals;
+}
+async function getUsps() {
+  const usps = await prismadb.usp.findMany();
+  return usps;
+}
+async function getMChallenges() {
+  const mchallenges = await prismadb.mChallenge.findMany();
+  return mchallenges;
+}
+async function getMChannels() {
+  const mchannels = await prismadb.mChannel.findMany();
+  return mchannels;
+}
 
 export default async function WelcomePage() {
   const experiences = await getExperiences();
@@ -89,6 +109,11 @@ export default async function WelcomePage() {
   const leads = await getLeads();
   const schallenges = await getSChallenges();
   const sstrategies = await getSStrategies();
+  const sgoals = await getSGoals();
+  const mgoals = await getMGoals();
+  const usps = await getUsps();
+  const mchannels = await getMChannels();
+  const mchallenges = await getMChallenges();
 
   return <OnboardingComponent
           experiences={experiences}
@@ -106,5 +131,10 @@ export default async function WelcomePage() {
           leads={leads}
           schallenges={schallenges}
           sstrategies={sstrategies}
+          sgoals={sgoals}
+          usps={usps}
+          mchannels={mchannels}
+          mchallenges={mchallenges}
+          mgoals={mgoals}
           />;
 }

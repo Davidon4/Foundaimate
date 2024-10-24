@@ -11,7 +11,28 @@ import Business from '@/components/welcome/business';
 import Sales from '@/components/welcome/sales';
 import Marketing from '@/components/welcome/marketing';
 import Development from '@/components/welcome/development';
-import { Experience, Ownership, Network, Revenue, Stage, Size, Industry, Product, Target, Member, Expertise, Decision, Lead, SStrategy, SChallenge } from "@prisma/client";
+import { 
+  Experience, 
+  SGoal, 
+  Ownership, 
+  Network, 
+  Revenue, 
+  Stage, 
+  Size, 
+  Industry, 
+  Product, 
+  Target, 
+  Member, 
+  Expertise, 
+  Decision, 
+  Lead, 
+  SStrategy, 
+  SChallenge,
+  Usp,
+  MChallenge,
+  MChannel,
+  MGoal
+} from "@prisma/client";
 
 interface WelcomeProps {
   experiences: Experience[];
@@ -29,9 +50,14 @@ interface WelcomeProps {
   leads: Lead[];
   schallenges: SChallenge[];
   sstrategies: SStrategy[];
+  sgoals: SGoal[];
+  usps: Usp[];
+  mchallenges: MChallenge[];
+  mchannels: MChannel[];
+  mgoals: MGoal[]
 }
 
-export default function OnboardingComponent({experiences, ownerships, members, expertises, decisions, revenues, stages, sizes, industries, products, targets, networks, leads, sstrategies, schallenges}: WelcomeProps) {
+export default function OnboardingComponent({experiences, ownerships, members, sgoals, expertises, decisions, revenues, stages, sizes, industries, products, targets, networks, leads, sstrategies, schallenges, mgoals, mchallenges, mchannels, usps}: WelcomeProps) {
   const [error, setError] = React.useState('');
   const { user } = useUser();
   const router = useRouter();
@@ -70,8 +96,8 @@ export default function OnboardingComponent({experiences, ownerships, members, e
         {type === "founder" && <Founder experiences={experiences} ownerships={ownerships} members={members} expertises={expertises} decisions={decisions} key="founder" />}
         {type === "business" && <Business stages={stages} sizes={sizes} industries={industries} networks={networks} key="business" />}
         {type === "development" && <Development products={products} key="development" />}
-        {type === "marketing" && <Marketing targets={targets} key="marketing" />}
-        {type === "sales" && <Sales revenues={revenues} leads={leads} schallenges={schallenges} sstrategies={sstrategies} key="sales" />}
+        {type === "marketing" && <Marketing targets={targets} usps={usps} mchallenges={mchallenges} mchannels={mchannels} mgoals={mgoals} key="marketing" />}
+        {type === "sales" && <Sales revenues={revenues} leads={leads} schallenges={schallenges} sgoals={sgoals} sstrategies={sstrategies} key="sales" />}
       </AnimatePresence>
     </div>
   )

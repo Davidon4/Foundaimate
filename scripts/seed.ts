@@ -576,22 +576,21 @@ async function seedIndustry() {
             }
         }
 
-// seedOwnership();
-// seedExperience();
-// seedExpertise();
-// seedStage();
-// seedSize();
-// seedRevenue();
-// seedNetwork();
-// seedProduct()
-// seedIndustry();
-// seedTarget();
-// seedMember();
-// seedDecision();
-// seedSChallenge();
-// seedSStrategy();
-// Lead();
-MGoal();
+seedOwnership();
+seedExperience();
+seedExpertise();
+seedStage();
+seedSize();
+seedRevenue();
+seedNetwork();
+seedProduct()
+seedIndustry();
+seedTarget();
+seedMember();
+seedDecision();
+seedSChallenge();
+seedSStrategy();
+Lead();
 Usp();
 MChannel();
 MChallenge();

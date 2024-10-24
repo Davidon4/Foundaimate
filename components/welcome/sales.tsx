@@ -7,7 +7,8 @@ import {
   Revenue,
   Lead,
   SChallenge,
-  SStrategy
+  SStrategy,
+  SGoal
 } from "@prisma/client";
 import { 
   Form,
@@ -37,6 +38,7 @@ interface SalesFormProps {
   leads: Lead[];
   schallenges: SChallenge[];
   sstrategies: SStrategy[];
+  sgoals: SGoal[];
 }
 
 const formSchema = z.object({
@@ -52,9 +54,12 @@ const formSchema = z.object({
   sstrategyId: z.string().min(1, {
       message: "Sales strategy is required"
   }),
+  sgoalId: z.string().min(1, {
+      message: "Sales goal is required"
+  }),
   })
 
-export default function Sales({ revenues, leads, schallenges, sstrategies}: SalesFormProps) {
+export default function Sales({ revenues, leads, schallenges, sstrategies, sgoals}: SalesFormProps) {
   const router = useRouter();
   const [error, setError] = React.useState('');
   const searchParams = useSearchParams();
@@ -79,7 +84,8 @@ export default function Sales({ revenues, leads, schallenges, sstrategies}: Sale
     revenueId: undefined,
     leadId: undefined,
     schallengeId: undefined,
-    sstrategyId: undefined
+    sstrategyId: undefined,
+    sgoalId: undefined
     }
   })
 
@@ -263,6 +269,37 @@ export default function Sales({ revenues, leads, schallenges, sstrategies}: Sale
                     {schallenges.map((schallenge) => (
                       <SelectItem key={schallenge.id} value={schallenge.id}>
                         {schallenge.name}
+                      </SelectItem>  
+                    ))}
+                  </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
+        <FormField
+              name="sgoalId"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem className="mt-5 w-full">
+                  <FormLabel className="font-bold text-base">What are your main sales goals for the next 6–12 months?</FormLabel>
+                  <Select
+                  disabled={isLoading}
+                  onValueChange={field.onChange}
+                  value={field.value}
+                  defaultValue={field.value}
+                  >
+                  <FormControl>
+                    <SelectTrigger className="bg-background">
+                    <SelectValue
+                    defaultValue={field.value}
+                    placeholder="Select sales challenge"
+                    />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {sgoals.map((sgoal) => (
+                      <SelectItem key={sgoal.id} value={sgoal.id}>
+                        {sgoal.name}
                       </SelectItem>  
                     ))}
                   </SelectContent>

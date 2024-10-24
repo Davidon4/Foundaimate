@@ -4,7 +4,11 @@ import React from "react";
 import { motion } from "framer-motion";
 import * as z from "zod";
 import {  
-  Target
+  Target,
+  Usp,
+  MChallenge,
+  MChannel,
+  MGoal
  } from "@prisma/client";
 import { 
   Form,
@@ -31,15 +35,31 @@ import { useForm } from "react-hook-form";
 
 interface MarketingFormProps {
   targets: Target[];
+  usps: Usp[];
+  mchannels: MChannel[];
+  mchallenges: MChallenge[];
+  mgoals: MGoal[];
 }
 
 const formSchema = z.object({
   targetId: z.string().min(1, {
       message: "Target customer is required"
-  })
-  })
+  }),
+  mchannelId: z.string().min(1, {
+      message: "Marketing channel is required"
+  }),
+  mgoalId: z.string().min(1, {
+    message: "Marketing goal is required"
+  }),
+  uspId: z.string().min(1, {
+    message: "Unique selling point is required"
+  }),
+  mchallengeId: z.string().min(1, {
+    message: "Marketing challenge is required"
+  }),
+})
 
-export default function Marketing({targets}: MarketingFormProps) {
+export default function Marketing({targets, mchannels, mchallenges, mgoals, usps}: MarketingFormProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [error, setError] = React.useState('');
@@ -62,7 +82,11 @@ export default function Marketing({targets}: MarketingFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-    targetId: undefined
+    targetId: undefined,
+    mchallengeId: undefined,
+    mchannelId: undefined,
+    uspId: undefined,
+    mgoalId: undefined
     }
   })
 
@@ -146,6 +170,130 @@ export default function Marketing({targets}: MarketingFormProps) {
                     {targets.map((target) => (
                       <SelectItem key={target.id} value={target.id}>
                         {target.name}
+                      </SelectItem>  
+                    ))}
+                  </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
+        <FormField
+              name="uspId"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem className="mt-5 w-full">
+                  <FormLabel className="font-bold text-base">What is your brand’s unique selling proposition (USP)?</FormLabel>
+                  <Select
+                  disabled={isLoading}
+                  onValueChange={field.onChange}
+                  value={field.value}
+                  defaultValue={field.value}
+                  >
+                  <FormControl>
+                    <SelectTrigger className="bg-background">
+                    <SelectValue
+                    defaultValue={field.value}
+                    placeholder="Select a unique selling point"
+                    />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {usps.map((usp) => (
+                      <SelectItem key={usp.id} value={usp.id}>
+                        {usp.name}
+                      </SelectItem>  
+                    ))}
+                  </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
+        <FormField
+              name="mchannelId"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem className="mt-5 w-full">
+                  <FormLabel className="font-bold text-base">Which marketing channels have been most effective for your business?</FormLabel>
+                  <Select
+                  disabled={isLoading}
+                  onValueChange={field.onChange}
+                  value={field.value}
+                  defaultValue={field.value}
+                  >
+                  <FormControl>
+                    <SelectTrigger className="bg-background">
+                    <SelectValue
+                    defaultValue={field.value}
+                    placeholder="Select a marketing channel"
+                    />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {mchannels.map((mchannel) => (
+                      <SelectItem key={mchannel.id} value={mchannel.id}>
+                        {mchannel.name}
+                      </SelectItem>  
+                    ))}
+                  </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
+        <FormField
+              name="mchallengeId"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem className="mt-5 w-full">
+                  <FormLabel className="font-bold text-base">What challenges do you face in your marketing efforts right now?</FormLabel>
+                  <Select
+                  disabled={isLoading}
+                  onValueChange={field.onChange}
+                  value={field.value}
+                  defaultValue={field.value}
+                  >
+                  <FormControl>
+                    <SelectTrigger className="bg-background">
+                    <SelectValue
+                    defaultValue={field.value}
+                    placeholder="Select marketing challenge"
+                    />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {mchallenges.map((mchallenge) => (
+                      <SelectItem key={mchallenge.id} value={mchallenge.id}>
+                        {mchallenge.name}
+                      </SelectItem>  
+                    ))}
+                  </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
+        <FormField
+              name="mgoalId"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem className="mt-5 w-full">
+                  <FormLabel className="font-bold text-base">What are your main marketing goals for the next 6–12 months?</FormLabel>
+                  <Select
+                  disabled={isLoading}
+                  onValueChange={field.onChange}
+                  value={field.value}
+                  defaultValue={field.value}
+                  >
+                  <FormControl>
+                    <SelectTrigger className="bg-background">
+                    <SelectValue
+                    defaultValue={field.value}
+                    placeholder="Select marketing goal"
+                    />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {mgoals.map((mgoal) => (
+                      <SelectItem key={mgoal.id} value={mgoal.id}>
+                        {mgoal.name}
                       </SelectItem>  
                     ))}
                   </SelectContent>

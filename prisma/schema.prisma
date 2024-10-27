@@ -134,6 +134,54 @@ model SGoal {
   members    Profile[] 
 }
 
+model DChallenge {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  name        String 
+  members    Profile[] 
+}
+
+model Feature {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  name        String 
+  members    Profile[] 
+}
+
+model Update {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  name        String 
+  members    Profile[] 
+}
+
+model Innovation {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  name        String 
+  members    Profile[] 
+}
+
+model DRisk {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  name        String 
+  members    Profile[] 
+}
+
+model MRisk {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  name        String 
+  members    Profile[] 
+}
+
+model SRisk {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  name        String 
+  members    Profile[] 
+}
+
+model DGoal {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  name        String 
+  members    Profile[] 
+}
+
 model Profile {
   id            String @id @default(auto()) @map("_id") @db.ObjectId
   name          String
@@ -203,6 +251,30 @@ model Profile {
   sgoal         SGoal  @relation(fields: [sgoalId], references: [id])
   sgoalId       String  @db.ObjectId
 
+  dchallenge    DChallenge  @relation(fields: [dchallengeId], references: [id])
+  dchallengeId  String  @db.ObjectId
+
+  feature       Feature  @relation(fields: [featureId], references: [id])
+  featureId     String  @db.ObjectId
+
+  update       Update  @relation(fields: [updateId], references: [id])
+  updateId     String  @db.ObjectId
+
+  innovation    Innovation  @relation(fields: [innovationId], references: [id])
+  innovationId  String  @db.ObjectId
+
+  drisk         DRisk  @relation(fields: [driskId], references: [id])
+  driskId       String  @db.ObjectId
+  
+  mrisk         MRisk  @relation(fields: [mriskId], references: [id])
+  mriskId       String  @db.ObjectId
+
+  srisk         SRisk  @relation(fields: [sriskId], references: [id])
+  sriskId       String  @db.ObjectId
+  
+  dgoal         DGoal  @relation(fields: [dgoalId], references: [id])
+  dgoalId       String  @db.ObjectId
+
   @@index([experienceId])
   @@index([ownershipId])
   @@index([expertiseId])
@@ -223,5 +295,13 @@ model Profile {
   @@index([uspId])
   @@index([sgoalId])
   @@index([mgoalId])
+  @@index([dchallengeId])
+  @@index([featureId])
+  @@index([updateId])
+  @@index([innovationId])
+  @@index([driskId])
+  @@index([sriskId])
+  @@index([mriskId])
+  @@index([dgoalId])
   @@index([name], name: "name_text_idx") // Text index for full-text search
 }

@@ -576,6 +576,215 @@ async function seedIndustry() {
             }
         }
 
+        async function DChallenge() {
+            const uri = process.env.DATABASE_URL;
+            const client = new MongoClient(uri);
+
+            try {
+                await client.connect();
+
+                const database = client.db();
+                const dchallengeCollection = database.collection("DChallenge");
+
+                const dchallengeToInsert = [
+                    {name: "Scaling infrastructure"},
+                    {name: "Bug fixes and maintenance"},
+                    {name: "Feature prioritization"},
+                    {name: "Hiring skilled developers"}
+                ];
+
+                await dchallengeCollection.insertMany(dchallengeToInsert);
+                console.log("Default development challenge seeded successfully")
+            } catch (error) {
+                console.log("Error seeding default development challenge", error)
+            } finally {
+                await client.close()
+            }
+        }
+
+        async function Feature() {
+            const uri = process.env.DATABASE_URL;
+            const client = new MongoClient(uri);
+
+            try {
+                await client.connect();
+
+                const database = client.db();
+                const featureCollection = database.collection("Feature");
+
+                const featureToInsert = [
+                    {name: "Based on customer feedback"},
+                    {name: "Internal team discussions and strategy"},
+                    {name: "Competitive analysis and market trends"},
+                    {name: "Product roadmap and long-term vision"}
+                ];
+
+                await featureCollection.insertMany(featureToInsert);
+                console.log("Default feature seeded successfully")
+            } catch (error) {
+                console.log("Error seeding default feature", error)
+            } finally {
+                await client.close()
+            }
+        }
+
+        async function Update() {
+            const uri = process.env.DATABASE_URL;
+            const client = new MongoClient(uri);
+
+            try {
+                await client.connect();
+
+                const database = client.db();
+                const updateCollection = database.collection("Update");
+
+                const updateToInsert = [
+                    {name: "Based on customer feedback"},
+                    {name: "Internal team discussions and strategy"},
+                    {name: "Competitive analysis and market trends"},
+                    {name: "Product roadmap and long-term vision"}
+                ];
+
+                await updateCollection.insertMany(updateToInsert);
+                console.log("Default feature seeded successfully")
+            } catch (error) {
+                console.log("Error seeding default feature", error)
+            } finally {
+                await client.close()
+            }
+        }
+
+        async function Innovation() {
+            const uri = process.env.DATABASE_URL;
+            const client = new MongoClient(uri);
+
+            try {
+                await client.connect();
+
+                const database = client.db();
+                const innovationCollection = database.collection("Innovation");
+
+                const innovationToInsert = [
+                    {name: "Incorporating new technologies (e.g., AI, blockchain)"},
+                    {name: "Optimizing existing technologies"},
+                    {name: "Cautious about adopting new technologies"},
+                    {name: "Innovation is not the primary focus at the moment"}
+                ];
+
+                await innovationCollection.insertMany(innovationToInsert);
+                console.log("Default innovation seeded successfully")
+            } catch (error) {
+                console.log("Error seeding default innovation", error)
+            } finally {
+                await client.close()
+            }
+        }
+
+        async function DRisk() {
+            const uri = process.env.DATABASE_URL;
+            const client = new MongoClient(uri);
+
+            try {
+                await client.connect();
+
+                const database = client.db();
+                const driskCollection = database.collection("DRisk");
+
+                const driskToInsert = [
+                    {name: "Infrastructure not scaling with user growth"},
+                    {name: "Codebase becoming unmanageable"},
+                    {name: "Lack of skilled developers"},
+                    {name: "Technical debt slowing down future development"}
+                ];
+
+                await driskCollection.insertMany(driskToInsert);
+                console.log("Default development risk seeded successfully")
+            } catch (error) {
+                console.log("Error seeding default development risk", error)
+            } finally {
+                await client.close()
+            }
+        }
+
+        async function DGoal() {
+            const uri = process.env.DATABASE_URL;
+            const client = new MongoClient(uri);
+
+            try {
+                await client.connect();
+
+                const database = client.db();
+                const dgoalCollection = database.collection("DGoal");
+
+                const dgoalToInsert = [
+                    {name: "Building a scalable, future-proof platform"},
+                    {name: "Expanding features and integrations"},
+                    {name: "Moving towards AI/ML or other emerging technologies"},
+                    {name: "We are still shaping our long-term tech vision"}
+                ];
+
+                await dgoalCollection.insertMany(dgoalToInsert);
+                console.log("Default development goal seeded successfully")
+            } catch (error) {
+                console.log("Error seeding default development goal", error)
+            } finally {
+                await client.close()
+            }
+        }
+
+        async function SRisk() {
+            const uri = process.env.DATABASE_URL;
+            const client = new MongoClient(uri);
+
+            try {
+                await client.connect();
+
+                const database = client.db();
+                const sriskCollection = database.collection("SRisk");
+
+                const sriskToInsert = [
+                    {name: "Market Saturation and Competition"},
+                    {name: "Increasing Customer Acquisition Cost"},
+                    {name: "Maintaining Product-Market Fit"},
+                    {name: "Scaling Sales Operations and Processes"}                    
+                ];
+
+                await sriskCollection.insertMany(sriskToInsert);
+                console.log("Default sales risk seeded successfully")
+            } catch (error) {
+                console.log("Error seeding default sales risk", error)
+            } finally {
+                await client.close()
+            }
+        }
+
+
+        async function MRisk() {
+            const uri = process.env.DATABASE_URL;
+            const client = new MongoClient(uri);
+
+            try {
+                await client.connect();
+
+                const database = client.db();
+                const mriskCollection = database.collection("MRisk");
+
+                const mriskToInsert = [
+                    {name: "Brand Dilution"},
+                    {name: "Channel Dependency"},
+                    {name: "Misalignment with New Target Markets"},
+                    {name: "Increasing Customer Acquisition Costs"}                    
+                ];
+
+                await mriskCollection.insertMany(mriskToInsert);
+                console.log("Default marketing risk seeded successfully")
+            } catch (error) {
+                console.log("Error seeding default marketing risk", error)
+            } finally {
+                await client.close()
+            }
+        }
+
 seedOwnership();
 seedExperience();
 seedExpertise();
@@ -596,3 +805,6 @@ MChannel();
 MChallenge();
 MGoal();
 SGoal();
+DGoal();
+SRisk();
+MRisk();

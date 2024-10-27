@@ -100,7 +100,7 @@ export default function Marketing({targets, mchannels, mchallenges, mgoals, usps
       console.log("All data=>", allData);
       const queryParams = new URLSearchParams(allData as Record<string, string>).toString();
 
-      router.push(`/onboarding/development?${queryParams}`);
+      router.push(`/welcome?type=development&${queryParams}`);
   } catch (err) {
     console.log("Error message")
   }
@@ -275,7 +275,7 @@ export default function Marketing({targets, mchannels, mchallenges, mgoals, usps
               control={form.control}
               render={({ field }) => (
                 <FormItem className="mt-5 w-full">
-                  <FormLabel className="font-bold text-base">What are your main marketing goals for the next 6–12 months?</FormLabel>
+                  <FormLabel className="font-bold text-base">What are your main marketing goals for the next 6 – 12 months?</FormLabel>
                   <Select
                   disabled={isLoading}
                   onValueChange={field.onChange}

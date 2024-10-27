@@ -8,7 +8,8 @@ import {
   Usp,
   MChallenge,
   MChannel,
-  MGoal
+  MGoal,
+  MRisk
  } from "@prisma/client";
 import { 
   Form,
@@ -39,6 +40,7 @@ interface MarketingFormProps {
   mchannels: MChannel[];
   mchallenges: MChallenge[];
   mgoals: MGoal[];
+  mrisks: MRisk[];
 }
 
 const formSchema = z.object({
@@ -57,14 +59,17 @@ const formSchema = z.object({
   mchallengeId: z.string().min(1, {
     message: "Marketing challenge is required"
   }),
+  mriskId: z.string().min(1, {
+    message: "Marketing risk is required"
+  })
 })
 
-export default function Marketing({targets, mchannels, mchallenges, mgoals, usps}: MarketingFormProps) {
+export default function Marketing({targets, mchannels, mchallenges, mgoals, mrisks, usps}: MarketingFormProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [error, setError] = React.useState('');
 
-  const businessData = {
+  const salesData = {
     name: searchParams.get('name'),
     description: searchParams.get('description'),
     stageId: searchParams.get('stageId'),
@@ -76,7 +81,12 @@ export default function Marketing({targets, mchannels, mchallenges, mgoals, usps
     memberId: searchParams.get('memberId'),
     expertiseId: searchParams.get('expertiseId'),
     decisionId: searchParams.get('decisionId'),
-    revenueId: searchParams.get('revenueId')
+    revenueId: searchParams.get('revenueId'),
+    leadId: searchParams.get('leadId'),
+    schallengeId: searchParams.get('schallengeId'),
+    sstrategyId: searchParams.get('sstrategyId'),
+    sgoalId: searchParams.get('sgoalId'),
+    sriskId: searchParams.get('sriskId'),
   }
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -86,7 +96,8 @@ export default function Marketing({targets, mchannels, mchallenges, mgoals, usps
     mchallengeId: undefined,
     mchannelId: undefined,
     uspId: undefined,
-    mgoalId: undefined
+    mgoalId: undefined,
+    mriskId: undefined
     }
   })
 
@@ -94,10 +105,10 @@ export default function Marketing({targets, mchannels, mchallenges, mgoals, usps
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const allData = {
-        ...businessData,
+        ...salesData,
         ...values
       }
-      console.log("All data=>", allData);
+      console.log("MARKETING_DATA=>", allData);
       const queryParams = new URLSearchParams(allData as Record<string, string>).toString();
 
       router.push(`/welcome?type=development&${queryParams}`);
@@ -263,6 +274,37 @@ export default function Marketing({targets, mchannels, mchallenges, mgoals, usps
                     {mchallenges.map((mchallenge) => (
                       <SelectItem key={mchallenge.id} value={mchallenge.id}>
                         {mchallenge.name}
+                      </SelectItem>  
+                    ))}
+                  </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
+             <FormField
+              name="mriskId"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem className="mt-5 w-full">
+                  <FormLabel className="font-bold text-base">What's the biggest marketing risk you foresee in scaling your startup?</FormLabel>
+                  <Select
+                  disabled={isLoading}
+                  onValueChange={field.onChange}
+                  value={field.value}
+                  defaultValue={field.value}
+                  >
+                  <FormControl>
+                    <SelectTrigger className="bg-background">
+                    <SelectValue
+                    defaultValue={field.value}
+                    placeholder="Select marketing risk"
+                    />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {mrisks.map((mrisk) => (
+                      <SelectItem key={mrisk.id} value={mrisk.id}>
+                        {mrisk.name}
                       </SelectItem>  
                     ))}
                   </SelectContent>

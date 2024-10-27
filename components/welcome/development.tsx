@@ -8,7 +8,8 @@ import {
   DChallenge,
   Update,
   DRisk,
-  Feature
+  Feature, 
+  Innovation
 } from "@prisma/client";
 import { 
   Form,
@@ -41,6 +42,7 @@ interface DevelopmentFormProps {
   features: Feature[];
   updates: Update[];
   drisks: DRisk[];
+  innovations: Innovation[];
 }
 
 const formSchema = z.object({
@@ -58,16 +60,19 @@ const formSchema = z.object({
   }),
   featureId: z.string().min(1, {
       message: "Feature is required"
+  }),
+  innovationId: z.string().min(1, {
+      message: "Innovation is required"
   })
   })
 
-export default function Development({products, dchallenges, updates, drisks, features}: DevelopmentFormProps) {
+export default function Development({products, dchallenges, updates, drisks, innovations, features}: DevelopmentFormProps) {
   const router = useRouter();
   const [error, setError] = React.useState('');
   const searchParams = useSearchParams();
   const { user } = useUser();
 
-  const businessData = {
+  const marketingData = {
     name: searchParams.get('name'),
     description: searchParams.get('description'),
     stageId: searchParams.get('stageId'),
@@ -85,6 +90,7 @@ export default function Development({products, dchallenges, updates, drisks, fea
     mchallengeId: searchParams.get('mchallengeId'),
     uspId: searchParams.get('uspId'),
     mgoalId: searchParams.get('mgoalId'),
+    mriskId: searchParams.get('mriskId'),
   };
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -94,7 +100,8 @@ export default function Development({products, dchallenges, updates, drisks, fea
     updateId: undefined,
     dchallengeId: undefined,
     driskId: undefined,
-    featureId: undefined
+    featureId: undefined,
+    innovationId: undefined
     }
   })
 
@@ -103,10 +110,10 @@ export default function Development({products, dchallenges, updates, drisks, fea
     try {
 
       const allData = {
-        ...businessData,
+        ...marketingData,
         ...values
       }
-      console.log("All data=>", allData);
+      console.log("DEVELOPMENT_DATA=>", allData);
       const queryParams = new URLSearchParams(allData as Record<string, string>).toString();
 
       // Navigate to the next page (marketing in this case)
@@ -312,6 +319,37 @@ export default function Development({products, dchallenges, updates, drisks, fea
                     {features.map((feature) => (
                       <SelectItem key={feature.id} value={feature.id}>
                         {feature.name}
+                      </SelectItem>  
+                    ))}
+                  </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
+        <FormField
+              name="innovationId"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem className="mt-5 w-full">
+                  <FormLabel className="font-bold text-base">What's your approach to technical innovation within your product?</FormLabel>
+                  <Select
+                  disabled={isLoading}
+                  onValueChange={field.onChange}
+                  value={field.value}
+                  defaultValue={field.value}
+                  >
+                  <FormControl>
+                    <SelectTrigger className="bg-background">
+                    <SelectValue
+                    defaultValue={field.value}
+                    placeholder="Select Approach to Innovation"
+                    />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {innovations.map((innovation) => (
+                      <SelectItem key={innovation.id} value={innovation.id}>
+                        {innovation.name}
                       </SelectItem>  
                     ))}
                   </SelectContent>

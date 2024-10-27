@@ -62,11 +62,14 @@ export default function Business({industries, stages, sizes, networks}: Business
   const router = useRouter();
   const searchParams = useSearchParams();
   const [error, setError] = React.useState('');
-  const experienceId = searchParams.get('experienceId');
-  const ownershipId = searchParams.get('ownershipId');
-  const memberId = searchParams.get('memberId');
-  const expertiseId = searchParams.get('expertiseId');
-  const decisionId = searchParams.get('decisionId');
+
+  const founderData = {
+  experienceId: searchParams.get('experienceId'),
+  ownershipId: searchParams.get('ownershipId'),
+  memberId: searchParams.get('memberId'),
+  expertiseId: searchParams.get('expertiseId'),
+  decisionId: searchParams.get('decisionId')
+}
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -85,16 +88,11 @@ export default function Business({industries, stages, sizes, networks}: Business
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const allData = {
-        ...values,
-        experienceId,
-        ownershipId,
-        memberId,
-        expertiseId,
-        decisionId
-      };
-
+        ...founderData,
+        ...values
+      }
+      console.log("BUSINESS_DATA=>", allData)
       const queryParams = new URLSearchParams(allData as Record<string, string>).toString();
-
       // Navigate to the Sales page with all the data
       router.push(`/welcome?type=sales&${queryParams}`);
       // const res = await 

@@ -8,7 +8,8 @@ import {
   Lead,
   SChallenge,
   SStrategy,
-  SGoal
+  SGoal,
+  SRisk
 } from "@prisma/client";
 import { 
   Form,
@@ -39,6 +40,7 @@ interface SalesFormProps {
   schallenges: SChallenge[];
   sstrategies: SStrategy[];
   sgoals: SGoal[];
+  srisks: SRisk[];
 }
 
 const formSchema = z.object({
@@ -57,26 +59,29 @@ const formSchema = z.object({
   sgoalId: z.string().min(1, {
       message: "Sales goal is required"
   }),
+  sriskId: z.string().min(1, {
+      message: "Sales risk is required"
+  }),
   })
 
-export default function Sales({ revenues, leads, schallenges, sstrategies, sgoals}: SalesFormProps) {
+export default function Sales({ revenues, leads, schallenges, sstrategies, sgoals, srisks}: SalesFormProps) {
   const router = useRouter();
   const [error, setError] = React.useState('');
   const searchParams = useSearchParams();
 
-  // const businessData = {
-    const name = searchParams.get('name');
-    const description = searchParams.get('description');
-    const stageId = searchParams.get('stageId');
-    const sizeId = searchParams.get('sizeId');
-    const industryId = searchParams.get('industryId');
-    const networkId = searchParams.get('networkId');
-    const experienceId = searchParams.get('experienceId');
-    const ownershipId = searchParams.get('ownershipId');
-    const memberId = searchParams.get('memberId');
-    const expertiseId = searchParams.get('expertiseId');
-    const decisionId = searchParams.get('decisionId');
-  // }
+  const businessData = {
+    name: searchParams.get('name'),
+    description: searchParams.get('description'),
+    stageId: searchParams.get('stageId'),
+    sizeId: searchParams.get('sizeId'),
+    industryId: searchParams.get('industryId'),
+    networkId: searchParams.get('networkId'),
+    experienceId: searchParams.get('experienceId'),
+    ownershipId: searchParams.get('ownershipId'),
+    memberId: searchParams.get('memberId'),
+    expertiseId: searchParams.get('expertiseId'),
+    decisionId: searchParams.get('decisionId')
+  }
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -85,7 +90,8 @@ export default function Sales({ revenues, leads, schallenges, sstrategies, sgoal
     leadId: undefined,
     schallengeId: undefined,
     sstrategyId: undefined,
-    sgoalId: undefined
+    sgoalId: undefined,
+    sriskId: undefined
     }
   })
 
@@ -93,21 +99,10 @@ export default function Sales({ revenues, leads, schallenges, sstrategies, sgoal
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const allData = {
-        // ...businessData,
-        ...values,
-        name,
-        description,
-        stageId,
-        sizeId,
-        industryId,
-        networkId,
-        experienceId,
-        ownershipId,
-        memberId,
-        expertiseId,
-        decisionId
+        ...businessData,
+        ...values
       }
-      console.log("All data=>", allData);
+      console.log("SALES_DATA=>", allData);
       const queryParams = new URLSearchParams(allData as Record<string, string>).toString();
 
       router.push(`/welcome?type=marketing&${queryParams}`);
@@ -269,6 +264,37 @@ export default function Sales({ revenues, leads, schallenges, sstrategies, sgoal
                     {schallenges.map((schallenge) => (
                       <SelectItem key={schallenge.id} value={schallenge.id}>
                         {schallenge.name}
+                      </SelectItem>  
+                    ))}
+                  </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="sriskId"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem className="mt-5 w-full">
+                  <FormLabel className="font-bold text-base">What's the biggest sales risk you foresee in scaling your startup?</FormLabel>
+                  <Select
+                  disabled={isLoading}
+                  onValueChange={field.onChange}
+                  value={field.value}
+                  defaultValue={field.value}
+                  >
+                  <FormControl>
+                    <SelectTrigger className="bg-background">
+                    <SelectValue
+                    defaultValue={field.value}
+                    placeholder="Select sales risk"
+                    />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {srisks.map((srisk) => (
+                      <SelectItem key={srisk.id} value={srisk.id}>
+                        {srisk.name}
                       </SelectItem>  
                     ))}
                   </SelectContent>

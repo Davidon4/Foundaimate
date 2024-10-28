@@ -11,6 +11,8 @@ import Business from '@/components/welcome/business';
 import Sales from '@/components/welcome/sales';
 import Marketing from '@/components/welcome/marketing';
 import Development from '@/components/welcome/development';
+import Avatar from '@/components/welcome/avatar';
+
 import { 
   Experience, 
   SGoal, 
@@ -170,6 +172,7 @@ export default function OnboardingComponent({experiences, ownerships, members, s
         {type === "development" && <Development products={products} updates={updates} dchallenges={dchallenges} drisks={drisks} features={features} innovations={innovations} initialData={formData} onDataUpdate={updateFormData} key="development" />}
         {type === "marketing" && <Marketing targets={targets} usps={usps} mchallenges={mchallenges} mchannels={mchannels} mgoals={mgoals} mrisks={mrisks} initialData={formData} onDataUpdate={updateFormData} key="marketing" />}
         {type === "sales" && <Sales revenues={revenues} leads={leads} schallenges={schallenges} sgoals={sgoals} sstrategies={sstrategies} srisks={srisks} initialData={formData} onDataUpdate={updateFormData} key="sales" />}
+        {type === "avatar" && <Avatar initialData={formData} onDataUpdate={updateFormData} key="avatar" />}
       </AnimatePresence>
     </div>
   )

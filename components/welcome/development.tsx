@@ -74,16 +74,17 @@ export default function Development({products, dchallenges, updates, drisks, inn
   const [error, setError] = React.useState('');
   const searchParams = useSearchParams();
   const { user } = useUser();
+  console.log("INNOVATIONS=>", innovations)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-    productId: initialData || undefined,
-    updateId: initialData || undefined,
-    dchallengeId: initialData || undefined,
-    driskId: initialData || undefined,
-    featureId: initialData || undefined,
-    innovationId: initialData || undefined
+    productId: initialData.productId || undefined,
+    updateId: initialData.updateId || undefined,
+    dchallengeId: initialData.dchallengeId || undefined,
+    driskId: initialData.driskId || undefined,
+    featureId: initialData.featureId || undefined,
+    innovationId: initialData.innovationId || undefined
     }
   })
 
@@ -95,19 +96,10 @@ export default function Development({products, dchallenges, updates, drisks, inn
         ...initialData,
         ...values
       } as Record<string, string>).toString();
-
-      // Navigate to the next page (marketing in this case)
-      router.push(`/`);
-      // const res = await completeOnboarding(formData);
-      // if (res?.message) {
-      //   await user?.reload();
-      //   router.push('/');
-      // }
-      // if (res?.error) {
-      //   setError(res.error);
-      // }
-  } catch (err) {
-    console.log("Error message")
+      router.push(`/welcome?type=avatar&${queryParams}`);
+  } catch (error) {
+    console.error("Error submitting form:", error);
+    setError("An error occurred while submitting the form.");
   }
   }
 

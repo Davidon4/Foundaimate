@@ -417,7 +417,7 @@ async function seedIndustry() {
             }
         }
 
-        async function Lead() {
+        async function seedLead() {
             const uri = process.env.DATABASE_URL;
             const client = new MongoClient(uri);
 
@@ -444,7 +444,7 @@ async function seedIndustry() {
             }
         }
 
-        async function MGoal() {
+        async function seedMGoal() {
             const uri = process.env.DATABASE_URL;
             const client = new MongoClient(uri);
 
@@ -470,7 +470,7 @@ async function seedIndustry() {
             }
         }
 
-        async function Usp() {
+        async function seedUsp() {
             const uri = process.env.DATABASE_URL;
             const client = new MongoClient(uri);
 
@@ -497,7 +497,7 @@ async function seedIndustry() {
             }
         }
 
-        async function MChannel() {
+        async function seedMChannel() {
             const uri = process.env.DATABASE_URL;
             const client = new MongoClient(uri);
 
@@ -524,7 +524,7 @@ async function seedIndustry() {
             }
         }
 
-        async function MChallenge() {
+        async function seedMChallenge() {
             const uri = process.env.DATABASE_URL;
             const client = new MongoClient(uri);
 
@@ -550,7 +550,7 @@ async function seedIndustry() {
             }
         }
 
-        async function SGoal() {
+        async function seedSGoal() {
             const uri = process.env.DATABASE_URL;
             const client = new MongoClient(uri);
 
@@ -576,7 +576,7 @@ async function seedIndustry() {
             }
         }
 
-        async function DChallenge() {
+        async function seedDChallenge() {
             const uri = process.env.DATABASE_URL;
             const client = new MongoClient(uri);
 
@@ -602,7 +602,7 @@ async function seedIndustry() {
             }
         }
 
-        async function Feature() {
+        async function seedFeature() {
             const uri = process.env.DATABASE_URL;
             const client = new MongoClient(uri);
 
@@ -628,7 +628,7 @@ async function seedIndustry() {
             }
         }
 
-        async function Update() {
+        async function seedUpdate() {
             const uri = process.env.DATABASE_URL;
             const client = new MongoClient(uri);
 
@@ -654,7 +654,7 @@ async function seedIndustry() {
             }
         }
 
-        async function Innovation() {
+        async function seedInnovation() {
             const uri = process.env.DATABASE_URL;
             const client = new MongoClient(uri);
 
@@ -680,7 +680,7 @@ async function seedIndustry() {
             }
         }
 
-        async function DRisk() {
+        async function seedDRisk() {
             const uri = process.env.DATABASE_URL;
             const client = new MongoClient(uri);
 
@@ -706,7 +706,7 @@ async function seedIndustry() {
             }
         }
 
-        async function DGoal() {
+        async function seedDGoal() {
             const uri = process.env.DATABASE_URL;
             const client = new MongoClient(uri);
 
@@ -732,7 +732,7 @@ async function seedIndustry() {
             }
         }
 
-        async function SRisk() {
+        async function seedSRisk() {
             const uri = process.env.DATABASE_URL;
             const client = new MongoClient(uri);
 
@@ -759,7 +759,7 @@ async function seedIndustry() {
         }
 
 
-        async function MRisk() {
+        async function seedMRisk() {
             const uri = process.env.DATABASE_URL;
             const client = new MongoClient(uri);
 
@@ -785,26 +785,31 @@ async function seedIndustry() {
             }
         }
 
-seedOwnership();
-seedExperience();
-seedExpertise();
-seedStage();
-seedSize();
-seedRevenue();
-seedNetwork();
-seedProduct()
-seedIndustry();
-seedTarget();
-seedMember();
-seedDecision();
-seedSChallenge();
-seedSStrategy();
-Lead();
-Usp();
-MChannel();
-MChallenge();
-MGoal();
-SGoal();
-DGoal();
-SRisk();
-MRisk();
+// seedOwnership();
+// seedExperience();
+// seedExpertise();
+// seedStage();
+// seedSize();
+// seedRevenue();
+// seedNetwork();
+// seedProduct();
+// seedIndustry();
+// seedTarget();
+// seedMember();
+// seedDecision();
+// seedSChallenge();
+// seedSStrategy();
+seedLead();
+seedUsp();
+seedMChannel();
+seedMChallenge();
+seedMGoal();
+seedSGoal();
+seedSRisk();
+seedMRisk();
+seedDChallenge();
+seedFeature();
+seedUpdate();
+seedInnovation();
+seedDRisk();
+seedDGoal();

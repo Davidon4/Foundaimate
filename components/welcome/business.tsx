@@ -58,28 +58,23 @@ const formSchema = z.object({
   })
   })
 
-export default function Business({industries, stages, sizes, networks}: BusinessFormProps) {
+export default function Business({industries, stages, sizes, networks, initialData, onDataUpdate}: BusinessFormProps & {
+  initialData: any,
+  onDataUpdate: (data: any) => void;
+}) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [error, setError] = React.useState('');
 
-  const founderData = {
-  experienceId: searchParams.get('experienceId'),
-  ownershipId: searchParams.get('ownershipId'),
-  memberId: searchParams.get('memberId'),
-  expertiseId: searchParams.get('expertiseId'),
-  decisionId: searchParams.get('decisionId')
-}
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-    name: "",
-    description: "",
-    stageId: undefined,
-    sizeId: undefined,
-    industryId: undefined,
-    networkId: undefined,
+      name: initialData.name || "",
+      description: initialData.description || "",
+      stageId: initialData.stageId || undefined,
+      sizeId: initialData.sizeId || undefined,
+      industryId: initialData.industryId || undefined,
+      networkId: initialData.networkId || undefined,
     }
   })
 
@@ -87,19 +82,17 @@ export default function Business({industries, stages, sizes, networks}: Business
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const allData = {
-        ...founderData,
+      onDataUpdate(values);
+      const queryParams = new URLSearchParams({
+        ...initialData,
         ...values
-      }
-      console.log("BUSINESS_DATA=>", allData)
-      const queryParams = new URLSearchParams(allData as Record<string, string>).toString();
-      // Navigate to the Sales page with all the data
+      } as Record<string, string>).toString();
       router.push(`/welcome?type=sales&${queryParams}`);
-      // const res = await 
-  } catch (err) {
-    console.log("Error message")
-  }
-  }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      setError("An error occurred while submitting the form.");
+    }
+  };
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8 scrollbar-hide">
@@ -219,7 +212,7 @@ export default function Business({industries, stages, sizes, networks}: Business
                     <SelectTrigger className="bg-background">
                     <SelectValue
                     defaultValue={field.value}
-                    placeholder="Select a stage"
+                    placeholder="Select a business stage"
                     />
                     </SelectTrigger>
                   </FormControl>
@@ -250,7 +243,7 @@ export default function Business({industries, stages, sizes, networks}: Business
                     <SelectTrigger className="bg-background">
                     <SelectValue
                     defaultValue={field.value}
-                    placeholder="Select a size"
+                    placeholder="Select team size"
                     />
                     </SelectTrigger>
                   </FormControl>
@@ -281,7 +274,7 @@ export default function Business({industries, stages, sizes, networks}: Business
                     <SelectTrigger className="bg-background">
                     <SelectValue
                     defaultValue={field.value}
-                    placeholder="Select a Network"
+                    placeholder="Select industry network"
                     />
                     </SelectTrigger>
                   </FormControl>

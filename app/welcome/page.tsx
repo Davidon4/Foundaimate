@@ -92,6 +92,34 @@ async function getMChannels() {
   const mchannels = await prismadb.mChannel.findMany();
   return mchannels;
 }
+async function getSRisks() {
+  const srisks = await prismadb.sRisk.findMany();
+  return srisks;
+}
+async function getMRisks() {
+  const mrisks = await prismadb.mRisk.findMany();
+  return mrisks;
+}
+async function getDRisks() {
+  const drisks = await prismadb.dRisk.findMany();
+  return drisks;
+}
+async function getDChallenges() {
+  const dchallenges = await prismadb.dChallenge.findMany();
+  return dchallenges;
+}
+async function getUpdates() {
+  const updates = await prismadb.update.findMany();
+  return updates;
+}
+async function getFeatures() {
+  const features = await prismadb.feature.findMany();
+  return features;
+}
+async function getInnovations() {
+  const innovations = await prismadb.innovation.findMany();
+  return innovations;
+}
 
 export default async function WelcomePage() {
   const experiences = await getExperiences();
@@ -114,6 +142,13 @@ export default async function WelcomePage() {
   const usps = await getUsps();
   const mchannels = await getMChannels();
   const mchallenges = await getMChallenges();
+  const srisks = await getSRisks();
+  const mrisks = await getMRisks();
+  const drisks = await getDRisks();
+  const dchallenges = await getDChallenges();
+  const updates = await getUpdates();
+  const features = await getFeatures();
+  const innovations = await getInnovations();
 
   return <OnboardingComponent
           experiences={experiences}
@@ -136,5 +171,12 @@ export default async function WelcomePage() {
           mchannels={mchannels}
           mchallenges={mchallenges}
           mgoals={mgoals}
+          mrisks={mrisks}
+          srisks={srisks}
+          drisks={drisks}
+          dchallenges={dchallenges}
+          updates={updates}
+          features={features}
+          innovations={innovations}
           />;
 }

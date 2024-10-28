@@ -1,6 +1,5 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
-
 import { motion } from "framer-motion";
 import * as z from "zod";
 import { 
@@ -64,52 +63,40 @@ const formSchema = z.object({
   }),
   })
 
-export default function Sales({ revenues, leads, schallenges, sstrategies, sgoals, srisks}: SalesFormProps) {
+export default function Sales({ revenues, leads, schallenges, sstrategies, sgoals, srisks, initialData, onDataUpdate}: SalesFormProps & {
+  initialData: any,
+  onDataUpdate: (data: any) => void;
+}) {
   const router = useRouter();
   const [error, setError] = React.useState('');
   const searchParams = useSearchParams();
 
-  const businessData = {
-    name: searchParams.get('name'),
-    description: searchParams.get('description'),
-    stageId: searchParams.get('stageId'),
-    sizeId: searchParams.get('sizeId'),
-    industryId: searchParams.get('industryId'),
-    networkId: searchParams.get('networkId'),
-    experienceId: searchParams.get('experienceId'),
-    ownershipId: searchParams.get('ownershipId'),
-    memberId: searchParams.get('memberId'),
-    expertiseId: searchParams.get('expertiseId'),
-    decisionId: searchParams.get('decisionId')
-  }
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-    revenueId: undefined,
-    leadId: undefined,
-    schallengeId: undefined,
-    sstrategyId: undefined,
-    sgoalId: undefined,
-    sriskId: undefined
+    revenueId: initialData.revenueId || undefined,
+    leadId: initialData.leadId || undefined,
+    schallengeId: initialData.schallengeId || undefined,
+    sstrategyId: initialData.sstrategyId || undefined,
+    sgoalId: initialData.sgoalId || undefined,
+    sriskId: initialData.sriskId || undefined
     }
   })
 
   const isLoading = form.formState.isSubmitting
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const allData = {
-        ...businessData,
+      onDataUpdate(values);
+      const queryParams = new URLSearchParams({
+        ...initialData,
         ...values
-      }
-      console.log("SALES_DATA=>", allData);
-      const queryParams = new URLSearchParams(allData as Record<string, string>).toString();
-
+      } as Record<string, string>).toString();
       router.push(`/welcome?type=marketing&${queryParams}`);
-  } catch (err) {
-    console.log("Error message")
+  } catch (error) {
+    console.log("Error message", error);
+    setError("An errror occured while submitting the form.");
   }
-  }
+  };
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8 scrollbar-hide">
@@ -318,7 +305,7 @@ export default function Sales({ revenues, leads, schallenges, sstrategies, sgoal
                     <SelectTrigger className="bg-background">
                     <SelectValue
                     defaultValue={field.value}
-                    placeholder="Select sales challenge"
+                    placeholder="Select sales goal"
                     />
                     </SelectTrigger>
                   </FormControl>

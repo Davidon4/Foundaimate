@@ -64,56 +64,38 @@ const formSchema = z.object({
   })
 })
 
-export default function Marketing({targets, mchannels, mchallenges, mgoals, mrisks, usps}: MarketingFormProps) {
+export default function Marketing({targets, mchannels, mchallenges, mgoals, mrisks, usps, initialData, onDataUpdate}: MarketingFormProps & {
+  initialData: any,
+  onDataUpdate: (data: any) => void; 
+}) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [error, setError] = React.useState('');
 
-  const salesData = {
-    name: searchParams.get('name'),
-    description: searchParams.get('description'),
-    stageId: searchParams.get('stageId'),
-    sizeId: searchParams.get('sizeId'),
-    industryId: searchParams.get('industryId'),
-    networkId: searchParams.get('networkId'),
-    experienceId: searchParams.get('experienceId'),
-    ownershipId: searchParams.get('ownershipId'),
-    memberId: searchParams.get('memberId'),
-    expertiseId: searchParams.get('expertiseId'),
-    decisionId: searchParams.get('decisionId'),
-    revenueId: searchParams.get('revenueId'),
-    leadId: searchParams.get('leadId'),
-    schallengeId: searchParams.get('schallengeId'),
-    sstrategyId: searchParams.get('sstrategyId'),
-    sgoalId: searchParams.get('sgoalId'),
-    sriskId: searchParams.get('sriskId'),
-  }
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-    targetId: undefined,
-    mchallengeId: undefined,
-    mchannelId: undefined,
-    uspId: undefined,
-    mgoalId: undefined,
-    mriskId: undefined
+    targetId: initialData.targetId || undefined,
+    mchallengeId: initialData.mchallengeId || undefined,
+    mchannelId: initialData.mchannelId || undefined,
+    uspId: initialData.uspId || undefined,
+    mgoalId: initialData.mgoalId || undefined,
+    mriskId: initialData.mriskId || undefined
     }
   })
 
   const isLoading = form.formState.isSubmitting
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const allData = {
-        ...salesData,
+      onDataUpdate(values);
+      const queryParams = new URLSearchParams({
+        ...initialData,
         ...values
-      }
-      console.log("MARKETING_DATA=>", allData);
-      const queryParams = new URLSearchParams(allData as Record<string, string>).toString();
-
+      } as Record<string, string>).toString();
       router.push(`/welcome?type=development&${queryParams}`);
-  } catch (err) {
-    console.log("Error message")
+  } catch (error) {
+    console.error("Error submitting form:", error);
+    setError("An error occurred while submitting the form.");
   }
   }
 
@@ -173,7 +155,7 @@ export default function Marketing({targets, mchannels, mchallenges, mgoals, mris
                     <SelectTrigger className="bg-background">
                     <SelectValue
                     defaultValue={field.value}
-                    placeholder="Select a target"
+                    placeholder="Select target"
                     />
                     </SelectTrigger>
                   </FormControl>
@@ -204,7 +186,7 @@ export default function Marketing({targets, mchannels, mchallenges, mgoals, mris
                     <SelectTrigger className="bg-background">
                     <SelectValue
                     defaultValue={field.value}
-                    placeholder="Select a unique selling point"
+                    placeholder="Select unique selling point"
                     />
                     </SelectTrigger>
                   </FormControl>
@@ -235,7 +217,7 @@ export default function Marketing({targets, mchannels, mchallenges, mgoals, mris
                     <SelectTrigger className="bg-background">
                     <SelectValue
                     defaultValue={field.value}
-                    placeholder="Select a marketing channel"
+                    placeholder="Select marketing channel"
                     />
                     </SelectTrigger>
                   </FormControl>

@@ -66,55 +66,35 @@ const formSchema = z.object({
   })
   })
 
-export default function Development({products, dchallenges, updates, drisks, innovations, features}: DevelopmentFormProps) {
+export default function Development({products, dchallenges, updates, drisks, innovations, features, initialData, onDataUpdate}: DevelopmentFormProps & {
+  initialData: any,
+  onDataUpdate: (data: any) => void;
+}) {
   const router = useRouter();
   const [error, setError] = React.useState('');
   const searchParams = useSearchParams();
   const { user } = useUser();
 
-  const marketingData = {
-    name: searchParams.get('name'),
-    description: searchParams.get('description'),
-    stageId: searchParams.get('stageId'),
-    sizeId: searchParams.get('sizeId'),
-    industryId: searchParams.get('industryId'),
-    networkId: searchParams.get('networkId'),
-    experienceId: searchParams.get('experienceId'),
-    ownershipId: searchParams.get('ownershipId'),
-    memberId: searchParams.get('memberId'),
-    expertiseId: searchParams.get('expertiseId'),
-    decisionId: searchParams.get('decisionId'),
-    revenueId: searchParams.get('revenueId'),
-    targetId: searchParams.get('targetId'),
-    mchannelId: searchParams.get('mchannelId'),
-    mchallengeId: searchParams.get('mchallengeId'),
-    uspId: searchParams.get('uspId'),
-    mgoalId: searchParams.get('mgoalId'),
-    mriskId: searchParams.get('mriskId'),
-  };
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-    productId: undefined,
-    updateId: undefined,
-    dchallengeId: undefined,
-    driskId: undefined,
-    featureId: undefined,
-    innovationId: undefined
+    productId: initialData || undefined,
+    updateId: initialData || undefined,
+    dchallengeId: initialData || undefined,
+    driskId: initialData || undefined,
+    featureId: initialData || undefined,
+    innovationId: initialData || undefined
     }
   })
 
   const isLoading = form.formState.isSubmitting
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-
-      const allData = {
-        ...marketingData,
+      onDataUpdate(values)
+      const queryParams = new URLSearchParams({
+        ...initialData,
         ...values
-      }
-      console.log("DEVELOPMENT_DATA=>", allData);
-      const queryParams = new URLSearchParams(allData as Record<string, string>).toString();
+      } as Record<string, string>).toString();
 
       // Navigate to the next page (marketing in this case)
       router.push(`/`);

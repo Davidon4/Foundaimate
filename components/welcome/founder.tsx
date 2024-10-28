@@ -51,19 +51,21 @@ const formSchema = z.object({
     })
 })
 
-export default function Founder({experiences, ownerships, members, expertises, decisions}: FounderFormProps) {
+export default function Founder({experiences, ownerships, members, expertises, decisions, initialData, onDataUpdate}: FounderFormProps & {
+  initialData: any,
+  onDataUpdate: (data: any) => void;
+}) {
   const router = useRouter();
   const [error, setError] = React.useState('');
-
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-        experienceId: undefined,
-        ownershipId: undefined,
-        memberId: undefined,
-        expertiseId: undefined,
-        decisionId: undefined
+      experienceId: initialData.experienceId || undefined,
+      ownershipId: initialData.ownershipId || undefined,
+      memberId: initialData.memberId || undefined,
+      expertiseId: initialData.expertiseId || undefined,
+      decisionId: initialData.decisionId || undefined
     }
   })
 
@@ -71,16 +73,13 @@ export default function Founder({experiences, ownerships, members, expertises, d
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
+      onDataUpdate(values);
       // Instead of creating a FormData object, we'll use the values directly
       const queryParams = new URLSearchParams({
-        experienceId: values.experienceId,
-        ownershipId: values.ownershipId,
-        memberId: values.memberId,
-        expertiseId: values.expertiseId,
-        decisionId: values.decisionId
-      }).toString();
-
-      // Navigate to the next page with the form data as query parameters
+        ...initialData,
+        ...values
+      } as Record<string, string>).toString();
+     // Navigate to the next page with the form data as query parameters
       router.push(`/welcome?type=business&${queryParams}`);
     } catch (error) {
       console.error("Error submitting form:", error);

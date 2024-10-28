@@ -31,7 +31,14 @@ import {
   Usp,
   MChallenge,
   MChannel,
-  MGoal
+  MGoal,
+  SRisk,
+  MRisk,
+  Update,
+  DChallenge,
+  DRisk,
+  Innovation,
+  Feature,
 } from "@prisma/client";
 
 interface WelcomeProps {
@@ -54,16 +61,82 @@ interface WelcomeProps {
   usps: Usp[];
   mchallenges: MChallenge[];
   mchannels: MChannel[];
-  mgoals: MGoal[]
+  mgoals: MGoal[];
+  srisks: SRisk[];
+  mrisks: MRisk[];
+  updates: Update[];
+  dchallenges: DChallenge[];
+  features: Feature[];
+  innovations: Innovation[];
+  drisks: DRisk[]
 }
 
-export default function OnboardingComponent({experiences, ownerships, members, sgoals, expertises, decisions, revenues, stages, sizes, industries, products, targets, networks, leads, sstrategies, schallenges, mgoals, mchallenges, mchannels, usps}: WelcomeProps) {
+export default function OnboardingComponent({experiences, ownerships, members, sgoals, srisks, expertises, decisions, revenues, mrisks, stages, sizes, industries, products, targets, networks, leads, sstrategies, schallenges, mgoals, mchallenges, mchannels, usps, innovations, updates, dchallenges, drisks, features}: WelcomeProps) {
   const [error, setError] = React.useState('');
   const { user } = useUser();
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  const [formData, setFormData] = React.useState({
+    // Founder data
+    experienceId: searchParams.get('experienceId') || '',
+    ownershipId: searchParams.get('ownershipId') || '',
+    memberId: searchParams.get('memberId') || '',
+    expertiseId: searchParams.get('expertiseId') || '',
+    decisionId: searchParams.get('decisionId') || '',
+    // Business data
+    name: searchParams.get('name') || '',
+    description: searchParams.get('description') || '',
+    stageId: searchParams.get('stageId') || '',
+    sizeId: searchParams.get('sizeId') || '',
+    industryId: searchParams.get('industryId') || '',
+    networkId: searchParams.get('networkId') || '',
+    // Sales data
+    revenueId: searchParams.get('revenueId') || '',
+    leadId: searchParams.get('leadId') || '',
+    schallengeId: searchParams.get('schallengeId') || '',
+    sstrategyId: searchParams.get('sstrategyId') || '',
+    sriskId: searchParams.get('sriskId') || '',
+    sgoalId: searchParams.get('sgoalId') || '',
+    // Marketing data
+    targetId: searchParams.get('targetId') || '',
+    mchallengeId: searchParams.get('mchallengeId') || '',
+    mchannelId: searchParams.get('mchannelId') || '',
+    uspId: searchParams.get('uspId') || '',
+    mgoalId: searchParams.get('mgoalId') || '',
+    mriskId: searchParams.get('mriskId') || '',
+    // Development data
+    productId: searchParams.get('productId') || '',
+    updateId: searchParams.get('updateId') || '',
+    dchallengeId: searchParams.get('mchallengeId') || '',
+    driskId: searchParams.get('sriskId') || '',
+    featureId: searchParams.get('featureId') || '',
+    innovationId: searchParams.get('innovationId') || '',
+  });
+
   const type = searchParams.get('type');
+
+  const handleBack = () => {
+    // Define the navigation flow
+    const flow = [null, 'founder', 'business', 'sales', 'marketing', 'development']; // null represents intro
+    const currentIndex = flow.indexOf(type);
+    
+    if (currentIndex > 0) {
+      // Get the previous type
+      const prevType = flow[currentIndex - 1];
+      // Preserve all current form data in the URL
+      const queryParams = new URLSearchParams(formData as Record<string, string>).toString();
+      router.push(`/welcome${prevType ? `?type=${prevType}&${queryParams}` : ''}`);
+    } else {
+      router.push('/welcome');
+    }
+  };
+
+  const updateFormData = (newData: Partial<typeof formData>) => {
+    setFormData(prev => ({ ...prev, ...newData }));
+  };
+
+
   // 
   return (
     // <div className="mx-auto flex h-screen max-w-3xl flex-col items-center justify-center overflow-x-hidden">
@@ -85,19 +158,18 @@ export default function OnboardingComponent({experiences, ownerships, members, s
           <>
             <button
               className="group absolute left-2 top-10 z-40 rounded-full p-2 transition-all hover:bg-tealCustom sm:left-10"
-              onClick={() => router.back()}
+              onClick={handleBack}
             >
               <ArrowLeftIcon className="h-8 w-8 text-gray-500 group-hover:text-white group-active:scale-90" />
             </button>
           </>
-        ) : (
-          <Intro key="intro" />
-        )}
-        {type === "founder" && <Founder experiences={experiences} ownerships={ownerships} members={members} expertises={expertises} decisions={decisions} key="founder" />}
-        {type === "business" && <Business stages={stages} sizes={sizes} industries={industries} networks={networks} key="business" />}
-        {type === "development" && <Development products={products} key="development" />}
-        {type === "marketing" && <Marketing targets={targets} usps={usps} mchallenges={mchallenges} mchannels={mchannels} mgoals={mgoals} key="marketing" />}
-        {type === "sales" && <Sales revenues={revenues} leads={leads} schallenges={schallenges} sgoals={sgoals} sstrategies={sstrategies} key="sales" />}
+        ) : null}
+        {!type && <Intro key="intro" />}
+        {type === "founder" && <Founder experiences={experiences} ownerships={ownerships} members={members} expertises={expertises} decisions={decisions} initialData={formData} onDataUpdate={updateFormData} key="founder" />}
+        {type === "business" && <Business stages={stages} sizes={sizes} industries={industries} networks={networks} initialData={formData} onDataUpdate={updateFormData} key="business" />}
+        {type === "development" && <Development products={products} updates={updates} dchallenges={dchallenges} drisks={drisks} features={features} innovations={innovations} initialData={formData} onDataUpdate={updateFormData} key="development" />}
+        {type === "marketing" && <Marketing targets={targets} usps={usps} mchallenges={mchallenges} mchannels={mchannels} mgoals={mgoals} mrisks={mrisks} initialData={formData} onDataUpdate={updateFormData} key="marketing" />}
+        {type === "sales" && <Sales revenues={revenues} leads={leads} schallenges={schallenges} sgoals={sgoals} sstrategies={sstrategies} srisks={srisks} initialData={formData} onDataUpdate={updateFormData} key="sales" />}
       </AnimatePresence>
     </div>
   )

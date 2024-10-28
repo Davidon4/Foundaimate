@@ -785,20 +785,20 @@ async function seedIndustry() {
             }
         }
 
-// seedOwnership();
-// seedExperience();
-// seedExpertise();
-// seedStage();
-// seedSize();
-// seedRevenue();
-// seedNetwork();
-// seedProduct();
-// seedIndustry();
-// seedTarget();
-// seedMember();
-// seedDecision();
-// seedSChallenge();
-// seedSStrategy();
+seedOwnership();
+seedExperience();
+seedExpertise();
+seedStage();
+seedSize();
+seedRevenue();
+seedNetwork();
+seedProduct();
+seedIndustry();
+seedTarget();
+seedMember();
+seedDecision();
+seedSChallenge();
+seedSStrategy();
 seedLead();
 seedUsp();
 seedMChannel();

@@ -182,6 +182,20 @@ model DGoal {
   members    Profile[] 
 }
 
+model Personality {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  role          String
+  motto         String
+  coreTraits    Json
+  toneExamples  Json
+  sampleInteraction Json
+  summary       String
+  imageUrl      String?   // Optional field for the image URL
+  members       Profile[]
+}
+
+
 model Profile {
   id            String @id @default(auto()) @map("_id") @db.ObjectId
   name          String
@@ -275,6 +289,9 @@ model Profile {
   dgoal         DGoal  @relation(fields: [dgoalId], references: [id])
   dgoalId       String  @db.ObjectId
 
+  personality         Personality  @relation(fields: [personalityId], references: [id])
+  personalityId       String  @db.ObjectId
+
   @@index([experienceId])
   @@index([ownershipId])
   @@index([expertiseId])
@@ -303,5 +320,6 @@ model Profile {
   @@index([sriskId])
   @@index([mriskId])
   @@index([dgoalId])
+  @@index([personalityId])
   @@index([name], name: "name_text_idx") // Text index for full-text search
 }

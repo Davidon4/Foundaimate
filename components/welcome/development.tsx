@@ -74,7 +74,6 @@ export default function Development({products, dchallenges, updates, drisks, inn
   const [error, setError] = React.useState('');
   const searchParams = useSearchParams();
   const { user } = useUser();
-  console.log("INNOVATIONS=>", innovations)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

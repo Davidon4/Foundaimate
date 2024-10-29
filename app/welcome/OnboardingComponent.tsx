@@ -120,7 +120,7 @@ export default function OnboardingComponent({experiences, ownerships, members, s
 
   const handleBack = () => {
     // Define the navigation flow
-    const flow = [null, 'founder', 'business', 'sales', 'marketing', 'development']; // null represents intro
+    const flow = [null, 'founder', 'business', 'sales', 'marketing', 'development', 'avatar']; // null represents intro
     const currentIndex = flow.indexOf(type);
     
     if (currentIndex > 0) {

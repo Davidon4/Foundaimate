@@ -41,6 +41,7 @@ import {
   DRisk,
   Innovation,
   Feature,
+  Personality
 } from "@prisma/client";
 
 interface WelcomeProps {
@@ -70,10 +71,11 @@ interface WelcomeProps {
   dchallenges: DChallenge[];
   features: Feature[];
   innovations: Innovation[];
-  drisks: DRisk[]
+  drisks: DRisk[];
+  personalities: Personality[];
 }
 
-export default function OnboardingComponent({experiences, ownerships, members, sgoals, srisks, expertises, decisions, revenues, mrisks, stages, sizes, industries, products, targets, networks, leads, sstrategies, schallenges, mgoals, mchallenges, mchannels, usps, innovations, updates, dchallenges, drisks, features}: WelcomeProps) {
+export default function OnboardingComponent({experiences, ownerships, members, sgoals, srisks, expertises, decisions, personalities, revenues, mrisks, stages, sizes, industries, products, targets, networks, leads, sstrategies, schallenges, mgoals, mchallenges, mchannels, usps, innovations, updates, dchallenges, drisks, features}: WelcomeProps) {
   const [error, setError] = React.useState('');
   const { user } = useUser();
   const router = useRouter();
@@ -172,7 +174,7 @@ export default function OnboardingComponent({experiences, ownerships, members, s
         {type === "development" && <Development products={products} updates={updates} dchallenges={dchallenges} drisks={drisks} features={features} innovations={innovations} initialData={formData} onDataUpdate={updateFormData} key="development" />}
         {type === "marketing" && <Marketing targets={targets} usps={usps} mchallenges={mchallenges} mchannels={mchannels} mgoals={mgoals} mrisks={mrisks} initialData={formData} onDataUpdate={updateFormData} key="marketing" />}
         {type === "sales" && <Sales revenues={revenues} leads={leads} schallenges={schallenges} sgoals={sgoals} sstrategies={sstrategies} srisks={srisks} initialData={formData} onDataUpdate={updateFormData} key="sales" />}
-        {type === "avatar" && <Avatar initialData={formData} onDataUpdate={updateFormData} key="avatar" />}
+        {type === "avatar" && <Avatar personalities={personalities} initialData={formData} onDataUpdate={updateFormData} key="avatar" />}
       </AnimatePresence>
     </div>
   )

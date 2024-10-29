@@ -120,6 +120,10 @@ async function getInnovations() {
   const innovations = await prismadb.innovation.findMany();
   return innovations;
 }
+async function getPersonalities() {
+  const personalities = await prismadb.personality.findMany();
+  return personalities;
+}
 
 export default async function WelcomePage() {
   const experiences = await getExperiences();
@@ -149,6 +153,7 @@ export default async function WelcomePage() {
   const updates = await getUpdates();
   const features = await getFeatures();
   const innovations = await getInnovations();
+  const personalities = await getPersonalities();
 
   return <OnboardingComponent
           experiences={experiences}
@@ -178,5 +183,6 @@ export default async function WelcomePage() {
           updates={updates}
           features={features}
           innovations={innovations}
+          personalities={personalities}
           />;
 }

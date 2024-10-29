@@ -895,7 +895,7 @@ seedMRisk();
 seedDChallenge();
 seedFeature();
 seedUpdate();
-seedPersonalityData
+seedPersonalityData();
 seedInnovation();
 seedDRisk();
 seedDGoal();

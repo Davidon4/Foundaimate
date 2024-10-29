@@ -25,14 +25,12 @@ interface PersonalityProps {
     personalities: Personality[];
 }
 
-export default function Avatar({initialData, onDataUpdate, personalities}: PersonalityProps) {
-  console.log("PERSONALITIES DATA:", personalities);
+export default function Avatar({ initialData, onDataUpdate, personalities }: PersonalityProps) {
   const router = useRouter();
   const [error, setError] = React.useState('');
 
   const handlePersonalitySelect = async (personalityId: string) => {
     try {
-      // Combine initialData with selected personality
       const finalData = {
         ...initialData,
         personalityId
@@ -41,12 +39,9 @@ export default function Avatar({initialData, onDataUpdate, personalities}: Perso
       const formData = new FormData();
       Object.entries(finalData).forEach(([key, value]) => {
         formData.append(key, value);
-      })
+      });
 
-      // Update parent component with final data
       onDataUpdate(formData);
-
-      // Submit all data to complete onboarding
       const response = await completeOnboarding(formData);
       
       if (response?.error) {
@@ -54,7 +49,6 @@ export default function Avatar({initialData, onDataUpdate, personalities}: Perso
         return;
       }
 
-      // Redirect to dashboard after successful completion
       router.push('/home');
     } catch (error) {
       console.error("Error completing onboarding:", error);
@@ -90,22 +84,22 @@ export default function Avatar({initialData, onDataUpdate, personalities}: Perso
       </motion.div>
       <motion.div
         variants={STAGGER_CHILD_VARIANTS}
-        className="grid w-full grid-cols-1 divide-y divide-border rounded-md border border-border text-foreground md:grid-cols-3 md:divide-x"
+        className="grid w-full grid-cols-1 gap-4 divide-y divide-border rounded-md border border-border text-foreground md:grid-cols-3 md:divide-x"
       >
         {personalities.map((personality) => (
           <button
             key={personality.id}
             onClick={() => handlePersonalitySelect(personality.id)}
-            className="flex min-h-[200px] flex-col items-center justify-center space-y-5 overflow-hidden p-5 transition-colors hover:bg-gray-200 hover:dark:bg-gray-800 md:p-10"
+            className="flex flex-col items-center justify-between min-h-[300px] p-5 transition-colors border rounded-md hover:bg-gray-200 hover:dark:bg-gray-800"
           >
-        {personality.imageUrl ? (
-          <Image 
-            src={personality.imageUrl} 
-            className="rounded-xl object-cover" 
-            width={300} 
-            height={300} 
-            alt={personality.name}
-          />
+            {personality.imageUrl ? (
+              <Image 
+                src={personality.imageUrl} 
+                className="rounded-xl object-cover" 
+                width={300} 
+                height={300} 
+                alt={personality.name}
+              />
             ) : (
               <Image 
                 src="/default-image.png" 
@@ -115,22 +109,45 @@ export default function Avatar({initialData, onDataUpdate, personalities}: Perso
                 alt="Default Avatar"
               />
             )}
-            <h2 className="text-2xl font-bold">
-              {personality.name}
-            </h2>
-            <h3 className="text-2xl font-medium">Core Traits:</h3>
+            <h2 className="text-2xl font-bold">{personality.name}</h2>
+            <h3 className="text-xl font-semibold">Role: {personality.role}</h3>
+            <p className="italic text-lg">Motto: "{personality.motto}"</p>
+            
+            <h4 className="text-lg font-medium">Core Traits:</h4>
             <div className="text-left">
-        {personality.coreTraits
-        ? Object.entries(personality.coreTraits).map(([trait, description]) => (
-        <div key={trait} className="mb-2">
-          <span className="font-semibold">{trait}:</span> {description}
-        </div>
-      ))
-        : <p>No core traits available</p>}
-        </div>
-        <div>
-          
-        </div>
+              {personality.coreTraits ? (
+                Object.entries(personality.coreTraits).map(([trait, description]) => (
+                  <div key={trait} className="mb-2">
+                    <span className="font-semibold">{trait}:</span> {description}
+                  </div>
+                ))
+              ) : (
+                <p>No core traits available</p>
+              )}
+            </div>
+
+            {/* <h4 className="text-lg font-medium">Tone Examples:</h4>
+            <div className="text-left">
+              {personality.toneExamples ? (
+                Object.entries(personality.toneExamples).map(([tone, example]) => (
+                  <div key={tone} className="mb-2">
+                    <span className="font-semibold">{tone}:</span> {example}
+                  </div>
+                ))
+              ) : (
+                <p>No tone examples available</p>
+              )}
+            </div> */}
+
+            {/* <h4 className="text-lg font-medium">Sample Interaction:</h4>
+            <p className="text-sm">
+              {typeof personality.sampleInteraction === "string" 
+                ? personality.sampleInteraction 
+                : JSON.stringify(personality.sampleInteraction) || "No sample interaction available"}
+            </p> */}
+
+            {/* <h4 className="text-lg font-medium">Summary:</h4>
+            <p className="text-sm">{personality.summary || "No summary available"}</p> */}
           </button>
         ))}
       </motion.div>

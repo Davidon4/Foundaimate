@@ -1,13 +1,15 @@
 import { useRouter } from "next/navigation";
 import React from "react";
 import Image from "next/image";
+import { useUser, useAuth } from '@clerk/nextjs'
 import { motion } from "framer-motion";
 import { STAGGER_CHILD_VARIANTS } from "@/lib/constants";
 import { completeOnboarding } from "@/app/welcome/_actions";
 import { Personality } from "@prisma/client";
+import qs from "query-string";
+import { useToast } from "@/hooks/use-toast";
 
-interface PersonalityProps {
-    initialData: {
+export interface ProfileData {
         experienceId: string;
         ownershipId: string;
         memberId: string;
@@ -20,47 +22,126 @@ interface PersonalityProps {
         industryId: string;
         networkId: string;
         revenueId: string;
+        productId: string;
+        targetId: string;
+        schallengeId: string;
+        leadId: string;
+        sstrategyId: string;
+        uspId: string;
+        mchannelId: string;
+        mchallengeId: string;
+        mgoalId: string;
+        sgoalId: string;
+        featureId: string;
+        updateId: string;
+        dchallengeId: string;
+        innovationId: string;
+        driskId: string;
+        mriskId: string;
+        sriskId: string;
+        userId: string;
     };
-    onDataUpdate: (data: any) => void;
-    personalities: Personality[];
+
+interface PersonalityProps {
+  initialData: ProfileData;
+  personalities: Personality[];
+  onDataUpdate: (data: any) => void;
 }
 
 export default function Avatar({initialData, onDataUpdate, personalities}: PersonalityProps) {
-  console.log("PERSONALITIES DATA:", personalities);
+  const { user, isLoaded } = useUser();
+  const {getToken} = useAuth();
   const router = useRouter();
+  const {toast} = useToast();
   const [error, setError] = React.useState('');
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [selectedPersonality, setSelectedPersonality] = React.useState<string | null>(null);
+
+  if (!isLoaded || !user) {
+    return null; // or a loading spinner
+  }
 
   const handlePersonalitySelect = async (personalityId: string) => {
+    setIsLoading(true);
+    setError('');
+    setSelectedPersonality(personalityId);
+    
     try {
-      // Combine initialData with selected personality
-      const finalData = {
+      const profileData = {
         ...initialData,
-        personalityId
+        personalityId,
+        userId: user.id,
       };
+  
+      console.log('About to submit profile data:', {
+        personalityId,
+        userId: user.id,
+        initialData,
+        fullProfileData: profileData
+      });
+  
+      const response = await fetch('/api/profile', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(profileData),
+      });
 
-      const formData = new FormData();
-      Object.entries(finalData).forEach(([key, value]) => {
-        formData.append(key, value);
-      })
+      console.log('Response status:', response.status);
+      console.log('Response headers:', Object.fromEntries(response.headers.entries()));
 
-      // Update parent component with final data
-      onDataUpdate(formData);
+      const responseText = await response.text();
+      console.log('Raw response:', responseText);
 
-      // Submit all data to complete onboarding
-      const response = await completeOnboarding(formData);
-      
-      if (response?.error) {
-        setError(response.error);
-        return;
+      let data;
+      try {
+        data = JSON.parse(responseText);
+        console.log('Parsed response data:', data);
+      } catch (e) {
+        console.error('Failed to parse response as JSON:', e);
+        throw new Error(`Invalid JSON response: ${responseText}`);
       }
 
-      // Redirect to dashboard after successful completion
-      router.push('/home');
-    } catch (error) {
-      console.error("Error completing onboarding:", error);
-      setError("An error occurred while completing the onboarding process.");
+      if (!response.ok) {
+        throw new Error(data.error || `Server error: ${response.status}`);
+      }
+  
+      if (data.profile?.id) {
+        console.log('Profile created successfully:', data.profile);
+        const selectedPersonalityData = personalities.find(p => p.id === personalityId);
+        const formData = new FormData();
+        formData.append('applicationName', 'AI Personalized Co-founder');
+        formData.append('applicationType', selectedPersonalityData?.name || 'default'); 
+        
+        console.log('Completing onboarding with:', {
+          applicationName: 'AI Personalized Co-founder',
+          applicationType: selectedPersonalityData?.name
+        });
+
+        const result = await completeOnboarding(formData);
+        console.log('Onboarding completion result:', result);
+        
+        if(result.success) {
+          await new Promise(resolve => setTimeout(resolve, 1500));
+          window.location.replace('/home');
+        } else {
+          throw new Error(result.error || 'Failed to complete onboarding');
+        }
+      }
+  
+    } catch (error: any) {
+      console.error("Error in handlePersonalitySelect:", error);
+      setError(error.message || "An error occurred while creating the profile");
+      toast({
+        title: "Error",
+        description: error.message || "An error occurred while creating the profile",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
     }
-  };
+};
 
   return (
     <motion.div

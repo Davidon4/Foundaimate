@@ -19,13 +19,27 @@ import {
   Revenue,
   Size,
   Stage,
-  Target 
+  Target, 
+  Lead,
+  SChallenge,
+  SStrategy,
+  SGoal,
+  Usp,
+  MChannel,
+  MChallenge,
+  MGoal,
+  MRisk,
+  SRisk,
+  DRisk,
+  DChallenge,
+  Update,
+  Feature,
+  Innovation
 } from "@prisma/client";
 
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
@@ -58,6 +72,21 @@ interface ProfileFormProps {
     decisions: Decision[];
     targets: Target[];
     members: Member[];
+    leads: Lead[];
+    schallenges: SChallenge[];
+    sstrategies: SStrategy[];
+    sgoals: SGoal[];
+    usps: Usp[];
+    mchannels: MChannel[];
+    mchallenges: MChallenge[];
+    mgoals: MGoal[];
+    mrisks: MRisk[];
+    srisks: SRisk[];
+    drisks: DRisk[];
+    dchallenges: DChallenge[];
+    updates: Update[];
+    features: Feature[];
+    innovations: Innovation[]
 }
 
     const formSchema = z.object({
@@ -102,10 +131,56 @@ interface ProfileFormProps {
     }),
     targetId: z.string().min(1, {
         message: "Target customer is required"
-    })
+    }),
+    leadId: z.string().min(1, {
+      message: "Lead mode is required"
+    }),
+    schallengeId: z.string().min(1, {
+        message: "Sales challenge is required"
+    }),
+    sstrategyId: z.string().min(1, {
+      message: "Sales strategy is required"
+    }),
+    sgoalId: z.string().min(1, {
+    message: "Sales goal is required"
+    }),
+    sriskId: z.string().min(1, {
+    message: "Sales risk is required"
+    }),
+    mchannelId: z.string().min(1, {
+      message: "Marketing channel is required"
+    }),
+    mgoalId: z.string().min(1, {
+      message: "Marketing goal is required"
+    }),
+    uspId: z.string().min(1, {
+      message: "Unique selling point is required"
+    }),
+    mchallengeId: z.string().min(1, {
+      message: "Marketing challenge is required"
+    }),
+    mriskId: z.string().min(1, {
+      message: "Marketing risk is required"
+    }),
+    dchallengeId: z.string().min(1, {
+      message: "Development challenge is required"
+  }),
+  updateId: z.string().min(1, {
+    message: "Update is required"
+  }),
+  driskId: z.string().min(1, {
+    message: "Devlopment risk is required"
+    }),
+  featureId: z.string().min(1, {
+    message: "Feature is required"
+  }),
+  innovationId: z.string().min(1, {
+    message: "Innovation is required"
+})
     })
 
 export const ProfileForm = ({
+  initialData,
   experiences,
   ownerships,
   expertises,
@@ -117,37 +192,90 @@ export const ProfileForm = ({
   products,
   decisions,
   members,
-  targets
+  targets,
+  leads,
+  schallenges,
+  sstrategies,
+  sgoals,
+  usps,
+  mchannels,
+  mchallenges,
+  mgoals,
+  mrisks,
+  srisks,
+  drisks,
+  dchallenges,
+  updates,
+  features,
+  innovations
 }: ProfileFormProps) => {
     const router = useRouter();
     const {toast} = useToast();
+    console.log("INITIALDATA=>", initialData)
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues:  {
-            name: "",
-            description: "",
-            ownershipId: undefined,
-            experienceId: undefined,
-            memberId: undefined,
-            expertiseId: undefined,
-            networkId: undefined,
-            revenueId: undefined,
-            stageId: undefined,
-            sizeId: undefined,
-            industryId: undefined,
-            productId: undefined,
-            decisionId: undefined,
-            targetId: undefined
+            name: initialData?.name || "",
+            description: initialData?.description || "",
+            ownershipId: initialData?.ownershipId || undefined,
+            experienceId: initialData?.experienceId || undefined,
+            memberId: initialData?.memberId || undefined,
+            expertiseId: initialData?.expertiseId || undefined,
+            networkId: initialData?.networkId || undefined,
+            revenueId: initialData?.revenueId || undefined,
+            stageId: initialData?.stageId || undefined,
+            sizeId: initialData?.sizeId || undefined,
+            industryId: initialData?.industryId || undefined,
+            productId: initialData?.productId || undefined,
+            decisionId: initialData?.decisionId || undefined,
+            targetId: initialData?.targetId || undefined,
+            leadId: initialData?.leadId || undefined,
+            schallengeId: initialData?.schallengeId || undefined,
+            sstrategyId: initialData?.sstrategyId || undefined,
+            sgoalId: initialData?.sgoalId || undefined,
+            sriskId: initialData?.sriskId || undefined,
+            mchannelId: initialData?.mchannelId || undefined,
+            mgoalId: initialData?.mgoalId || undefined,
+            uspId: initialData?.uspId || undefined,
+            mchallengeId: initialData?.mchallengeId || undefined,
+            mriskId: initialData?.mriskId || undefined,
+            dchallengeId: initialData?.dchallengeId || undefined,
+            updateId: initialData?.updateId || undefined,
+            driskId: initialData?.driskId || undefined,
+            featureId: initialData?.featureId || undefined,
+            innovationId: initialData?.innovationId || undefined
         }
     })
 
     const isLoading = form.formState.isSubmitting;
 
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
+      try {
+        if(initialData) {
+          await axios.patch(`/api/profile/${initialData.id}`, values);
+          toast({
+            title: "Success",
+            description: "Your profile has been updated."
+          })
+        }
+
+        router.refresh();
+        router.push('/home');
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "Something went wrong",
+          variant: "destructive"
+        });
+      }
+    }
+
     return (
         <div className="h-full p-4 space-y-2 max-w-3xl mx-auto">
             <Form {...form}>
                 <form
+                onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-8 pb-10"
                 >
                 <div className="space-y-2 w-3/4">
@@ -581,8 +709,7 @@ export const ProfileForm = ({
             />
           <div className="w-full flex justify-center">
             <Button size="lg" disabled={isLoading}>
-            Edit your companion
-              {/* {initialData ? '' : 'Create your companion'} */}
+              {isLoading ? "Saving..." : "Save Changes"}
               <Wand2 className="w-4 h-4 ml-2" />
             </Button>
           </div>

@@ -1,6 +1,6 @@
 import prismadb from "@/lib/prismadb";
 
-const RootPage = async () => { 
+const HomePage = async () => { 
 
     return ( 
         <div className="h-full p-4 space-y-2">
@@ -9,4 +9,4 @@ const RootPage = async () => {
      );
 }
  
-export default RootPage;
+export default HomePage;

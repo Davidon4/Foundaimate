@@ -82,6 +82,8 @@ export default function OnboardingComponent({experiences, ownerships, members, s
   const searchParams = useSearchParams();
 
   const [formData, setFormData] = React.useState({
+    // User
+    userId: user?.id || '',
     // Founder data
     experienceId: searchParams.get('experienceId') || '',
     ownershipId: searchParams.get('ownershipId') || '',

@@ -176,12 +176,6 @@ model SRisk {
   members    Profile[] 
 }
 
-model DGoal {
-  id          String @id @default(auto()) @map("_id") @db.ObjectId
-  name        String 
-  members    Profile[] 
-}
-
 model Personality {
   id            String   @id @default(auto()) @map("_id") @db.ObjectId
   name          String
@@ -285,9 +279,6 @@ model Profile {
 
   srisk         SRisk  @relation(fields: [sriskId], references: [id])
   sriskId       String  @db.ObjectId
-  
-  dgoal         DGoal  @relation(fields: [dgoalId], references: [id])
-  dgoalId       String  @db.ObjectId
 
   personality         Personality  @relation(fields: [personalityId], references: [id])
   personalityId       String  @db.ObjectId
@@ -319,7 +310,6 @@ model Profile {
   @@index([driskId])
   @@index([sriskId])
   @@index([mriskId])
-  @@index([dgoalId])
   @@index([personalityId])
   @@index([name], name: "name_text_idx") // Text index for full-text search
 }

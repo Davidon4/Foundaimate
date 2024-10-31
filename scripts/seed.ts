@@ -1,5 +1,5 @@
 require("dotenv").config();
-const {MongoClient} = require("mongodb");
+const {MongoClient, ObjectId} = require("mongodb");
 
 async function seedOwnership() {
     const uri = process.env.DATABASE_URL;
@@ -706,32 +706,6 @@ async function seedIndustry() {
             }
         }
 
-        async function seedDGoal() {
-            const uri = process.env.DATABASE_URL;
-            const client = new MongoClient(uri);
-
-            try {
-                await client.connect();
-
-                const database = client.db();
-                const dgoalCollection = database.collection("DGoal");
-
-                const dgoalToInsert = [
-                    {name: "Building a scalable, future-proof platform"},
-                    {name: "Expanding features and integrations"},
-                    {name: "Moving towards AI/ML or other emerging technologies"},
-                    {name: "We are still shaping our long-term tech vision"}
-                ];
-
-                await dgoalCollection.insertMany(dgoalToInsert);
-                console.log("Default development goal seeded successfully")
-            } catch (error) {
-                console.log("Error seeding default development goal", error)
-            } finally {
-                await client.close()
-            }
-        }
-
         async function seedSRisk() {
             const uri = process.env.DATABASE_URL;
             const client = new MongoClient(uri);
@@ -870,32 +844,119 @@ async function seedIndustry() {
     }
 }
 
-seedOwnership();
-seedExperience();
-seedExpertise();
-seedStage();
-seedSize();
-seedRevenue();
-seedNetwork();
-seedProduct();
-seedIndustry();
-seedTarget();
-seedMember();
-seedDecision();
-seedSChallenge();
-seedSStrategy();
-seedLead();
-seedUsp();
-seedMChannel();
-seedMChallenge();
-seedMGoal();
-seedSGoal();
-seedSRisk();
-seedMRisk();
-seedDChallenge();
-seedFeature();
-seedUpdate();
-seedPersonalityData();
-seedInnovation();
-seedDRisk();
-seedDGoal();
+// async function seedProfile() {
+//     const uri = process.env.DATABASE_URL;
+//     const client = new MongoClient(uri);
+
+//     try {
+//         await client.connect();
+
+//         const database = client.db();
+//         const profileCollection = database.collection("Profile");
+
+//         const profileToInsert = [{
+//             name: "Ioma",
+//             description: "This is a test profile of a ride sharing app that allows riders share ride.",
+//             userId: "user_2oB5ZjxDpxtx74hBoUkyKF0hO1J",
+//             experienceId: new ObjectId("670c7b6580df11ca6018da22"),
+//             ownershipId: new ObjectId("670c7b6580df11ca6018da14"),
+//             expertiseId: new ObjectId("670c7b6580df11ca6018da0f"),
+//             stageId: new ObjectId("670c7b6580df11ca6018da25"),
+//             revenueId: new ObjectId("670c7b6580df11ca6018da19"),
+//             networkId: new ObjectId("670c7b6580df11ca6018da03"),
+//             industryId: new ObjectId("670c7b6580df11ca6018da4f"),
+//             sizeId: new ObjectId("670c7b6580df11ca6018da0b"),
+//             productId: new ObjectId("670c7b6580df11ca6018da55"),
+//             decisionId: new ObjectId("670ced655278e20317d61444"),
+//             targetId: new ObjectId("670ced655278e20317d61448"),
+//             memberId: new ObjectId("67117dd2b8c8f55a607a00e1"),
+//             schallengeId: new ObjectId("67197179a861a31ec635cee4"),
+//             sstrategyId: new ObjectId("67197179a861a31ec635cede"),
+//             leadId: new ObjectId("67197179a861a31ec635cee9"),
+//             mchannelId: new ObjectId("671a29fef3a6cf4b17f79dbe"),
+//             uspId: new ObjectId("671a29fef3a6cf4b17f79db6"),
+//             mchallengeId: new ObjectId("671a29fef3a6cf4b17f79dbc"),
+//             mgoalId: new ObjectId("671a29fef3a6cf4b17f79dc8"),
+//             sgoalId: new ObjectId("671a29fef3a6cf4b17f79dc3"),
+//             dchallengeId: new ObjectId("671f89b5c07437211d172fd6"),
+//             featureId: new ObjectId("671f89b5c07437211d172fde"),
+//             updateId: new ObjectId("671fa287872e86020489180e"),
+//             innovationId: new ObjectId("671f89b5c07437211d172fc7"),
+//             driskId: new ObjectId("671f89b5c07437211d172fe5"),
+//             mriskId: new ObjectId("671f89b5c07437211d172fd6"),
+//             sriskId: new ObjectId("671f89b5c07437211d172fd6"),
+//             personalityId: new ObjectId("6720d7008c1d44a964fc076a")
+//         }];
+
+//         await profileCollection.insertMany(profileToInsert);
+//         console.log("Default profile seeded successfully");
+//     } catch (error) {
+//         console.log("Error seeding default profile", error);
+//     } finally {
+//         await client.close();
+//     }
+// }
+
+// const profileData = {
+//     name: "Test Profile",
+//     description: "This is a test profile.",
+//     userId: "user_2oB5ZjxDpxtx74hBoUkyKF0hO1J", // Ensure this user exists
+//     experienceId: "670c7b6580df11ca6018da22", // Ensure this ID exists
+//     ownershipId: "670c7b6580df11ca6018da14", // Ensure this ID exists
+//     expertiseId: "670c7b6580df11ca6018da0f", // Ensure this ID exists
+//     stageId: "670c7b6580df11ca6018da25", // Ensure this ID exists
+//     revenueId: "670c7b6580df11ca6018da19", // Ensure this ID exists
+//     networkId: "670c7b6580df11ca6018da03", // Ensure this ID exists
+//     industryId: "670c7b6580df11ca6018da4f", // Ensure this ID exists
+//     sizeId: "670c7b6580df11ca6018da0b", // Ensure this ID exists
+//     productId: "670c7b6580df11ca6018da55", // Ensure this ID exists
+//     decisionId: "670ced655278e20317d61444", // Ensure this ID exists
+//     targetId: "670ced655278e20317d61448", // Ensure this ID exists
+//     memberId: "67117dd2b8c8f55a607a00e1", // Ensure this ID exists
+//     schallengeId: "67197179a861a31ec635cee4", // Ensure this ID exists
+//     sstrategyId: "67197179a861a31ec635cede", // Ensure this ID exists
+//     leadId: "67197179a861a31ec635cee9", // Ensure this ID exists
+//     mchannelId: "671a29fef3a6cf4b17f79dbe", // Ensure this ID exists
+//     uspId: "671a29fef3a6cf4b17f79db6", // Ensure this ID exists
+//     mchallengeId: "671a29fef3a6cf4b17f79dbc", // Ensure this ID exists
+//     mgoalId: "671a29fef3a6cf4b17f79dc8", // Ensure this ID exists
+//     sgoalId: "671a29fef3a6cf4b17f79dc3", // Ensure this ID exists
+//     dchallengeId: "671f89b5c07437211d172fd6", // Ensure this ID exists
+//     featureId: "671f89b5c07437211d172fde", // Ensure this ID exists
+//     updateId: "671fa287872e86020489180e", // Ensure this ID exists
+//     innovationId: "671f89b5c07437211d172fc7", // Ensure this ID exists
+//     driskId: "671f89b5c07437211d172fe5", // Ensure this ID exists
+//     mriskId: "671f89b5c07437211d172fd6", // Ensure this ID exists
+//     sriskId: "671f89b5c07437211d172fd6", // Ensure this ID exists
+//     personalityId: "6720d7008c1d44a964fc076a", // Ensure this ID exists
+//   };
+
+// seedOwnership();
+// seedExperience();
+// seedExpertise();
+// seedStage();
+// seedSize();
+// seedRevenue();
+// seedNetwork();
+// seedProduct();
+// seedIndustry();
+// seedTarget();
+// seedMember();
+// seedDecision();
+// seedSChallenge();
+// seedSStrategy();
+// seedLead();
+// seedUsp();
+// seedMChannel();
+// seedMChallenge();
+// seedMGoal();
+// seedSGoal();
+// seedSRisk();
+// seedMRisk();
+// seedDChallenge();
+// seedFeature();
+// seedUpdate();
+// seedPersonalityData();
+// seedInnovation();
+// seedDRisk();
+// seedProfile();

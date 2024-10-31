@@ -14,11 +14,9 @@ import {
 import { 
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "../ui/form";
 import { 
   Select,
@@ -330,6 +328,7 @@ export default function Marketing({targets, mchannels, mchallenges, mgoals, mris
           className="flex justify-center mt-8"
           >
             <Button
+            type="submit"
             className="py-5 px-10 text-base bg-tealCustom font-medium mt-5 hover:bg-teal-700 rounded transition-colors">
             {isLoading ? "Submitting..." : "Next"}
             </Button>

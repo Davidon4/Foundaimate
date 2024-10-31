@@ -333,10 +333,9 @@ export default function Development({products, dchallenges, updates, drisks, inn
           className="flex justify-center mt-8"
           >
             <Button
+            type="submit"
             className="py-5 px-10 text-base bg-tealCustom font-medium mt-5 hover:bg-teal-700 rounded transition-colors"
-            onClick={() =>
-              router.push("/home")
-            }>
+              >
             {isLoading ? "Submitting..." : "Next"}
             </Button>
             {error && <p className="text-red-500 mt-2">{error}</p>}

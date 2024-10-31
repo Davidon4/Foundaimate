@@ -6,19 +6,21 @@ export const completeOnboarding = async (formData: FormData) => {
   const { userId } = auth()
 
   if (!userId) {
-    return { message: 'No Logged In User' }
+    throw new Error('No Logged In User')
   }
 
   try {
-    const res = await clerkClient().users.updateUser(userId, {
+   await clerkClient().users.updateUser(userId, {
       publicMetadata: {
         onboardingComplete: true,
         applicationName: formData.get('applicationName'),
         applicationType: formData.get('applicationType'),
       },
     })
-    return { message: res.publicMetadata }
+    
+    return { success: true }
   } catch (err) {
-    return { error: 'There was an error updating the user metadata.' }
+    console.error('Error in completeOnboarding:', err)
+    return { success: false, error: 'There was an error updating the user metadata.' }
   }
 }

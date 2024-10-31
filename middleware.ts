@@ -3,22 +3,31 @@ import { NextRequest, NextResponse } from "next/server";
 
 const isOnboardingRoute = createRouteMatcher(['/welcome'])
 const isPublicRoute = createRouteMatcher(['/'])
+const isApiRoute = createRouteMatcher(['/api(.*)'])
 
 export default clerkMiddleware((auth, req: NextRequest) => {
-    const {userId, sessionClaims, redirectToSignIn} = auth()
+    const {userId, sessionClaims} = auth()
+
+    if(isApiRoute(req)) {
+      return NextResponse.next()
+    }
 
     if (userId && isOnboardingRoute(req)) {
       return NextResponse.next()
     }
 
-    if (!userId && !isPublicRoute(req)) return redirectToSignIn({returnBackUrl: req.url})
+    if (!userId && !isPublicRoute(req)) {
+      return auth().redirectToSignIn({returnBackUrl: req.url})
+    } 
 
       if (userId && !sessionClaims?.metadata?.onboardingComplete && req.nextUrl.pathname !== "/welcome") {
         const onboardingUrl = new URL('/welcome', req.url)
         return NextResponse.redirect(onboardingUrl)
       }
 
-      if (userId && !isPublicRoute(req)) return NextResponse.next()
+      if (userId && !isPublicRoute(req)) {
+        return NextResponse.next()
+      } 
 });
 
 export const config = {
@@ -29,3 +38,11 @@ export const config = {
     '/(api|trpc)(.*)',
   ],
 };
+
+// export const config = {
+//   matcher: [
+//     '/((?!.+\\.[\\w]+$|_next).*)',
+//     '/',
+//     '/(api|trpc)(.*)'
+//   ]
+// };

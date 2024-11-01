@@ -272,22 +272,26 @@ export const ProfileForm = ({
     }
 
     return (
-        <div className="h-full p-4 space-y-2 max-w-3xl mx-auto">
+        <div className="min-h-screen bg-gray-50/50 py-8">
+        <div className="max-w-5xl mx-auto px-4">
             <Form {...form}>
                 <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-8 pb-10"
+                className="space-y-8"
                 >
-                <div className="space-y-2 w-full">
-                  <div className="p-4 bg-white rounded-lg shadow-sm">
-                    <div className="mb-6">
-                        <h3 className="text-lg font-semibold text-gray-900">Founder Profile</h3>
-                        <p className="text-sm text-muted-foreground">
-                        Give insights into your experience and role as a founder
+                <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                  <div className="p-6 border-b border-gray-100">
+                    <div className="flex items-center gap-4">
+                      <div className="flex-1">
+                        <h3 className="text-2xl font-bold text-gray-900">Founder Profile</h3>
+                        <p className="text-gray-600 mt-1">
+                        Tell us about your experience and role as a founder
                         </p>
-                        <Separator className="my-4"/>
+                        </div>
                     </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    </div>
+            <div className="p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <FormField
               name="experienceId"
               control={form.control}
@@ -444,16 +448,21 @@ export const ProfileForm = ({
               )}
             />
             </div>           
+            </div>           
             </div>
-            <div className="p-4 bg-white rounded-lg shadow-sm mt-8">
-                <div className="mb-6">
-                  <h3 className="text-xl font-semibold text-gray-900">Business Profile</h3>
-                  <p className="text-sm text-gray-500 mt-1">
-                  Share essential details about your business and its journey
-              </p>
-                  <Separator className="bg-primary/10"/>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                  <div className="p-6 border-b border-gray-100">
+                    <div className="flex items-center gap-4">
+                      <div className="flex-1">
+                        <h3 className="text-2xl font-bold text-gray-900">Business Profile</h3>
+                        <p className="text-gray-600 mt-1">
+                        Share essential details about your business and its journey
+                        </p>
+                        </div>
+                    </div>
+                    </div>
+              <div className="p-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <FormField
               name="name"
               control={form.control}
@@ -617,15 +626,20 @@ export const ProfileForm = ({
             />
               </div>
                 </div>
-              <div className="p-4 bg-white rounded-lg shadow-sm mt-8">
-                <div className="mb-6">
-                  <h3 className="text-xl font-semibold text-gray-900">Sales Strategy</h3>
-                  <p className="text-sm text-gray-500 mt-1">
-                  Share essential details about your business and its journey
-              </p>
-                  <Separator className="bg-primary/10"/>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                </div>
+                <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                  <div className="p-6 border-b border-gray-100">
+                    <div className="flex items-center gap-4">
+                      <div className="flex-1">
+                        <h3 className="text-2xl font-bold text-gray-900">Sales Strategy</h3>
+                        <p className="text-gray-600 mt-1">
+                        Share essential details about your business and its journey
+                        </p>
+                        </div>
+                    </div>
+                    </div>
+                    <div className="p-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <FormField
               name="revenueId"
               control={form.control}
@@ -814,15 +828,20 @@ export const ProfileForm = ({
             />
               </div>
                 </div>
-            <div className="p-4 bg-white rounded-lg shadow-sm mt-8">
-                <div className="mb-6">
-                  <h3 className="text-xl font-semibold text-gray-900">Marketing Strategy</h3>
-                  <p className="text-sm text-gray-500 mt-1">
-                  Share essential details about your business and its journey
-              </p>
-                  <Separator className="bg-primary/10"/>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                </div>
+                <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                  <div className="p-6 border-b border-gray-100">
+                    <div className="flex items-center gap-4">
+                      <div className="flex-1">
+                        <h3 className="text-2xl font-bold text-gray-900">Marketing Strategy</h3>
+                        <p className="text-gray-600 mt-1">
+                        Tell us about your experience and role as a founder
+                        </p>
+                        </div>
+                    </div>
+                    </div>
+                    <div className="p-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <FormField
               name="targetId"
               control={form.control}
@@ -1011,15 +1030,20 @@ export const ProfileForm = ({
             />
             </div>
             </div>
-            <div className="p-4 bg-white rounded-lg shadow-sm mt-8">
-                <div className="mb-6">
-                  <h3 className="text-xl font-semibold text-gray-900">Development Strategy</h3>
-                  <p className="text-sm text-gray-500 mt-1">
-                  Share essential details about your business and its journey
-              </p>
-                  <Separator className="bg-primary/10"/>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            </div>
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                  <div className="p-6 border-b border-gray-100">
+                    <div className="flex items-center gap-4">
+                      <div className="flex-1">
+                        <h3 className="text-2xl font-bold text-gray-900">Development Strategy</h3>
+                        <p className="text-gray-600 mt-1">
+                        Tell us about your experience and role as a founder
+                        </p>
+                        </div>
+                    </div>
+                    </div>
+                    <div className="p-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <FormField
               name="productId"
               control={form.control}
@@ -1208,24 +1232,28 @@ export const ProfileForm = ({
             />
             </div>
             </div>
-          <div className="flex justify-center mt-8">
-            <Button type="submit" className="px-8 py-2 bg-tealCustom hover:bg-teal-700 text-white rounded-md shadow-sm transition-colors" disabled={isLoading}>
+            </div>
+          <div className="sticky bottom-0 bg-white border-t border-gray-100 p-6 flex justify-end">
+            <Button 
+            type="submit" 
+            className="h-12 px-8 text-base font-semibold bg-tealCustom hover:bg-teal-700 text-white transition-all"
+            disabled={isLoading}>
               {isLoading ? (
                     <div className="flex items-center gap-2">
+                    <Loader2 className="w-5 h-5 animate-spin" />
                     <span>Saving...</span>
-                    <Loader2 className="w-4 h-4 animate-spin" />
                     </div>   
               ) : ( 
                 <div className="flex items-center gap-2">
-                <span>Save Changes</span>
-                <Wand2 className="w-4 h-4" />
+                 <span>Save Changes</span>
+                <Wand2 className="w-5 h-5" />
             </div>
               )}
             </Button>
-          </div>
              </div>
             </form>
             </Form>
+        </div>
         </div>
     )
 }

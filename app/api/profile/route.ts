@@ -19,7 +19,6 @@ export async function GET(req: Request) {
           }
       });
 
-      console.log("Returning profile:", profile);
       return NextResponse.json({ profile });
   } catch (error) {
       console.log('[PROFILE_GET]', error);

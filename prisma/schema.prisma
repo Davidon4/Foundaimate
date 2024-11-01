@@ -185,10 +185,31 @@ model Personality {
   toneExamples  Json
   sampleInteraction Json
   summary       String
-  imageUrl      String?   // Optional field for the image URL
+  imageUrl      String?   
   members       Profile[]
+
+  messages      Message[]
 }
 
+enum Role {
+  user
+  system
+}
+
+model Message {
+  id            String  @id @default(auto()) @map("_id") @db.ObjectId
+  role          Role
+  content       String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  personalityId String  @db.ObjectId
+  userId        String
+
+  personality   Personality  @relation(fields: [personalityId], references: [id], onDelete: Cascade)
+
+  @@index([personalityId])
+}
 
 model Profile {
   id            String @id @default(auto()) @map("_id") @db.ObjectId
@@ -280,8 +301,8 @@ model Profile {
   srisk         SRisk  @relation(fields: [sriskId], references: [id])
   sriskId       String  @db.ObjectId
 
-  personality         Personality  @relation(fields: [personalityId], references: [id])
-  personalityId       String  @db.ObjectId
+  personality    Personality  @relation(fields: [personalityId], references: [id])
+  personalityId  String  @db.ObjectId
 
   @@index([experienceId])
   @@index([ownershipId])

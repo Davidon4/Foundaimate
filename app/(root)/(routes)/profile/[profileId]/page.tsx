@@ -1,6 +1,5 @@
 import { auth } from "@clerk/nextjs/server";
 import { ProfileForm } from "./components/profile-form";
-// import PageIllustration from "@/components/page-illustration";
 import prismadb from "@/lib/prismadb";
 
 interface ProfileIdPageProps {
@@ -27,8 +26,6 @@ const ProfileIdPage = async ({params}: ProfileIdPageProps) => {
        if (!profile) {
         console.log(`No profile found with ID: ${params.profileId} for user: ${userId}`);
         throw new Error("Profile not found");
-        // Optionally redirect to new profile creation
-        // redirect('/profile/new');
         }
 
        const experiences = await prismadb.experience.findMany();
@@ -58,7 +55,6 @@ const ProfileIdPage = async ({params}: ProfileIdPageProps) => {
        const updates = await prismadb.update.findMany();
        const features = await prismadb.feature.findMany();
        const innovations = await prismadb.innovation.findMany();
-
 
     return ( 
         <>

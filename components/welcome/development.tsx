@@ -14,11 +14,9 @@ import {
 import { 
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "../ui/form";
 import { 
   Select,
@@ -27,14 +25,11 @@ import {
   SelectValue,
   SelectItem 
 } from "../ui/select";
-import { Input } from "../ui/input";
-import { Textarea } from "../ui/textarea";
 import { useUser } from "@clerk/nextjs";
 import { Button } from "../ui/button";
 import { STAGGER_CHILD_VARIANTS } from "@/lib/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { completeOnboarding } from "@/app/welcome/_actions";
 
 interface DevelopmentFormProps {
   products: Product[];
@@ -330,7 +325,7 @@ export default function Development({products, dchallenges, updates, drisks, inn
             />
           <motion.div
           variants={STAGGER_CHILD_VARIANTS}
-          className="flex justify-center mt-8"
+          className="flex items-center justify-center mt-8"
           >
             <Button
             type="submit"

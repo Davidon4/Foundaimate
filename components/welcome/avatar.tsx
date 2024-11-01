@@ -58,7 +58,7 @@ export default function Avatar({initialData, onDataUpdate, personalities}: Perso
   const [selectedPersonality, setSelectedPersonality] = React.useState<string | null>(null);
 
   if (!isLoaded || !user) {
-    return null; // or a loading spinner
+    return null;
   }
 
   const handlePersonalitySelect = async (personalityId: string) => {
@@ -73,13 +73,6 @@ export default function Avatar({initialData, onDataUpdate, personalities}: Perso
         userId: user.id,
       };
   
-      console.log('About to submit profile data:', {
-        personalityId,
-        userId: user.id,
-        initialData,
-        fullProfileData: profileData
-      });
-  
       const response = await fetch('/api/profile', {
         method: 'POST',
         headers: {
@@ -88,11 +81,7 @@ export default function Avatar({initialData, onDataUpdate, personalities}: Perso
         body: JSON.stringify(profileData),
       });
 
-      console.log('Response status:', response.status);
-      console.log('Response headers:', Object.fromEntries(response.headers.entries()));
-
       const responseText = await response.text();
-      console.log('Raw response:', responseText);
 
       let data;
       try {
@@ -108,19 +97,12 @@ export default function Avatar({initialData, onDataUpdate, personalities}: Perso
       }
   
       if (data.profile?.id) {
-        console.log('Profile created successfully:', data.profile);
         const selectedPersonalityData = personalities.find(p => p.id === personalityId);
         const formData = new FormData();
         formData.append('applicationName', 'AI Personalized Co-founder');
         formData.append('applicationType', selectedPersonalityData?.name || 'default'); 
-        
-        console.log('Completing onboarding with:', {
-          applicationName: 'AI Personalized Co-founder',
-          applicationType: selectedPersonalityData?.name
-        });
 
         const result = await completeOnboarding(formData);
-        console.log('Onboarding completion result:', result);
         
         if(result.success) {
           await new Promise(resolve => setTimeout(resolve, 1500));

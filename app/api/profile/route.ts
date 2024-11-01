@@ -2,6 +2,31 @@ import { NextResponse } from 'next/server';
 import prismadb from '@/lib/prismadb';
 import { getAuth } from '@clerk/nextjs/server';
 
+export async function GET(req: Request) {
+  try {
+      const { userId } = getAuth(req as any);
+
+      if (!userId) {
+          return new NextResponse("Unauthorized", { status: 401 });
+      }
+
+      const profile = await prismadb.profile.findFirst({
+          where: {
+              userId: userId
+          },
+          select: {
+              id: true
+          }
+      });
+
+      console.log("Returning profile:", profile);
+      return NextResponse.json({ profile });
+  } catch (error) {
+      console.log('[PROFILE_GET]', error);
+      return new NextResponse("Internal Error", { status: 500 });
+  }
+}
+
 export async function POST(req: Request) {
   try {
     const {userId} = getAuth(req as any);

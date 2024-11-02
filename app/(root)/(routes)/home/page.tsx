@@ -12,12 +12,16 @@ const HomePage = async () => {
     const {userId} = auth();
 
     if (!userId) {
-        return null;
+        return (
+            <div className="h-full flex items-center justify-center">
+                <p className="text-gray-800 font-medium text-lg">Please sign in to continue.</p>
+            </div>
+        );
     }
 
     const profile = await prismadb.profile.findFirst({
         where: {
-            userId: userId
+            userId: userId.toString()
         },
         include: {
             personality: true,

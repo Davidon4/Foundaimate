@@ -56,6 +56,7 @@ export async function PATCH(
                 sstrategyId: body.sstrategyId,
                 sgoalId: body.sgoalId,
                 sriskId: body.sriskId,
+                uspId: body.uspId,
                 mchannelId: body.mchannelId,
                 mchallengeId: body.mchallengeId,
                 mgoalId: body.mgoalId,

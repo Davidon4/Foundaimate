@@ -11,8 +11,9 @@ import { BotAvatar } from "@/components/bot-avatar";
 import { UserAvatar } from "@/components/user-avatar";
 
 export interface ChatMessageProps {
-    role: "system" | "user";
+    role: "system" | "user" | "assistant";
     content?: string;
+    personalityName: string;
     isLoading?: boolean;
     imageUrl?: string | null;
 }
@@ -25,6 +26,7 @@ export const ChatMessage = ({role, content, isLoading, imageUrl}: ChatMessagePro
         if(!content) {
             return
         }
+
 
         navigator.clipboard.writeText(content);
         toast({

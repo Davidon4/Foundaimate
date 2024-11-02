@@ -32,21 +32,30 @@ export const ChatMessages = ({messages = [], isLoading, personality}: ChatMessag
 
     return (
     <div className="flex-1 overflow-y-auto px-4 no-scrollbar">
-      <ChatMessage
+      {/* <ChatMessage
       isLoading={fakeLoading}
       imageUrl={personality.imageUrl}
       role="system"
       content={`Hi, How can I help you today?`}
-      /> 
+      personalityName={personality.name}
+      />  */}
         {messages.map((message) => (
         <ChatMessage
           key={message.content}
           imageUrl={personality.imageUrl}
           role={message.role}
           content={message.content}
+          personalityName={personality.name}
         />
       ))} 
-      {isLoading && <ChatMessage role="system" imageUrl={personality.imageUrl} isLoading/>}
+      {isLoading && (
+      <ChatMessage 
+      role="system" 
+      imageUrl={personality.imageUrl} 
+      isLoading
+      personalityName={personality.name}
+      />
+      )}
       <div ref={scrollRef}/>
     </div>
     )

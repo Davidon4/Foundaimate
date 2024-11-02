@@ -67,6 +67,7 @@ export default function Avatar({initialData, onDataUpdate, personalities}: Perso
     setSelectedPersonality(personalityId);
     
     try {
+      const selectedPersonalityData = personalities.find(p => p.id === personalityId);
       const profileData = {
         ...initialData,
         personalityId,

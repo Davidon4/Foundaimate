@@ -180,6 +180,7 @@ model Personality {
   id            String   @id @default(auto()) @map("_id") @db.ObjectId
   name          String
   role          String
+  userId        String?
   motto         String
   coreTraits    Json
   toneExamples  Json

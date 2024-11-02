@@ -956,7 +956,7 @@ async function seedIndustry() {
 // seedDChallenge();
 // seedFeature();
 // seedUpdate();
-// seedPersonalityData();
+seedPersonalityData();
 // seedInnovation();
 // seedDRisk();
 // seedProfile();

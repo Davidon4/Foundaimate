@@ -8,7 +8,7 @@ interface UserAvatarProps {
     className?: string;
 }
 
-export const UserAvatar = ({size, className}: UserAvatarProps) => {
+export const UserAvatar = ({size}: UserAvatarProps) => {
     const {user} = useUser();
 
     return (

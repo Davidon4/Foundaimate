@@ -1,6 +1,6 @@
 "use client";
 
-import {ElementRef, useEffect, useRef, useState} from "react";
+import {ElementRef, useEffect, useRef} from "react";
 import { Personality } from "@prisma/client";
 import { ChatMessage, ChatMessageProps } from "@/components/chat-message";
 
@@ -12,19 +12,6 @@ interface ChatMessagesProps {
 
 export const ChatMessages = ({messages = [], isLoading, personality}: ChatMessagesProps) => {
     const scrollRef = useRef<ElementRef<"div">>(null);
-    const [fakeLoading, setFakeLoading] = useState(
-        messages.length === 0 ? true : false
-    );
-
-    useEffect(() => {
-        const timeout = setTimeout(() => {
-            setFakeLoading(false)
-        }, 1000);
-
-        return () => {
-            clearTimeout(timeout);
-        }
-    }, []);
 
     useEffect(() => {
         scrollRef?.current?.scrollIntoView({behavior: "smooth"});

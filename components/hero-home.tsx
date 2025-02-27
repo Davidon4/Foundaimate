@@ -1,8 +1,41 @@
+"use client";
 import PageIllustration from "@/components/page-illustration";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { useEffect } from "react";
+import Script from "next/script";
+
+declare global {
+  interface Window {
+    Calendly?: {
+      initBadgeWidget: (config: {
+        url: string;
+        text: string;
+        color: string;
+        textColor: string;
+        branding: boolean;
+      }) => void;
+      showPopupWidget: (url: string) => void;
+    };
+  }
+}
 
 export default function HeroHome() {
+  useEffect(() => {
+    const initCalendly = () => {
+      if (window.Calendly) {
+        window.Calendly.initBadgeWidget({
+          url: "https://calendly.com/ezeluakudavid1",
+          text: "Book a Demo",
+          color: "#16778a",
+          textColor: "#fff",
+          branding: true
+        })
+      }
+    }
+
+    initCalendly();
+  }, []);
+
   return (
     <section className="relative">
       <PageIllustration />
@@ -16,8 +49,7 @@ export default function HeroHome() {
               data-aos="zoom-y-out"
               data-aos-delay={150}
             >
-              Your personalized ai virtual <br className="max-lg:hidden" />
-               co-founder
+              Scale Smarter with an AI Co-Founder Built Around You
             </h1>
             <div className="mx-auto max-w-3xl">
               <p
@@ -25,8 +57,7 @@ export default function HeroHome() {
                 data-aos="zoom-y-out"
                 data-aos-delay={300}
               >
-                Foundaimate is an intelligent AI co-founder designed to offer tailored insights and guidance, helping you navigate every startup challenge with confidence and clarity
-                {/* Foundaimate is an intelligent AI co-founder designed to offer tailored insights and guidance to help you tackle every startup challenge. */}
+                Navigate your startup&apos;s biggest challenges with Foundaimate, the AI co-founder companion that adapts to your unique needs and amplifies your decision-making
               </p>
               <div className="relative before:absolute before:inset-0 before:border-y before:[border-image:linear-gradient(to_right,transparent,theme(colors.slate.300/.8),transparent)1]">
                 <div
@@ -45,14 +76,26 @@ export default function HeroHome() {
                       </span>
                     </span>
                   </a> */}
-                  <Button size="sm" asChild>
-                    <Link href="/signup" 
-                    className="bg-tealCustom text-gray-200 shadow hover:bg-teal-700 text-sm rounded-md"
-                    >Book a Demo
-                  <span className="ml-1 tracking-normal text-blue-300 transition-transform group-hover:translate-x-0.5">
+                  <Script 
+                    src="https://assets.calendly.com/assets/external/widget.js" 
+                    strategy="lazyOnload"
+                    onLoad={() => {
+                      console.log('Calendly script loaded');
+                    }}
+                  />
+                  <link
+                    href="https://assets.calendly.com/assets/external/widget.css"
+                      rel="stylesheet"
+                  />
+                  <Button 
+                  size="sm" 
+                  className="bg-tealCustom text-gray-200 shadow hover:bg-teal-700 text-sm rounded-md"
+                  onClick={() => window.Calendly?.showPopupWidget('https://calendly.com/ezeluakudavid1')}
+                  >
+                    Book a Demo
+                    <span className="ml-1 tracking-normal text-blue-300 transition-transform group-hover:translate-x-0.5">
                         -&gt;
                       </span>
-                    </Link>
                   </Button>
                 </div>
               </div>
@@ -64,51 +107,86 @@ export default function HeroHome() {
             data-aos="zoom-y-out"
             data-aos-delay={600}
           >
-            <div className="relative aspect-video rounded-2xl bg-gray-900 px-5 py-3 shadow-xl before:pointer-events-none before:absolute before:-inset-5 before:border-y before:[border-image:linear-gradient(to_right,transparent,theme(colors.slate.300/.8),transparent)1] after:absolute after:-inset-5 after:-z-10 after:border-x after:[border-image:linear-gradient(to_bottom,transparent,theme(colors.slate.300/.8),transparent)1]">
-              <div className="relative mb-8 flex items-center justify-between before:block before:h-[9px] before:w-[41px] before:bg-[length:16px_9px] before:[background-image:radial-gradient(circle_at_4.5px_4.5px,_theme(colors.gray.600)_4.5px,_transparent_0)] after:w-[41px]">
-                <span className="text-[13px] font-medium text-white">
+            <div className="relative aspect-video rounded-2xl bg-gradient-to-br from-gray-900 to-gray-800 px-5 py-3 shadow-2xl before:pointer-events-none before:absolute before:-inset-5 before:border-y before:[border-image:linear-gradient(to_right,transparent,theme(colors.slate.300/.8),transparent)1] after:absolute after:-inset-5 after:-z-10 after:border-x after:[border-image:linear-gradient(to_bottom,transparent,theme(colors.slate.300/.8),transparent)1]">
+              <div className="relative mb-8 flex items-center gap-2">
+                <div className="flex gap-2">
+                <div className="h-3 w-3 rounded-full bg-red-500"></div>
+                <div className="h-3 w-3 rounded-full bg-yellow-500"></div>
+                <div className="h-3 w-3 rounded-full bg-green-500"></div>
+                </div>
+                <div className="flex-1 text-center">
+                <span className="text-sm font-medium text-gray-300 bg-gray-700/50 px-3 py-1 rounded-md">
                   foundaimate.com
                 </span>
               </div>
-              <div className="font-mono text-gray-500 [&_span]:opacity-0">
-                <span className="animate-[code-1_10s_infinite] text-gray-200">
-                    Founder:
-                </span>{" "}
-                <span className="animate-[code-2_10s_infinite]">
-                My current marketing approach hasn’t been very effective in the market.
-                </span>
-                <br />
-                <br />
-                <span className="animate-[code-3_10s_infinite] text-gray-200">
-                Foundaimate (AI):
-                </span>{" "}
-                <span className="animate-[code-4_10s_infinite]">
-                I see. You’ve been focusing on social media marketing, Have you considered partnering with niche communities or influencers to reach your audience more directly?
-                </span>
-                <br />
-                <br />
-                <span className="animate-[code-5_10s_infinite] text-gray-200">
-                Founder:
-                </span>{" "}
-                <span className="animate-[code-6_10s_infinite]">
+              </div>
+
+              {/* // Chat Content */}
+              <div className="font-mono text-gray-400 space-y-6">
+                <div className="flex items-start gap-3 opacity-0 animate-[fadeIn_0.5s_0.5s_forwards]">
+                <div className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center">
+                <span className="text-blue-400 text-xl">F</span>
+                </div>
+                <div className="flex-1">
+                <div className="bg-blue-500/10 rounded-lg p-3 inline-block">
+                <p className="text-blue-100 typewriter-text-1">
+                My current marketing approach hasn&apos;t been very effective in the market.
+                </p>
+                </div>
+                </div>
+                </div>
+
+                <div className="flex items-start gap-3 opacity-0 animate-[fadeIn_0.5s_2s_forwards]">
+                <div className="w-8 h-8 rounded-full bg-tealCustom flex items-center justify-center">
+                <span className="text-teal-400 text-xs">AI</span>
+                </div>
+                <div className="flex-1">
+                  <div className="bg-tealCustom rounded-lg p-3 inline-block max-w-[80%]">
+                <p className="text-teal-100 typewriter-text-2">
+                I see. You&apos;ve been focusing on social media marketing, Have you considered partnering with niche communities or influencers to reach your audience more directly?
+                </p>
+                </div>
+                </div>
+                </div>
+
+                <div className="flex items-start gap-3 opacity-0 animate-[fadeIn_0.5s_3s_forwards]">
+                <div className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center">
+                <span className="text-blue-400 text-xl">F</span>
+                </div>
+                <div className="flex-1">
+                <div className="bg-blue-500/10 rounded-lg p-3 inline-block">
+                <p className="text-blue-100 typewriter-text-3">
                 Not yet. How do I start?
-                </span>
-                <br/>
-                <br/>
-                <span className="animate-[code-7_10s_infinite] text-gray-200">
-                Foundaimate (AI):
-                </span>{" "}
-                <span className="animate-[code-8_10s_infinite]">
+                </p>
+                </div>
+                </div>
+                </div>
+
+                <div className="flex items-start gap-3 opacity-0 animate-[fadeIn_0.5s_4s_forwards]">
+                <div className="w-8 h-8 rounded-full bgCustom flex items-center justify-center">
+                <span className="text-teal-400 text-xs">AI</span>
+                </div>
+                <div className="flex-1">
+                  <div className="bg-tealCustom rounded-lg p-3 inline-block max-w-[80%]">
+                <p className="text-teal-100 typewriter-text-4">
                 Look for online groups where your target customers are active, or collaborate with micro-influencers who have strong engagement. I can help you find some options. Sound good?
-                </span>
-                <br/>
-                <br/>
-                <span className="animate-[code-9_10s_infinite] text-gray-200">
-                Founder:
-                </span>{" "}
-                <span className="animate-[code-10_10s_infinite]">
-                Yes, let’s try that!
-                </span>
+                </p>
+                </div>
+                </div>
+                </div>
+
+                <div className="flex items-start gap-3 opacity-0 animate-[fadeIn_0.5s_5s_forwards]">
+                <div className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center">
+                <span className="text-blue-400 text-xl">F</span>
+                </div>
+                <div className="flex-1">
+                <div className="bg-blue-500/10 rounded-lg p-3 inline-block">
+                <p className="text-blue-100 typewriter-text-5">
+                Yes, let&apos;s try that!
+                </p>
+                </div>
+                </div>
+                </div>
               </div>
             </div>
             </div>

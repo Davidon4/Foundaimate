@@ -9,12 +9,10 @@ export const Sidebar = () => {
     const pathname = usePathname();
     const router = useRouter();
     const [profileId, setProfileId] = useState<string | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const fetchProfileId = async () => {
             try {
-                setIsLoading(true);
                 const response = await fetch('/api/profile');
                 const data = await response.json();
                 if (data.profile?.id) {
@@ -22,8 +20,6 @@ export const Sidebar = () => {
                 }
             } catch (error) {
                 console.error("Error fetching profile=>", error);
-            } finally {
-                setIsLoading(false);
             }
         }
         fetchProfileId();
@@ -50,7 +46,7 @@ export const Sidebar = () => {
         }
     ];
 
-    const onNavigate = (url: string, pro: boolean, index: number) => {
+    const onNavigate = (url: string) => {
             router.push(url);
     };
 
@@ -58,9 +54,9 @@ export const Sidebar = () => {
         <div className="space-y-4 flex-col h-full text-primary bg-secondary">
             <div className="g-3 flex flex-1 justify-center">
                 <div className="space-y-2">  
-                    {routes.map((route, index) => (
+                    {routes.map((route) => (
                         <div
-                            onClick={() => onNavigate(route.href, route.pro, index)}
+                            onClick={() => onNavigate(route.href)}
                             key={route.href}
                             className={cn(
                                 "text-muted-foreground text-xs group flex p-3 w-full justify-start font-medium cursor-pointer hover:text-primary hover:bg-primary/10 rounded-lg transition",

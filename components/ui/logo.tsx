@@ -1,8 +1,8 @@
 import Link from "next/link";
 
-export default function Logo() {
+export default function Logo({className} : {className: string}) {
   return (
-    <Link href="/" className="inline-flex" aria-label="Cruip">
+    <Link href="/" className={className} aria-label="Cruip">
       <svg
         width="50"
         height="50"

@@ -1,7 +1,7 @@
 "use client";
 
-import { Personality, Message } from "@prisma/client";
-import { useRouter, useParams } from "next/navigation";
+import {Personality, Message} from "@prisma/client";
+import { useRouter } from "next/navigation";
 import {useCompletion} from "ai/react";
 import { FormEvent, useState } from "react";
 import { ChatForm } from "@/components/chat-form";
@@ -19,21 +19,17 @@ interface ChatClientProps {
 }
 
 export const ChatClient = ({personality}: ChatClientProps) => {
-    if(!personality?.name) {
-        console.error("Personality or personality name is missing=>", personality);
-        return null;
-    }
     const router = useRouter();
     const [messages, setMessages] = useState<ChatMessageProps[]>([
         {
             role: "system",
             content: `Hi, How can I help you today?`,
-            personalityName: personality.name,
+            personalityName: personality?.name || "",
         },
-        ...personality.messages.map((message) => ({
+        ...(personality?.messages || []).map((message: Message) => ({
             role: message.role as "system" | "user",
             content: message.content,
-            personalityName: personality.name,
+            personalityName: personality?.name || "",
             modelName: "gpt-4-turbo-preview"
         }))
     ]);
@@ -45,7 +41,7 @@ export const ChatClient = ({personality}: ChatClientProps) => {
         handleSubmit: completion,
         setInput
     } = useCompletion({
-        api: `/api/chat/${personality.id}`,
+        api: `/api/chat/${personality?.id}`,
         onResponse: (response) => {
             // Optional: Handle streaming response metadata
             if (response.status === 429) {
@@ -53,7 +49,7 @@ export const ChatClient = ({personality}: ChatClientProps) => {
             }
         },
         body: {
-            personalityName: personality.name,
+            personalityName: personality?.name,
             messages
         },
         onError: (error) => {
@@ -61,20 +57,25 @@ export const ChatClient = ({personality}: ChatClientProps) => {
             setMessages(current => [...current, {
                 role: "assistant", // Changed from "system" to "assistant"
                 content: "Sorry, I encountered an error. Please try again.",
-                personalityName: personality.name,
+                personalityName: personality?.name || "",
             }]);
         },
         onFinish(_prompt, completion) {
          const systemMessage: ChatMessageProps = {
             role: "system",
             content: completion,
-            personalityName: personality.name,
+            personalityName: personality?.name || "",
          }; 
          setMessages((current) => [...current, systemMessage]);
          setInput("");
          router.refresh();
         }
     });
+
+    if(!personality?.name) {
+        console.error("Personality or personality name is missing=>", personality);
+        return null;
+    }
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -83,7 +84,7 @@ export const ChatClient = ({personality}: ChatClientProps) => {
         const userMessage: ChatMessageProps = {
             role: "user",
             content: input,
-            personalityName: personality.name,
+            personalityName: personality?.name || "",
         };
         setMessages((current) => [...current, userMessage]);
 

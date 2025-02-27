@@ -1,22 +1,15 @@
 "use client"
 
-import axios from "axios";
 import { Personality, Message } from "@prisma/client";
 import { 
     ChevronLeft,
-    Edit,
     MessagesSquare,
-    MoreVertical,
-    Trash
  } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useUser } from "@clerk/nextjs";
-import Image from "next/image";
 import { BotAvatar } from "@/components/bot-avatar";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast"; 
 
 interface ChatHeaderProps {
     personality: Personality & {

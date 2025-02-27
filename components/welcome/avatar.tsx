@@ -1,12 +1,10 @@
-import { useRouter } from "next/navigation";
 import React from "react";
 import Image from "next/image";
-import { useUser, useAuth } from '@clerk/nextjs'
+import { useUser} from '@clerk/nextjs'
 import { motion } from "framer-motion";
 import { STAGGER_CHILD_VARIANTS } from "@/lib/constants";
 import { completeOnboarding } from "@/app/welcome/_actions";
 import { Personality } from "@prisma/client";
-import qs from "query-string";
 import { useToast } from "@/hooks/use-toast";
 
 export interface ProfileData {
@@ -45,29 +43,22 @@ export interface ProfileData {
 interface PersonalityProps {
   initialData: ProfileData;
   personalities: Personality[];
-  onDataUpdate: (data: any) => void;
+  onDataUpdate: (data: ProfileData) => void;
 }
 
-export default function Avatar({initialData, onDataUpdate, personalities}: PersonalityProps) {
+export default function Avatar({initialData, personalities}: PersonalityProps) {
   const { user, isLoaded } = useUser();
-  const {getToken} = useAuth();
-  const router = useRouter();
   const {toast} = useToast();
   const [error, setError] = React.useState('');
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [selectedPersonality, setSelectedPersonality] = React.useState<string | null>(null);
 
   if (!isLoaded || !user) {
     return null;
   }
 
   const handlePersonalitySelect = async (personalityId: string) => {
-    setIsLoading(true);
     setError('');
-    setSelectedPersonality(personalityId);
     
     try {
-      const selectedPersonalityData = personalities.find(p => p.id === personalityId);
       const profileData = {
         ...initialData,
         personalityId,
@@ -113,16 +104,15 @@ export default function Avatar({initialData, onDataUpdate, personalities}: Perso
         }
       }
   
-    } catch (error: any) {
+    } catch (error: Error | unknown) {
+      const errorMessage = error instanceof Error ? error.message : "An error occurred while creating the profile";
       console.error("Error in handlePersonalitySelect:", error);
-      setError(error.message || "An error occurred while creating the profile");
+      setError(errorMessage);
       toast({
         title: "Error",
-        description: error.message || "An error occurred while creating the profile",
+        description: errorMessage,
         variant: "destructive",
       });
-    } finally {
-      setIsLoading(false);
     }
 };
 
@@ -184,13 +174,13 @@ export default function Avatar({initialData, onDataUpdate, personalities}: Perso
             </h2>
             <h3 className="text-2xl font-medium">Core Traits:</h3>
             <div className="text-left">
-        {personality.coreTraits
-        ? Object.entries(personality.coreTraits).map(([trait, description]) => (
-        <div key={trait} className="mb-2">
-          <span className="font-semibold">{trait}:</span> {description}
-        </div>
-      ))
-        : <p>No core traits available</p>}
+        {personality.coreTraits && typeof personality.coreTraits === 'object'
+          ? Object.entries(personality.coreTraits as Record<string, string>).map(([trait, description]) => (
+            <div key={trait} className="mb-2">
+              <span className="font-semibold">{trait}:</span> {description}
+            </div>
+          ))
+          : <p>No core traits available</p>}
         </div>
         <div>
           

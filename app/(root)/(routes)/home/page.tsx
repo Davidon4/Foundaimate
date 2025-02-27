@@ -78,7 +78,7 @@ const HomePage = async () => {
                 <Card className="p-8 shadow-lg col-span-full bg-primary/5 border-2 border-primary/20">
                     <div className="text-center">
                         <h2 className="text-2xl font-bold mb-4 text-gray-900">Motto</h2>
-                        <p className="text-xl italic text-gray-800 font-medium">"{personality.motto}"</p>
+                        <p className="text-xl italic text-gray-800 font-medium">{personality.motto}</p>
                     </div>
                 </Card>
 
@@ -104,7 +104,7 @@ const HomePage = async () => {
                         {Object.entries(personality.toneExamples as Record<string, string>).map(([situation, example]) => (
                             <div key={situation} className="bg-gray-50 p-4 rounded-lg">
                                 <h3 className="font-bold text-lg text-gray-900 mb-2">{situation}</h3>
-                                <p className="text-base text-gray-700 italic leading-relaxed">"{example}"</p>
+                                <p className="text-base text-gray-700 italic leading-relaxed">{example}</p>
                             </div>
                         ))}
                     </div>

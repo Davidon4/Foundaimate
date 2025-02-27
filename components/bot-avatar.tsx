@@ -6,7 +6,7 @@ interface BotAvatarProps {
     className?: string;
 }
 
-export const BotAvatar = ({src, size, className}: BotAvatarProps) => {
+export const BotAvatar = ({src, size}: BotAvatarProps) => {
     return (
         <Avatar
         className={

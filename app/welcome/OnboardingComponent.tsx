@@ -76,7 +76,6 @@ interface WelcomeProps {
 }
 
 export default function OnboardingComponent({experiences, ownerships, members, sgoals, srisks, expertises, decisions, personalities, revenues, mrisks, stages, sizes, industries, products, targets, networks, leads, sstrategies, schallenges, mgoals, mchallenges, mchannels, usps, innovations, updates, dchallenges, drisks, features}: WelcomeProps) {
-  const [error, setError] = React.useState('');
   const { user } = useUser();
   const router = useRouter();
   const searchParams = useSearchParams();

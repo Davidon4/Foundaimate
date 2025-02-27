@@ -2,9 +2,15 @@ import { NextResponse } from 'next/server';
 import prismadb from '@/lib/prismadb';
 import { getAuth } from '@clerk/nextjs/server';
 
+interface PrismaError extends Error {
+  code?: string;
+  meta?: Record<string, unknown>;
+}
+
 export async function GET(req: Request) {
   try {
-      const { userId } = getAuth(req as any);
+      // @ts-expect-error Clerk types don't match Next.js Request
+      const { userId } = getAuth(req);
 
       if (!userId) {
           return new NextResponse("Unauthorized", { status: 401 });
@@ -28,7 +34,8 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
-    const {userId} = getAuth(req as any);
+    // @ts-expect-error Clerk's type definitions are not perfectly aligned with Next.js Request
+    const { userId } = getAuth(req);
     console.log("Authenticated userId:", userId);
 
     if (!userId) {
@@ -71,22 +78,22 @@ export async function POST(req: Request) {
     console.log("Created profile:", JSON.stringify(profile, null, 2));
 
     return NextResponse.json({ profile }, { status: 200 });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Detailed error in profile creation:', {
-      message: error.message,
-      code: error.code,
-      meta: error.meta,
-      stack: error.stack 
+      message: error instanceof Error ? error.message : String(error),
+      code: error instanceof Error ? (error as PrismaError).code : undefined,
+      meta: error instanceof Error ? (error as PrismaError).meta : undefined,
+      stack: error instanceof Error ? error.stack : undefined
     });
 
     return NextResponse.json(
       { 
         success: false,
-        error: error.message || 'Failed to create profile',
+        error: error instanceof Error ? error.message : String(error) || 'Failed to create profile',
         details: process.env.NODE_ENV === 'development' ? {
-          code: error.code,
-          meta: error.meta,
-          message: error.message
+          code: error instanceof Error ? (error as PrismaError).code : undefined,
+          meta: error instanceof Error ? (error as PrismaError).meta : undefined,
+          message: error instanceof Error ? error.message : String(error)
         } : undefined 
       },
       {status: 500}

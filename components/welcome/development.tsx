@@ -1,4 +1,4 @@
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 import { motion } from "framer-motion";
@@ -25,7 +25,6 @@ import {
   SelectValue,
   SelectItem 
 } from "../ui/select";
-import { useUser } from "@clerk/nextjs";
 import { Button } from "../ui/button";
 import { STAGGER_CHILD_VARIANTS } from "@/lib/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -62,13 +61,11 @@ const formSchema = z.object({
   })
 
 export default function Development({products, dchallenges, updates, drisks, innovations, features, initialData, onDataUpdate}: DevelopmentFormProps & {
-  initialData: any,
-  onDataUpdate: (data: any) => void;
+  initialData: z.infer<typeof formSchema>,
+  onDataUpdate: (data: z.infer<typeof formSchema>) => void;
 }) {
   const router = useRouter();
   const [error, setError] = React.useState('');
-  const searchParams = useSearchParams();
-  const { user } = useUser();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -235,7 +232,7 @@ export default function Development({products, dchallenges, updates, drisks, inn
               control={form.control}
               render={({ field }) => (
                 <FormItem className="mt-5 w-full">
-                  <FormLabel className="font-bold text-base">What's the biggest technical risk you foresee in scaling your startup?</FormLabel>
+                  <FormLabel className="font-bold text-base">What&apos;s the biggest technical risk you foresee in scaling your startup?</FormLabel>
                   <Select
                   disabled={isLoading}
                   onValueChange={field.onChange}
@@ -297,7 +294,7 @@ export default function Development({products, dchallenges, updates, drisks, inn
               control={form.control}
               render={({ field }) => (
                 <FormItem className="mt-5 w-full">
-                  <FormLabel className="font-bold text-base">What's your approach to technical innovation within your product?</FormLabel>
+                  <FormLabel className="font-bold text-base">What&apos;s your approach to technical innovation within your product?</FormLabel>
                   <Select
                   disabled={isLoading}
                   onValueChange={field.onChange}

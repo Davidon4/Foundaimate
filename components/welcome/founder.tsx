@@ -52,8 +52,8 @@ const formSchema = z.object({
 })
 
 export default function Founder({experiences, ownerships, members, expertises, decisions, initialData, onDataUpdate}: FounderFormProps & {
-  initialData: any,
-  onDataUpdate: (data: any) => void;
+  initialData: z.infer<typeof formSchema>,
+  onDataUpdate: (data: z.infer<typeof formSchema>) => void;
 }) {
   const router = useRouter();
   const [error, setError] = React.useState('');

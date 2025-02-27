@@ -1,4 +1,4 @@
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { motion } from "framer-motion";
 import * as z from "zod";
@@ -13,12 +13,11 @@ import {
 import { 
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "../ui/form";
+import { Button } from "../ui/button";
 import { 
   Select,
   SelectContent,
@@ -26,9 +25,6 @@ import {
   SelectValue,
   SelectItem 
 } from "../ui/select";
-import { Input } from "../ui/input";
-import { Textarea } from "../ui/textarea";
-import { Button } from "../ui/button";
 import { STAGGER_CHILD_VARIANTS } from "@/lib/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -64,12 +60,11 @@ const formSchema = z.object({
   })
 
 export default function Sales({ revenues, leads, schallenges, sstrategies, sgoals, srisks, initialData, onDataUpdate}: SalesFormProps & {
-  initialData: any,
-  onDataUpdate: (data: any) => void;
+  initialData: z.infer<typeof formSchema>,
+  onDataUpdate: (data: z.infer<typeof formSchema>) => void;
 }) {
   const router = useRouter();
   const [error, setError] = React.useState('');
-  const searchParams = useSearchParams();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -263,7 +258,7 @@ export default function Sales({ revenues, leads, schallenges, sstrategies, sgoal
               control={form.control}
               render={({ field }) => (
                 <FormItem className="mt-5 w-full">
-                  <FormLabel className="font-bold text-base">What's the biggest sales risk you foresee in scaling your startup?</FormLabel>
+                  <FormLabel className="font-bold text-base">What&apos;s the biggest sales risk you foresee in scaling your startup?</FormLabel>
                   <Select
                   disabled={isLoading}
                   onValueChange={field.onChange}

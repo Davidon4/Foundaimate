@@ -1,4 +1,4 @@
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 import { motion } from "framer-motion";
@@ -14,7 +14,6 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "../ui/form";
 import { 
   Select,
@@ -59,11 +58,10 @@ const formSchema = z.object({
   })
 
 export default function Business({industries, stages, sizes, networks, initialData, onDataUpdate}: BusinessFormProps & {
-  initialData: any,
-  onDataUpdate: (data: any) => void;
+  initialData: z.infer<typeof formSchema>,
+  onDataUpdate: (data: z.infer<typeof formSchema>) => void;
 }) {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [error, setError] = React.useState('');
 
   const form = useForm<z.infer<typeof formSchema>>({

@@ -7,7 +7,6 @@ import {
 } from '@clerk/nextjs';
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
-import { ThemeProvider } from "@/components/theme-provider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",

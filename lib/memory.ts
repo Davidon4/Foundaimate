@@ -175,7 +175,7 @@ export class MemoryManager {
             fileName: personalityFileName,
             ...contextFilter 
         })
-        .catch((err: any) => {
+        .catch((err: Error | unknown) => {
             console.log("WARNING: failed to get vector search results.", err);
         });
         return similarDocs;

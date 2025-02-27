@@ -98,3 +98,43 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes typewriter {
+  from {width : 0;}
+  to {width: 100%;}
+}
+
+.typewriter-text-1 {
+  overflow: hidden;
+  display: inline-block;
+  animation: typewriter 1s steps(40, end) 0.5s forwards;
+}
+
+.typewriter-text-2 {
+  overflow: hidden;
+  display: inline-block;
+  animation: typewriter 2s steps(80, end) 2s forwards;
+}
+
+.typewriter-text-3 {
+  overflow: hidden;
+  display: inline-block;
+  animation: typewriter 1s steps(20, end) 3s forwards;
+}
+
+.typewriter-text-4 {
+  overflow: hidden;
+  display: inline-block;
+  animation: typewriter 2s steps(80, end) 4s forwards;
+}
+
+.typewriter-text-5 {
+  overflow: hidden;
+  display: inline-block;
+  animation: typewriter 1s steps(20, end) 5s forwards;
+}

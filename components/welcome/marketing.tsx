@@ -1,4 +1,4 @@
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 import { motion } from "framer-motion";
@@ -25,8 +25,6 @@ import {
   SelectValue,
   SelectItem 
 } from "../ui/select";
-import { Input } from "../ui/input";
-import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 import { STAGGER_CHILD_VARIANTS } from "@/lib/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -63,11 +61,10 @@ const formSchema = z.object({
 })
 
 export default function Marketing({targets, mchannels, mchallenges, mgoals, mrisks, usps, initialData, onDataUpdate}: MarketingFormProps & {
-  initialData: any,
-  onDataUpdate: (data: any) => void; 
+  initialData: z.infer<typeof formSchema>,
+  onDataUpdate: (data: z.infer<typeof formSchema>) => void;
 }) {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [error, setError] = React.useState('');
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -173,7 +170,7 @@ export default function Marketing({targets, mchannels, mchallenges, mgoals, mris
               control={form.control}
               render={({ field }) => (
                 <FormItem className="mt-5 w-full">
-                  <FormLabel className="font-bold text-base">What is your brand’s unique selling proposition (USP)?</FormLabel>
+                  <FormLabel className="font-bold text-base">What is your brand&apos;s unique selling proposition (USP)?</FormLabel>
                   <Select
                   disabled={isLoading}
                   onValueChange={field.onChange}
@@ -266,7 +263,7 @@ export default function Marketing({targets, mchannels, mchallenges, mgoals, mris
               control={form.control}
               render={({ field }) => (
                 <FormItem className="mt-5 w-full">
-                  <FormLabel className="font-bold text-base">What's the biggest marketing risk you foresee in scaling your startup?</FormLabel>
+                  <FormLabel className="font-bold text-base">What&apos;s the biggest marketing risk you foresee in scaling your startup?</FormLabel>
                   <Select
                   disabled={isLoading}
                   onValueChange={field.onChange}

@@ -47,7 +47,6 @@ import {
     FormMessage,
 } from '@/components/ui/form';
 import { useToast } from "@/hooks/use-toast";
-import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { 
@@ -262,7 +261,7 @@ export const ProfileForm = ({
 
         router.refresh();
         router.push('/home');
-      } catch (error) {
+      } catch {
         toast({
           title: "Error",
           description: "Something went wrong",
@@ -769,7 +768,7 @@ export const ProfileForm = ({
               control={form.control}
               render={({ field }) => (
                 <FormItem className="mt-5 w-3/4">
-                  <FormLabel className="font-bold text-base">What's the biggest sales risk you foresee in scaling your startup?</FormLabel>
+                  <FormLabel className="font-bold text-base">What&apos;s the biggest sales risk you foresee in scaling your startup?</FormLabel>
                   <Select
                   disabled={isLoading}
                   onValueChange={field.onChange}
@@ -878,7 +877,7 @@ export const ProfileForm = ({
               control={form.control}
               render={({ field }) => (
                 <FormItem className="mt-5 w-3/4">
-                  <FormLabel className="font-bold text-base">What is your brand’s unique selling proposition (USP)?</FormLabel>
+                  <FormLabel className="font-bold text-base">What is your brand&apos;s unique selling proposition (USP)?</FormLabel>
                   <Select
                   disabled={isLoading}
                   onValueChange={field.onChange}
@@ -971,7 +970,7 @@ export const ProfileForm = ({
               control={form.control}
               render={({ field }) => (
                 <FormItem className="mt-5 w-3/4">
-                  <FormLabel className="font-bold text-base">What's the biggest marketing risk you foresee in scaling your startup?</FormLabel>
+                  <FormLabel className="font-bold text-base">What&apos;s the biggest marketing risk you foresee in scaling your startup?</FormLabel>
                   <Select
                   disabled={isLoading}
                   onValueChange={field.onChange}
@@ -1111,7 +1110,7 @@ export const ProfileForm = ({
               control={form.control}
               render={({ field }) => (
                 <FormItem className="mt-5 w-3/4">
-                  <FormLabel className="font-bold text-base">How do you handle updates and deployements?</FormLabel>
+                  <FormLabel className="font-bold text-base">How do you handle updates and deployments?</FormLabel>
                   <Select
                   disabled={isLoading}
                   onValueChange={field.onChange}
@@ -1142,7 +1141,7 @@ export const ProfileForm = ({
               control={form.control}
               render={({ field }) => (
                 <FormItem className="mt-5 w-3/4">
-                  <FormLabel className="font-bold text-base">What's the biggest technical risk you foresee in scaling your startup?</FormLabel>
+                  <FormLabel className="font-bold text-base">What&apos;s the biggest technical risk you foresee in scaling your startup?</FormLabel>
                   <Select
                   disabled={isLoading}
                   onValueChange={field.onChange}
@@ -1173,7 +1172,7 @@ export const ProfileForm = ({
               control={form.control}
               render={({ field }) => (
                 <FormItem className="mt-5 w-3/4">
-                  <FormLabel className="font-bold text-base">How do you priotize new features and product updates?</FormLabel>
+                  <FormLabel className="font-bold text-base">How do you prioritize new features and product updates?</FormLabel>
                   <Select
                   disabled={isLoading}
                   onValueChange={field.onChange}
@@ -1204,7 +1203,7 @@ export const ProfileForm = ({
               control={form.control}
               render={({ field }) => (
                 <FormItem className="mt-5 w-3/4">
-                  <FormLabel className="font-bold text-base">What's your approach to technical innovation within your product?</FormLabel>
+                  <FormLabel className="font-bold text-base">What&apos;s your approach to technical innovation within your product?</FormLabel>
                   <Select
                   disabled={isLoading}
                   onValueChange={field.onChange}

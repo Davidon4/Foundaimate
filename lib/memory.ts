@@ -160,6 +160,7 @@ export class MemoryManager {
         const vectorStore = await PineconeStore.fromExistingIndex(
             new OpenAIEmbeddings({ openAIApiKey: process.env.CLAUDE_API_KEY}),
             {   
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 pineconeIndex: pineconeIndex as any,
                 filter: contextFilter,
             }

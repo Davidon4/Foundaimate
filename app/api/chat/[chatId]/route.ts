@@ -184,7 +184,7 @@ export async function POST(
     Remember: You're not just an advisor - you're a committed co-founder who deeply cares about the success of ${userProfile.name}.`;
 
     // Convert messages to Anthropic format
-    const anthropicMessages = messages.map((msg: any) => ({
+    const anthropicMessages = messages.map((msg: { role: string; content: string }) => ({
         role: msg.role === 'user' ? ('user' as const) : ('assistant' as const),
         content: msg.content
     }));

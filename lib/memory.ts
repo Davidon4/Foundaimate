@@ -2,11 +2,6 @@ import {Redis} from "@upstash/redis";
 import {OpenAIEmbeddings} from "@langchain/openai";
 import {Pinecone} from "@pinecone-database/pinecone";
 import {PineconeStore} from "@langchain/pinecone";
-// import { OpenAI } from "openai";
-
-// const openai = new OpenAI({
-//     apiKey: process.env.OPENAI_API_KEY
-//   });
 
 export type PersonalityKey = {
     personalityName: string;
@@ -158,14 +153,14 @@ export class MemoryManager {
     ) {
         const pineconeClient = <Pinecone>this.vectorDBClient;
 
-        const pineconeIndex = pineconeClient.Index(
+        const pineconeIndex = pineconeClient.index(
             process.env.PINECONE_INDEX! || ""
         );
 
         const vectorStore = await PineconeStore.fromExistingIndex(
-            new OpenAIEmbeddings({ openAIApiKey: process.env.OPENAI_API_KEY}),
+            new OpenAIEmbeddings({ openAIApiKey: process.env.CLAUDE_API_KEY}),
             {   
-                pineconeIndex,
+                pineconeIndex: pineconeIndex as any,
                 filter: contextFilter,
             }
         );

@@ -1,8 +1,7 @@
 import dotenv from "dotenv";
-import { StreamingTextResponse, LangChainStream } from "ai";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-import { ChatOpenAI } from "@langchain/openai";
+import Anthropic from "@anthropic-ai/sdk";
 
 import { MemoryManager } from "@/lib/memory";
 import { rateLimit } from "@/lib/rate-limit";
@@ -96,7 +95,7 @@ export async function POST(
 
     const personalityKey = {
         personalityName,
-        modelName: "gpt-4-turbo-preview",
+        modelName: "claude-3-5-sonnet-20241022",
         userId: userId,
     };
 
@@ -112,19 +111,6 @@ export async function POST(
     //   personalityName
     // );
 
-    // Set up streaming
-    const { stream, handlers } = LangChainStream();
-
-    // Replace Replicate model with OpenAI GPT-4
-    const model = new ChatOpenAI({
-        modelName: "gpt-4-turbo-preview",
-        temperature: 0.7,
-        maxTokens: 2048,
-        openAIApiKey: process.env.OPENAI_API_KEY!,
-        streaming: true,
-        callbacks: [handlers],
-      });
-
     const personality = await prismadb.personality.findFirst({
         where: {
                  name: personalityName
@@ -135,10 +121,11 @@ export async function POST(
         return new NextResponse("Personality not found", { status: 404 });
       }  
 
-await model.invoke([
-    {
-    role: "system",
-    content: `You are ${personalityName}, a dedicated AI co-founder to ${userProfile.name}. You have intimate knowledge of the business and a personal investment in its success.
+    const anthropic = new Anthropic({
+        apiKey: process.env.ANTHROPIC_API_KEY!,
+    });
+
+    const systemMessage = `You are ${personalityName}, a dedicated AI co-founder to ${userProfile.name}. You have intimate knowledge of the business and a personal investment in its success.
 
     CONVERSATION FLOW:
     1. GREETINGS:
@@ -194,15 +181,44 @@ await model.invoke([
     PERSONALITY TRAITS:
     ${personality.coreTraits}
 
-    Remember: You're not just an advisor - you're a committed co-founder who deeply cares about the success of ${userProfile.name}.`
-    },
-    ...messages
-]);
+    Remember: You're not just an advisor - you're a committed co-founder who deeply cares about the success of ${userProfile.name}.`;
+
+    // Convert messages to Anthropic format
+    const anthropicMessages = messages.map((msg: any) => ({
+        role: msg.role === 'user' ? ('user' as const) : ('assistant' as const),
+        content: msg.content
+    }));
+
+    const stream = await anthropic.messages.create({
+        model: "claude-3-5-sonnet-20241022",
+        max_tokens: 2048,
+        temperature: 0.7,
+        system: systemMessage,
+        messages: anthropicMessages,
+        stream: true,
+    });
 
     // Save message to history
     await memoryManager.writeToHistory(content, personalityKey);
 
-    return new StreamingTextResponse(stream);
+    // Create a readable stream from Anthropic's stream
+    const encoder = new TextEncoder();
+    const readableStream = new ReadableStream({
+        async start(controller) {
+            for await (const event of stream) {
+                if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
+                    controller.enqueue(encoder.encode(event.delta.text));
+                }
+            }
+            controller.close();
+        }
+    });
+
+    return new NextResponse(readableStream, {
+        headers: {
+            'Content-Type': 'text/plain; charset=utf-8',
+        }
+    });
     
   } catch (error) {
     console.log('[CHAT_POST]', error);
